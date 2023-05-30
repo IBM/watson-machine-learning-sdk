@@ -1,0 +1,21 @@
+Changelog
+=========
+
+**v1.0.279**
+
+- Promote function supporting any asset is moved under `client.spaces.promote(...)` function.
+- Software specification filtering of details added to repository, models, functions and deployments modules.
+- Software specification additional columns with spec_state in `list(...)` added to repository, models, functions and deployments modules.
+- Fixed filtering of AutoAI's historical runs.
+
+**v1.0.277**
+
+- Support for outliers.
+- FL: Changed ssl_context initialization
+- Fixed: r-shiny deployment with serving name creation.
+- Support for CPD 3.0 in the code removed.
+- Documentation update - new structure.
+- FL: For party rejoin with crypto
+- Copyrights update - year and license alignment
+- Switch api for connections list
+

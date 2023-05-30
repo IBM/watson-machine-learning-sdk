@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ibm_watson_machine_learning.hw_spec &#8212; ibm-watson-machine-learning(V4) 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/wml_logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">IBM Watson Machine Learning</p>
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples.html">Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ibm_watson_machine_learning.hw_spec</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -----------------------------------------------------------------------------------------</span>
+<span class="c1">#  (C) Copyright IBM Corp. 2020- 2023.</span>
+<span class="c1">#  https://opensource.org/licenses/BSD-3-Clause</span>
+<span class="c1">#  -----------------------------------------------------------------------------------------</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils</span> <span class="kn">import</span> <span class="n">HW_SPEC_DETAILS_TYPE</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">HwSpecMetaNames</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span><span class="p">,</span> <span class="n">ApiRequestFailure</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">json</span>
+
+<span class="n">_DEFAULT_LIST_LENGTH</span> <span class="o">=</span> <span class="mi">50</span>
+
+
+<div class="viewcode-block" id="HwSpec"><a class="viewcode-back" href="../../core_api.html#client.HwSpec">[docs]</a><span class="k">class</span> <span class="nc">HwSpec</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Store and manage hardware specs.&quot;&quot;&quot;</span>
+
+    <span class="n">ConfigurationMetaNames</span> <span class="o">=</span> <span class="n">HwSpecMetaNames</span><span class="p">()</span>
+    <span class="sd">&quot;&quot;&quot;MetaNames for Hardware Specification.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="n">WMLResource</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ICP</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">ICP</span>
+
+<div class="viewcode-block" id="HwSpec.get_details"><a class="viewcode-back" href="../../core_api.html#client.HwSpec.get_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hw_spec_uid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get hardware specification details.</span>
+
+<span class="sd">        :param hw_spec_uid: Unique id of the hardware spec</span>
+<span class="sd">        :type hw_spec_uid: str</span>
+
+<span class="sd">        :return: metadata of the hardware specifications</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            hw_spec_details = client.hardware_specifications.get_details(hw_spec_uid)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HwSpec</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">hw_spec_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;hw_spec_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ICP</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_hw_spec_href</span><span class="p">(</span><span class="n">hw_spec_uid</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">(</span><span class="n">skip_space_project_chk</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                    <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_hw_spec_href</span><span class="p">(</span><span class="n">hw_spec_uid</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">(),</span>
+                                      <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_required_element_from_response</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;get hardware spec details&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;get hardware spec details&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span></div>
+
+    <span class="c1"># Creation of new hardware specs is not required at the moment because WML does not support it</span>
+    <span class="c1"># def store(self, meta_props):</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#             Create a space.</span>
+    <span class="c1">#</span>
+    <span class="c1">#             **Parameters**</span>
+    <span class="c1">#</span>
+    <span class="c1">#             .. important::</span>
+    <span class="c1">#                #. **meta_props**:  meta data of the space configuration. To see available meta names use:\n</span>
+    <span class="c1">#                                 &gt;&gt;&gt; client.hardware_specifications.ConfigurationMetaNames.get()</span>
+    <span class="c1">#</span>
+    <span class="c1">#                   **type**: dict\n</span>
+    <span class="c1">#</span>
+    <span class="c1">#             **Output**</span>
+    <span class="c1">#</span>
+    <span class="c1">#             .. important::</span>
+    <span class="c1">#</span>
+    <span class="c1">#                 **returns**: metadata of the stored space\n</span>
+    <span class="c1">#                 **return type**: dict\n</span>
+    <span class="c1">#</span>
+    <span class="c1">#             **Example**</span>
+    <span class="c1">#</span>
+    <span class="c1">#              &gt;&gt;&gt; meta_props = {</span>
+    <span class="c1">#              &gt;&gt;&gt;    client.hardware_specifications.ConfigurationMetaNames.NAME: &quot;skl_pipeline_heart_problem_prediction&quot;,</span>
+    <span class="c1">#              &gt;&gt;&gt;    client.hardware_specifications.ConfigurationMetaNames.DESCRIPTION: &quot;description scikit-learn_0.20&quot;,</span>
+    <span class="c1">#              &gt;&gt;&gt;    client.hardware_specifications.ConfigurationMetaNames.HARDWARE_CONFIGURATIONS: {},</span>
+    <span class="c1">#              &gt;&gt;&gt; }</span>
+    <span class="c1">#</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#</span>
+    <span class="c1">#     # quick support for COS credentials instead of local path</span>
+    <span class="c1">#     # TODO add error handling and cleaning (remove the file)</span>
+    <span class="c1">#     HwSpec._validate_type(meta_props, u&#39;meta_props&#39;, dict, True)</span>
+    <span class="c1">#     hw_spec_meta = self.ConfigurationMetaNames._generate_resource_metadata(</span>
+    <span class="c1">#         meta_props,</span>
+    <span class="c1">#         with_validation=True,</span>
+    <span class="c1">#         client=self._client)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     hw_spec_meta_json = json.dumps(hw_spec_meta)</span>
+    <span class="c1">#     href = self._client.service_instance._href_definitions.get_hw_specs_href()</span>
+    <span class="c1">#</span>
+    <span class="c1">#     creation_response = requests.post(href, params=self._client._params(), headers=self._client._get_headers(), data=hw_spec_meta_json)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     hw_spec_details = self._handle_response(201, u&#39;creating new hw specs&#39;, creation_response)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     return hw_spec_details</span>
+
+<div class="viewcode-block" id="HwSpec.list"><a class="viewcode-back" href="../../core_api.html#client.HwSpec.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print hardware specifications in a table format.</span>
+
+<span class="sd">        :param name: Unique id of the hardware spec</span>
+<span class="sd">        :type name: str, optional</span>
+
+<span class="sd">        :param return_as_df: determinate if table should be returned as pandas.DataFrame object, default: True</span>
+<span class="sd">        :type return_as_df: bool, optional</span>
+
+<span class="sd">        :return: pandas.DataFrame with listed hardware specifications or None if return_as_df is False</span>
+<span class="sd">        :rtype: pandas.DataFrame or None</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.hardware_specifications.list()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span>
+
+        <span class="c1"># Todo provide api to return</span>
+        <span class="n">href</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_hw_specs_href</span><span class="p">()</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">href</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;list hw_specs&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+        <span class="n">asset_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;list assets&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)[</span><span class="s2">&quot;resources&quot;</span><span class="p">]</span>
+        <span class="n">hw_spec_values</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;asset_id&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;description&#39;</span><span class="p">])</span> <span class="k">for</span>
+            <span class="n">m</span> <span class="ow">in</span> <span class="n">asset_details</span><span class="p">]</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="n">hw_spec_values</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;NAME&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;DESCRIPTION&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_DEFAULT_LIST_LENGTH</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">return_as_df</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">table</span></div>
+
+<div class="viewcode-block" id="HwSpec.get_id"><a class="viewcode-back" href="../../core_api.html#client.HwSpec.get_id">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="n">hw_spec_details</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get ID of hardware specifications asset.</span>
+
+<span class="sd">        :param hw_spec_details: metadata of the hardware specifications</span>
+<span class="sd">        :type hw_spec_details: dict</span>
+
+<span class="sd">        :return: Unique Id of hardware specifications</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            asset_uid = client.hardware_specifications.get_id(hw_spec_details)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">HwSpec</span><span class="o">.</span><span class="n">get_uid</span><span class="p">(</span><span class="n">hw_spec_details</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HwSpec.get_uid"><a class="viewcode-back" href="../../core_api.html#client.HwSpec.get_uid">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_uid</span><span class="p">(</span><span class="n">hw_spec_details</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get UID of hardware specifications asset.</span>
+
+<span class="sd">        *Deprecated:* Use ``get_id(hw_spec_details)`` instead.</span>
+
+<span class="sd">        :param hw_spec_details: metadata of the hardware specifications</span>
+<span class="sd">        :type hw_spec_details: dict</span>
+
+<span class="sd">        :return: Unique Id of hardware specifications</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            asset_uid = client.hardware_specifications.get_uid(hw_spec_details)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HwSpec</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">hw_spec_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;hw_spec_details&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">HwSpec</span><span class="o">.</span><span class="n">_validate_type_of_details</span><span class="p">(</span><span class="n">hw_spec_details</span><span class="p">,</span> <span class="n">HW_SPEC_DETAILS_TYPE</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">WMLResource</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">hw_spec_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;hw_spec_details&#39;</span><span class="p">,</span>
+                                                           <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;asset_id&#39;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="HwSpec.get_href"><a class="viewcode-back" href="../../core_api.html#client.HwSpec.get_href">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_href</span><span class="p">(</span><span class="n">hw_spec_details</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get url of hardware specifications.</span>
+
+<span class="sd">        :param hw_spec_details: hardware specifications details</span>
+<span class="sd">        :type hw_spec_details: dict</span>
+
+<span class="sd">        :return: href of hardware specifications</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            hw_spec_details = client.hw_spec.get_details(hw_spec_uid)</span>
+<span class="sd">            hw_spec_href = client.hw_spec.get_href(hw_spec_details)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HwSpec</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">hw_spec_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;hw_spec_details&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">HwSpec</span><span class="o">.</span><span class="n">_validate_type_of_details</span><span class="p">(</span><span class="n">hw_spec_details</span><span class="p">,</span> <span class="n">HW_SPEC_DETAILS_TYPE</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">WMLResource</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">hw_spec_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;hw_spec_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;href&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="HwSpec.get_id_by_name"><a class="viewcode-back" href="../../core_api.html#client.HwSpec.get_id_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_id_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hw_spec_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get Unique Id of hardware specification for the given name.</span>
+
+<span class="sd">        :param hw_spec_name: name of the hardware spec</span>
+<span class="sd">        :type hw_spec_name: str</span>
+
+<span class="sd">        :return: Unique Id of hardware specification</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            asset_uid = client.hardware_specifications.get_id_by_name(hw_spec_name)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">HwSpec</span><span class="o">.</span><span class="n">get_uid_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hw_spec_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HwSpec.get_uid_by_name"><a class="viewcode-back" href="../../core_api.html#client.HwSpec.get_uid_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_uid_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hw_spec_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get Unique Id of hardware specification for the given name.</span>
+
+<span class="sd">        *Deprecated:* Use ``get_id_by_name(hw_spec_name)`` instead.</span>
+
+<span class="sd">        :param hw_spec_name:  name of the hardware spec</span>
+<span class="sd">        :type hw_spec_name: str</span>
+
+<span class="sd">        :return: Unique Id of hardware specification</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            asset_uid = client.hardware_specifications.get_uid_by_name(hw_spec_name)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">HwSpec</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">hw_spec_name</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;hw_spec_name&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">(</span><span class="n">skip_space_project_chk</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">hw_spec_name</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_hw_specs_href</span><span class="p">(),</span>
+                                <span class="n">params</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
+                                <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">total_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;list assets&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)[</span><span class="s2">&quot;total_results&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">total_values</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">hw_spec_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;list assets&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)[</span><span class="s2">&quot;resources&quot;</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">hw_spec_details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;asset_id&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;Not Found&quot;</span></div>
+
+    <span class="c1"># def delete(self, hw_spec_uid):</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#         Delete a hardware specifications.</span>
+    <span class="c1">#</span>
+    <span class="c1">#         **Parameters**</span>
+    <span class="c1">#</span>
+    <span class="c1">#         .. important::</span>
+    <span class="c1">#             #. **hw_spec_uid**:  hardware specifications UID\n</span>
+    <span class="c1">#                **type**: str\n</span>
+    <span class="c1">#</span>
+    <span class="c1">#         **Output**</span>
+    <span class="c1">#</span>
+    <span class="c1">#         .. important::</span>
+    <span class="c1">#             **returns**: status (&quot;SUCCESS&quot; or &quot;FAILED&quot;)\n</span>
+    <span class="c1">#             **return type**: str\n</span>
+    <span class="c1">#</span>
+    <span class="c1">#         **Example**</span>
+    <span class="c1">#</span>
+    <span class="c1">#          &gt;&gt;&gt; client.hw_spec.delete(hw_spec_uid)</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     HwSpec._validate_type(hw_spec_uid, u&#39;hw_spec_uid&#39;, str, True)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     response = requests.delete(self._client.service_instance._href_definitions.get_hw_spec_href(hw_spec_uid), params=self._client._params(),</span>
+    <span class="c1">#                             headers=self._client._get_headers())</span>
+    <span class="c1">#</span>
+    <span class="c1">#     if response.status_code == 200:</span>
+    <span class="c1">#         return self._get_required_element_from_response(response.json())</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#         return self._handle_response(204, u&#39;delete hardware specification&#39;, response)</span>
+    <span class="c1">#</span>
+
+    <span class="k">def</span> <span class="nf">_get_required_element_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_data</span><span class="p">):</span>
+
+        <span class="n">WMLResource</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">response_data</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;hw_spec_response&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">new_el</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+                                       <span class="s1">&#39;asset_id&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;asset_id&#39;</span><span class="p">],</span>
+                                       <span class="s1">&#39;href&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;href&#39;</span><span class="p">],</span>
+                                       <span class="s1">&#39;asset_type&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;asset_type&#39;</span><span class="p">],</span>
+                                       <span class="s1">&#39;created_at&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span>
+                                       <span class="c1">#&#39;updated_at&#39;: response_data[&#39;metadata&#39;][&#39;updated_at&#39;]</span>
+                                       <span class="p">},</span>
+                          <span class="s1">&#39;entity&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span>
+
+                          <span class="p">}</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">WSD</span><span class="p">:</span>
+                    <span class="n">new_el</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+                                           <span class="s1">&#39;asset_id&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;asset_id&#39;</span><span class="p">],</span>
+                                           <span class="s1">&#39;href&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;href&#39;</span><span class="p">],</span>
+                                           <span class="s1">&#39;asset_type&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;asset_type&#39;</span><span class="p">],</span>
+                                           <span class="s1">&#39;created_at&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span>
+                                           <span class="p">},</span>
+                              <span class="s1">&#39;entity&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span>
+
+                              <span class="p">}</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_el</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+                                           <span class="s1">&#39;asset_id&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;asset_id&#39;</span><span class="p">],</span>
+                                           <span class="s1">&#39;href&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;href&#39;</span><span class="p">],</span>
+                                           <span class="s1">&#39;asset_type&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;asset_type&#39;</span><span class="p">],</span>
+                                           <span class="s1">&#39;created_at&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span>
+                                       <span class="p">},</span>
+                             <span class="s1">&#39;entity&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span>
+
+                            <span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># For system hardware spec</span>
+                <span class="n">new_el</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+                                       <span class="s1">&#39;asset_id&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;asset_id&#39;</span><span class="p">],</span>
+                                       <span class="s1">&#39;href&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;href&#39;</span><span class="p">],</span>
+                                       <span class="s1">&#39;asset_type&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;asset_type&#39;</span><span class="p">],</span>
+                                       <span class="s1">&#39;created_at&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span>
+                                       <span class="c1">#&#39;updated_at&#39;: response_data[&#39;metadata&#39;][&#39;updated_at&#39;]</span>
+                                       <span class="p">},</span>
+                          <span class="s1">&#39;entity&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span>
+
+                          <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;href&#39;</span> <span class="ow">in</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]:</span>
+                <span class="n">href_without_host</span> <span class="o">=</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;href&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.com&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">new_el</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;href&#39;</span><span class="p">:</span> <span class="n">href_without_host</span><span class="p">})</span>
+
+            <span class="k">return</span> <span class="n">new_el</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;Failed to read Response from down-stream service: &quot;</span> <span class="o">+</span> <span class="n">response_data</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018-2023, IBM.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,94 @@
+IBM Cloud Pak for Data
+======================
+
+Requirements
+------------
+Starting work with IBM Cloud refer to `Getting started` section in main product documentation:
+ - `Version 3.5 <https://www.ibm.com/docs/en/cloud-paks/cp-data/3.5.0?topic=getting-started>`__
+ - `Version 4.0 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=getting-started>`__
+ - `Version 4.5 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.5.x?topic=getting-started>`__
+ - `Version 4.6 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.6.x?topic=getting-started>`__
+
+Supported machine learning frameworks
+-------------------------------------
+For the list of supported machine learning frameworks (models) of IBM Cloud Pak® for Data, refer to `Watson Machine Learning Documentation`:
+ - `Version 3.5 <https://www.ibm.com/docs/en/cloud-paks/cp-data/3.5.0?topic=overview-supported-deployment-frameworks>`__
+ - `Version 4.0 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=functions-supported-deployment-frameworks>`__
+ - `Version 4.5 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.5.x?topic=specifications-supported-frameworks-software>`__
+ - `Version 4.6 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.6.x?topic=specifications-supported-frameworks-software>`__
+
+Authentication
+--------------
+If you are a user of IBM Cloud Pak® for Data version 4.0, you can create an IBM Watson Machine Learning Python client by providing credentials, or using a token:
+
+**Note:** To determine <URL> and <APIKEY> refer to `Authentication <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=functions-authentication-watson-machine-learning>`__
+section of product documentation.
+
+Example of creating the client using credentials (`username`/`password`):
+
+.. code-block:: python
+
+    from ibm_watson_machine_learning import APIClient
+    wml_credentials = {
+                       "url": "<URL>",
+                       "username": "<USERNAME>",
+                       "password" : "<PASSWORD>",
+                       "instance_id": "openshift",
+                       "version" : "4.0"
+                      }
+
+    client = APIClient(wml_credentials)
+
+Example of creating the client using credentials (`username`/`apikey`):
+
+.. code-block:: python
+
+    from ibm_watson_machine_learning import APIClient
+    wml_credentials = {
+                       "url": "<URL>",
+                       "username": "<USERNAME>",
+                       "apikey" : "<APIKEY>",
+                       "instance_id": "openshift",
+                       "version" : "4.0"
+                      }
+
+    client = APIClient(wml_credentials)
+
+Example of creating the client using a token:
+
+In IBM Cloud Pak® for Data version 4.0, user can authenticate with token set in the notebook environment.
+
+.. code-block:: python
+
+    access_token = os.environ['USER_ACCESS_TOKEN']
+    from ibm_watson_machine_learning import APIClient
+
+    wml_credentials = {
+                       "url": "<URL>",
+                       "token": access_token,
+                       "instance_id": "openshift"
+                       "version" : "4.0"
+                      }
+    client = APIClient(wml_credentials)
+
+**Note:**
+      * The version value should be set to version and release (format: `x.y`, for example: `4.6`)
+        for In IBM Cloud Pak® for Data users.
+      * Setting default space id or project id is mandatory. For examples, refer to ``client.set.default_space()`` and ``client.set.default_project()`` APIs in this document.
+
+**Note for IBM Cloud Pak® for Data version 4.0 and above:**
+    If during authentication the following error appear:
+
+    .. code-block::
+
+        Attempt of generating `bedrock_url` automatically failed.
+        If iamintegration=True, please provide `bedrock_url` in wml_credentials.
+        If iamintegration=False, please validate your credentials.
+
+    There are two possible causes:
+
+    1. During installation were chosen option: iamintegration=False (default configuration). Probably the credentials are invalid or service is temporary unavailable.
+    2. During installation were chosen option: iamintegration=True. Autogeneration of `bedrock_url` wasn't successful.
+       In this situation IBM Cloud Pak foundational services URL should be provided as `bedrock_url` param to the wml_credentials.
+
+       To get IBM Cloud Pak foundational services URL please refer to documentation: https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=overview-authentication#find_bedrock

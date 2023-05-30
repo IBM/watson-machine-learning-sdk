@@ -1,0 +1,25 @@
+The ibm-watson-machine-learning library
+=======================================
+The ``ibm-watson-machine-learning`` Python library allows you to work with IBM Watson Machine Learning services.
+You can train, store, and deploy your models, score them using APIs, and finally integrate them with your application
+development.
+
+For supported product offerings refer to :ref:`Product Offerings<product-offerings>` section.
+
+
+.. toctree::
+    :maxdepth: 5
+
+    install
+    setup
+    api
+    samples
+    changelog
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`search`
+

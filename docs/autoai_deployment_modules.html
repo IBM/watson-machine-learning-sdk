@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Deployment Modules for AutoAI models &#8212; ibm-watson-machine-learning(V4) 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystyle2.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Samples" href="samples.html" />
+    <link rel="prev" title="DataConnection Modules" href="dataconnection_modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/wml_logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">IBM Watson Machine Learning</p>
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api.html#modules">Modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="core_api.html">Core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="federated_learning.html">Federated Learning</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="autoai.html">AutoAI</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="autoai_working_with_class_and_optimizer.html">Working with AutoAI class and optimizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoai_working_with_dataconnection.html">Working with DataConnection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoai_experiment.html">AutoAI experiment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dataconnection_modules.html">DataConnection Modules</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Deployment Modules for AutoAI models</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#web-service">Web Service</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#batch">Batch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="deployment-modules-for-autoai-models">
+<h1>Deployment Modules for AutoAI models<a class="headerlink" href="#deployment-modules-for-autoai-models" title="Permalink to this heading">¶</a></h1>
+<section id="web-service">
+<h2>Web Service<a class="headerlink" href="#web-service" title="Permalink to this heading">¶</a></h2>
+<p>For usage instruction see <a class="reference internal" href="autoai_working_with_class_and_optimizer.html#working-with-web-service"><span class="std std-ref">Web Service</span></a>.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.WebService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ibm_watson_machine_learning.deployment.</span></span><span class="sig-name descname"><span class="pre">WebService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_wml_credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">WorkSpace</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_project_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_space_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_wml_credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">WorkSpace</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_project_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_space_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wml_credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">WorkSpace</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/web_service.html#WebService"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.WebService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDeployment</span></code></p>
+<p>An Online Deployment class aka. WebService.
+With this class object you can manage any online (WebService) deployment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_wml_credentials</strong> (<em>dict</em>) – credentials to Watson Machine Learning instance where training was performed</p></li>
+<li><p><strong>source_project_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio project where training was performed</p></li>
+<li><p><strong>source_space_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio Space where training was performed</p></li>
+<li><p><strong>target_wml_credentials</strong> (<em>dict</em>) – credentials to Watson Machine Learning instance where you want to deploy</p></li>
+<li><p><strong>target_project_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio project where you want to deploy</p></li>
+<li><p><strong>target_space_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio Space where you want to deploy</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.WebService.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deployment_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serving_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment_run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hardware_spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/web_service.html#WebService.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.WebService.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create deployment from a model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>str</em>) – AutoAI model name</p></li>
+<li><p><strong>deployment_name</strong> (<em>str</em>) – name of the deployment</p></li>
+<li><p><strong>training_data</strong> (<em>pandas.DataFrame</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>optional</em>) – training data for the model</p></li>
+<li><p><strong>training_target</strong> (<em>pandas.DataFrame</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>optional</em>) – target/label data for the model</p></li>
+<li><p><strong>serving_name</strong> (<em>str</em><em>, </em><em>optional</em>) – serving name of the deployment</p></li>
+<li><p><strong>metadata</strong> (<em>dict</em><em>, </em><em>optional</em>) – model meta properties</p></li>
+<li><p><strong>experiment_run_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of a training/experiment (only applicable for AutoAI deployments)</p></li>
+<li><p><strong>hardware_spec</strong> (<em>dict</em><em>, </em><em>optional</em>) – hardware specification for deployment</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.deployment</span> <span class="kn">import</span> <span class="n">WebService</span>
+
+<span class="n">deployment</span> <span class="o">=</span> <span class="n">WebService</span><span class="p">(</span>
+       <span class="n">wml_credentials</span><span class="o">=</span><span class="p">{</span>
+             <span class="s2">&quot;apikey&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;iam_apikey_description&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;iam_apikey_name&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;iam_role_crn&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;iam_serviceid_crn&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;instance_id&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://us-south.ml.cloud.ibm.com&quot;</span>
+           <span class="p">},</span>
+        <span class="n">project_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+        <span class="n">space_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+
+<span class="n">deployment</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+       <span class="n">experiment_run_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+       <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+       <span class="n">deployment_name</span><span class="o">=</span><span class="s1">&#39;My new deployment&#39;</span><span class="p">,</span>
+       <span class="n">serving_name</span><span class="o">=</span><span class="s1">&#39;my_new_deployment&#39;</span>
+   <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.WebService.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deployment_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/web_service.html#WebService.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.WebService.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete deployment on WML.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deployment_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the deployment to delete, if empty, current deployment will be deleted</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">deployment</span> <span class="o">=</span> <span class="n">WebService</span><span class="p">(</span><span class="n">workspace</span><span class="o">=...</span><span class="p">)</span>
+<span class="c1"># Delete current deployment</span>
+<span class="n">deployment</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<span class="c1"># Or delete a specific deployment</span>
+<span class="n">deployment</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">deployment_id</span><span class="o">=</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.WebService.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deployment_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/web_service.html#WebService.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.WebService.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get WML deployment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deployment_id</strong> (<em>str</em>) – ID of the deployment to work with</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">deployment</span> <span class="o">=</span> <span class="n">WebService</span><span class="p">(</span><span class="n">workspace</span><span class="o">=...</span><span class="p">)</span>
+<span class="n">deployment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">deployment_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.WebService.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/web_service.html#WebService.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.WebService.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deployment parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.WebService.list">
+<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/web_service.html#WebService.list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.WebService.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List WML deployments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>limit</strong> (<em>int</em><em>, </em><em>optional</em>) – set the limit of how many deployments to list,
+default is <cite>None</cite> (all deployments should be fetched)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pandas DataFrame with information about deployments</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">deployment</span> <span class="o">=</span> <span class="n">WebService</span><span class="p">(</span><span class="n">workspace</span><span class="o">=...</span><span class="p">)</span>
+<span class="n">deployments_list</span> <span class="o">=</span> <span class="n">deployment</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">deployments_list</span><span class="p">)</span>
+
+<span class="c1"># Result:</span>
+<span class="c1">#                  created_at  ...  status</span>
+<span class="c1"># 0  2020-03-06T10:50:49.401Z  ...   ready</span>
+<span class="c1"># 1  2020-03-06T13:16:09.789Z  ...   ready</span>
+<span class="c1"># 4  2020-03-11T14:46:36.035Z  ...  failed</span>
+<span class="c1"># 3  2020-03-11T14:49:55.052Z  ...  failed</span>
+<span class="c1"># 2  2020-03-11T15:13:53.708Z  ...   ready</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.WebService.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload:</span> <span class="pre">dict</span> <span class="pre">|</span> <span class="pre">~pandas.core.frame.DataFrame</span> <span class="pre">=</span> <span class="pre">Empty</span> <span class="pre">DataFrame</span> <span class="pre">Columns:</span> <span class="pre">[]</span> <span class="pre">Index:</span> <span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transaction_id:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/web_service.html#WebService.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.WebService.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Online scoring on WML. Payload is passed to the WML scoring endpoint where model have been deployed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>payload</strong> (<em>pandas.DataFrame</em><em> or </em><em>dict</em>) – DataFrame with data to test the model or dictionary with keys <cite>observations</cite>
+and <cite>supporting_features</cite> and DataFrames with data for <cite>observations</cite> and <cite>supporting_features</cite>
+to score forecasting models</p></li>
+<li><p><strong>transaction_id</strong> (<em>str</em><em>, </em><em>optional</em>) – can be used to indicate under which id the records will be saved into payload table
+in IBM OpenScale</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary with list od model output/predicted targets</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">web_service</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">payload</span><span class="o">=</span><span class="n">test_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+
+<span class="c1"># Result:</span>
+<span class="c1"># {&#39;predictions&#39;:</span>
+<span class="c1">#     [{</span>
+<span class="c1">#         &#39;fields&#39;: [&#39;prediction&#39;, &#39;probability&#39;],</span>
+<span class="c1">#         &#39;values&#39;: [[&#39;no&#39;, [0.9221385608558003, 0.07786143914419975]],</span>
+<span class="c1">#                   [&#39;no&#39;, [0.9798324002736079, 0.020167599726392187]]</span>
+<span class="c1">#     }]}</span>
+
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">web_service</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">payload</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;observations&#39;</span><span class="p">:</span> <span class="n">new_observations_df</span><span class="p">})</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">web_service</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">payload</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;observations&#39;</span><span class="p">:</span> <span class="n">new_observations_df</span><span class="p">,</span> <span class="s1">&#39;supporting_features&#39;</span><span class="p">:</span> <span class="n">supporting_features_df</span><span class="p">})</span> <span class="c1"># supporting features time series forecasting sceanrio</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="batch">
+<h2>Batch<a class="headerlink" href="#batch" title="Permalink to this heading">¶</a></h2>
+<p>For usage instruction see <a class="reference internal" href="autoai_working_with_class_and_optimizer.html#working-with-batch"><span class="std std-ref">Batch</span></a>.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ibm_watson_machine_learning.deployment.</span></span><span class="sig-name descname"><span class="pre">Batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_wml_credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">WorkSpace</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_project_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_space_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_wml_credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">WorkSpace</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_project_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_space_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wml_credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">WorkSpace</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDeployment</span></code></p>
+<p>The Batch Deployment class.
+With this class object you can manage any batch deployment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_wml_credentials</strong> (<em>dict</em>) – credentials to Watson Machine Learning instance where training was performed</p></li>
+<li><p><strong>source_project_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio project where training was performed</p></li>
+<li><p><strong>source_space_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio Space where training was performed</p></li>
+<li><p><strong>target_wml_credentials</strong> (<em>dict</em>) – credentials to Watson Machine Learning instance where you want to deploy</p></li>
+<li><p><strong>target_project_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio project where you want to deploy</p></li>
+<li><p><strong>target_space_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio Space where you want to deploy</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deployment_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment_run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create deployment from a model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>str</em>) – AutoAI model name</p></li>
+<li><p><strong>deployment_name</strong> (<em>str</em>) – name of the deployment</p></li>
+<li><p><strong>training_data</strong> (<em>pandas.DataFrame</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>optional</em>) – training data for the model</p></li>
+<li><p><strong>training_target</strong> (<em>pandas.DataFrame</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>optional</em>) – target/label data for the model</p></li>
+<li><p><strong>metadata</strong> (<em>dict</em><em>, </em><em>optional</em>) – model meta properties</p></li>
+<li><p><strong>experiment_run_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of a training/experiment (only applicable for AutoAI deployments)</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.deployment</span> <span class="kn">import</span> <span class="n">Batch</span>
+
+<span class="n">deployment</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span>
+       <span class="n">wml_credentials</span><span class="o">=</span><span class="p">{</span>
+             <span class="s2">&quot;apikey&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;iam_apikey_description&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;iam_apikey_name&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;iam_role_crn&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;iam_serviceid_crn&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;instance_id&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://us-south.ml.cloud.ibm.com&quot;</span>
+           <span class="p">},</span>
+        <span class="n">project_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+        <span class="n">space_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+
+<span class="n">deployment</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+       <span class="n">experiment_run_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+       <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+       <span class="n">deployment_name</span><span class="o">=</span><span class="s1">&#39;My new deployment&#39;</span>
+   <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deployment_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete deployment on WML.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deployment_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the deployment to delete, if empty, current deployment will be deleted</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">deployment</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="n">workspace</span><span class="o">=...</span><span class="p">)</span>
+<span class="c1"># Delete current deployment</span>
+<span class="n">deployment</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<span class="c1"># Or delete a specific deployment</span>
+<span class="n">deployment</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">deployment_id</span><span class="o">=</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deployment_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get WML deployment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deployment_id</strong> (<em>str</em>) – ID of the deployment to work with</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">deployment</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="n">workspace</span><span class="o">=...</span><span class="p">)</span>
+<span class="n">deployment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">deployment_id</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.get_job_id">
+<span class="sig-name descname"><span class="pre">get_job_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_scoring_details</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.get_job_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.get_job_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get id from batch scoring details.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.get_job_params">
+<span class="sig-name descname"><span class="pre">get_job_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scoring_job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.get_job_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.get_job_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get batch deployment job parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scoring_job_id</strong> (<em>str</em>) – Id of scoring job</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>parameters of the scoring job</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.get_job_result">
+<span class="sig-name descname"><span class="pre">get_job_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scoring_job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.get_job_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.get_job_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get batch deployment results of job with id <cite>scoring_job_id</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scoring_job_id</strong> (<em>str</em>) – Id of scoring job which results will be returned</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>result</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>MissingScoringResults</strong> – in case of incompleted or failed job
+<cite>MissingScoringResults</cite> scoring exception is raised</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.get_job_status">
+<span class="sig-name descname"><span class="pre">get_job_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scoring_job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.get_job_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.get_job_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get status of scoring job.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scoring_job_id</strong> (<em>str</em>) – Id of scoring job</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary with state of scoring job (one of: [completed, failed, starting, queued])
+and additional details if they exist</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deployment parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.list">
+<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List WML deployments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>limit</strong> (<em>int</em><em>, </em><em>optional</em>) – set the limit of how many deployments to list,
+default is <cite>None</cite> (all deployments should be fetched)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pandas DataFrame with information about deployments</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">deployment</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="n">workspace</span><span class="o">=...</span><span class="p">)</span>
+<span class="n">deployments_list</span> <span class="o">=</span> <span class="n">deployment</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">deployments_list</span><span class="p">)</span>
+
+<span class="c1"># Result:</span>
+<span class="c1">#                  created_at  ...  status</span>
+<span class="c1"># 0  2020-03-06T10:50:49.401Z  ...   ready</span>
+<span class="c1"># 1  2020-03-06T13:16:09.789Z  ...   ready</span>
+<span class="c1"># 4  2020-03-11T14:46:36.035Z  ...  failed</span>
+<span class="c1"># 3  2020-03-11T14:49:55.052Z  ...  failed</span>
+<span class="c1"># 2  2020-03-11T15:13:53.708Z  ...   ready</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.list_jobs">
+<span class="sig-name descname"><span class="pre">list_jobs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.list_jobs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.list_jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns pandas DataFrame with list of deployment jobs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.rerun_job">
+<span class="sig-name descname"><span class="pre">rerun_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scoring_job_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="dataconnection_modules.html#ibm_watson_machine_learning.helpers.connections.connections.DataConnection" title="ibm_watson_machine_learning.helpers.connections.connections.DataConnection"><span class="pre">DataConnection</span></a></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.rerun_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.rerun_job" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rerun scoring job with the same parameters as job described by <cite>scoring_job_id</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scoring_job_id</strong> (<em>str</em>) – Id described scoring job</p></li>
+<li><p><strong>background_mode</strong> (<em>bool</em><em>, </em><em>optional</em>) – indicator if score_rerun() method will run in background (async) or (sync)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>scoring job details</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scoring_details</span> <span class="o">=</span> <span class="n">deployment</span><span class="o">.</span><span class="n">score_rerun</span><span class="p">(</span><span class="n">scoring_job_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.run_job">
+<span class="sig-name descname"><span class="pre">run_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload:</span> <span class="pre">~pandas.core.frame.DataFrame</span> <span class="pre">|</span> <span class="pre">~typing.List[~ibm_watson_machine_learning.helpers.connections.connections.DataConnection]</span> <span class="pre">|</span> <span class="pre">~typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~pandas.core.frame.DataFrame]</span> <span class="pre">|</span> <span class="pre">~typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~ibm_watson_machine_learning.helpers.connections.connections.DataConnection]</span> <span class="pre">=</span> <span class="pre">Empty</span> <span class="pre">DataFrame</span> <span class="pre">Columns:</span> <span class="pre">[]</span> <span class="pre">Index:</span> <span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_data_reference:</span> <span class="pre">~ibm_watson_machine_learning.helpers.connections.connections.DataConnection</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transaction_id:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_mode:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="dataconnection_modules.html#ibm_watson_machine_learning.helpers.connections.connections.DataConnection" title="ibm_watson_machine_learning.helpers.connections.connections.DataConnection"><span class="pre">DataConnection</span></a></span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.run_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.run_job" title="Permalink to this definition">¶</a></dt>
+<dd><p>Batch scoring job on WML. Payload or Payload data reference is required.
+It is passed to the WML where model have been deployed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>payload</strong> (<em>pandas.DataFrame</em><em> or </em><em>List</em><em>[</em><a class="reference internal" href="dataconnection_modules.html#ibm_watson_machine_learning.helpers.connections.connections.DataConnection" title="ibm_watson_machine_learning.helpers.connections.connections.DataConnection"><em>DataConnection</em></a><em>] or </em><em>Dict</em>) – DataFrame that contains data to test the model or data storage connection details
+that inform the model where payload data is stored</p></li>
+<li><p><strong>output_data_reference</strong> (<a class="reference internal" href="dataconnection_modules.html#ibm_watson_machine_learning.helpers.connections.connections.DataConnection" title="ibm_watson_machine_learning.helpers.connections.connections.DataConnection"><em>DataConnection</em></a><em>, </em><em>optional</em>) – DataConnection to the output COS for storing predictions,
+required only when DataConnections are used as a payload</p></li>
+<li><p><strong>transaction_id</strong> (<em>str</em><em>, </em><em>optional</em>) – can be used to indicate under which id the records will be saved into payload table
+in IBM OpenScale</p></li>
+<li><p><strong>background_mode</strong> (<em>bool</em><em>, </em><em>optional</em>) – indicator if score() method will run in background (async) or (sync)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>scoring job details</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">score_details</span> <span class="o">=</span> <span class="n">batch_service</span><span class="o">.</span><span class="n">run_job</span><span class="p">(</span><span class="n">payload</span><span class="o">=</span><span class="n">test_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">score_details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;scoring&#39;</span><span class="p">])</span>
+
+<span class="c1"># Result:</span>
+<span class="c1"># {&#39;input_data&#39;: [{&#39;fields&#39;: [&#39;sepal_length&#39;,</span>
+<span class="c1">#               &#39;sepal_width&#39;,</span>
+<span class="c1">#               &#39;petal_length&#39;,</span>
+<span class="c1">#               &#39;petal_width&#39;],</span>
+<span class="c1">#              &#39;values&#39;: [[4.9, 3.0, 1.4, 0.2]]}],</span>
+<span class="c1"># &#39;predictions&#39;: [{&#39;fields&#39;: [&#39;prediction&#39;, &#39;probability&#39;],</span>
+<span class="c1">#               &#39;values&#39;: [[&#39;setosa&#39;,</span>
+<span class="c1">#                 [0.9999320742502246,</span>
+<span class="c1">#                  5.1519823540224506e-05,</span>
+<span class="c1">#                  1.6405926235405522e-05]]]}]</span>
+
+<span class="n">payload_reference</span> <span class="o">=</span> <span class="n">DataConnection</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">DSLocation</span><span class="p">(</span><span class="n">asset_id</span><span class="o">=</span><span class="n">asset_id</span><span class="p">))</span>
+<span class="n">score_details</span> <span class="o">=</span> <span class="n">batch_service</span><span class="o">.</span><span class="n">run_job</span><span class="p">(</span><span class="n">payload</span><span class="o">=</span><span class="n">payload_reference</span><span class="p">,</span> <span class="n">output_data_filename</span> <span class="o">=</span> <span class="s2">&quot;scoring_output.csv&quot;</span><span class="p">)</span>
+<span class="n">score_details</span> <span class="o">=</span> <span class="n">batch_service</span><span class="o">.</span><span class="n">run_job</span><span class="p">(</span><span class="n">payload</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;observations&#39;</span><span class="p">:</span> <span class="n">payload_reference</span><span class="p">})</span>
+<span class="n">score_details</span> <span class="o">=</span> <span class="n">batch_service</span><span class="o">.</span><span class="n">run_job</span><span class="p">(</span><span class="n">payload</span><span class="o">=</span><span class="p">[</span><span class="n">payload_reference</span><span class="p">])</span>
+<span class="n">score_details</span> <span class="o">=</span> <span class="n">batch_service</span><span class="o">.</span><span class="n">run_job</span><span class="p">(</span><span class="n">payload</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;observations&#39;</span><span class="p">:</span> <span class="n">payload_reference</span><span class="p">,</span> <span class="s1">&#39;supporting_features&#39;</span><span class="p">:</span> <span class="n">supporting_features_reference</span><span class="p">})</span>  <span class="c1"># supporting features time series forecasting sceanrio</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.deployment.Batch.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployment/batch.html#Batch.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.deployment.Batch.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scoring on WML. Payload is passed to the WML scoring endpoint where model have been deployed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>payload</strong> (<em>pandas.DataFrame</em>) – data to test the model</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018-2023, IBM.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/autoai_deployment_modules.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

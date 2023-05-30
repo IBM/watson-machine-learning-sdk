@@ -1,0 +1,55 @@
+IBM Cloud
+=========
+
+Requirements
+------------
+Starting work with IBM Cloud refer to `Getting started <https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-wdp.html?audience=wdp>`__ section in main product documentation.
+
+Supported machine learning frameworks
+-------------------------------------
+For the list of supported machine learning frameworks (models) on IBM Cloud, refer to
+`Watson Machine Learning Documentation <https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/pm_service_supported_frameworks.html>`__.
+
+Authentication
+--------------
+To use Watson Machine learning APIs, create an instance of APIClient with authentication details.
+
+**Note:** Depending on the region of your provisioned service instance, use one of the following as your url:
+
+    * Dallas: `https://us-south.ml.cloud.ibm.com`
+    * London: `https://eu-gb.ml.cloud.ibm.com`
+    * Frankfurt: `https://eu-de.ml.cloud.ibm.com`
+    * Tokyo: `https://jp-tok.ml.cloud.ibm.com`
+
+**Note:** To determine `apikey` go to https://cloud.ibm.com/iam/apikeys and generate your apikey.
+
+Example of creating the client using apikey:
+
+.. code-block:: python
+
+   from ibm_watson_machine_learning import APIClient
+
+   wml_credentials = {
+                      "url": "https://us-south.ml.cloud.ibm.com",
+                      "apikey":"***********"
+                     }
+
+   client = APIClient(wml_credentials)
+
+
+
+
+Example of creating the client using token:
+
+.. code-block:: python
+
+   from ibm_watson_machine_learning import APIClient
+
+   wml_credentials = {
+                      "url": "https://us-south.ml.cloud.ibm.com",
+                      "token":"***********",
+                     }
+
+   client = APIClient(wml_credentials)
+
+**Note:** Setting default space/project id is mandatory. For details, refer to ``client.set.default_space()`` API in this document.

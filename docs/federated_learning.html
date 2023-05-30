@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Federated Learning &#8212; ibm-watson-machine-learning(V4) 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystyle2.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="AutoAI" href="autoai.html" />
+    <link rel="prev" title="Core" href="core_api.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/wml_logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">IBM Watson Machine Learning</p>
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api.html#modules">Modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="core_api.html">Core</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Federated Learning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#aggregation">Aggregation</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#configure-and-start-aggregation">Configure and start aggregation</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#local-training">Local training</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#configure-and-start-local-training">Configure and start local training</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="autoai.html">AutoAI</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="federated-learning">
+<h1>Federated Learning<a class="headerlink" href="#federated-learning" title="Permalink to this heading">¶</a></h1>
+<p>Federated Learning provides the tools for training a model collaboratively, by coordinating local training runs
+and fusing the results. Even though data sources are never moved, combined, or shared among parties or the aggregator,
+all of them contribute to training and improving the quality of the global model.</p>
+<p><a class="reference external" href="https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-demo.html?context=cpdaas&amp;audience=wdp">Tutorial and Samples for IBM Cloud</a></p>
+<p><a class="reference external" href="https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=learning-federated-tutorial-samples">Tutorial and Samples for IBM Cloud Pak for Data, IBM Watson Machine Learning Server</a></p>
+<section id="aggregation">
+<h2>Aggregation<a class="headerlink" href="#aggregation" title="Permalink to this heading">¶</a></h2>
+<p>The aggregator process, which fuses the parties’ training results, runs as a Watson Machine Learning training job.
+For more information on creating and querying a training job, see the API documentation for the <code class="docutils literal notranslate"><span class="pre">client.training</span></code> class.
+The parameters available to configure a Federated Learning training are described in the <a class="reference external" href="https://cloud.ibm.com/apidocs/machine-learning-cp#trainings-create">IBM Cloud API Docs</a>.</p>
+<section id="configure-and-start-aggregation">
+<h3>Configure and start aggregation<a class="headerlink" href="#configure-and-start-aggregation" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning</span> <span class="kn">import</span> <span class="n">APIClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">(</span> <span class="n">credentials</span> <span class="p">)</span>
+
+<span class="n">PROJECT_ID</span> <span class="o">=</span> <span class="s2">&quot;8ae1a720-83ed-4c57-b719-8dd086bd7ce0&quot;</span>
+<span class="n">client</span><span class="o">.</span><span class="n">set</span><span class="o">.</span><span class="n">default_project</span><span class="p">(</span> <span class="n">PROJECT_ID</span> <span class="p">)</span>
+
+<span class="n">aggregator_metadata</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">NAME</span><span class="p">:</span> <span class="s1">&#39;Federated Tensorflow MNIST&#39;</span><span class="p">,</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="s1">&#39;MNIST digit recognition with Federated Learning using Tensorflow&#39;</span><span class="p">,</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_DATA_REFERENCES</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_RESULTS_REFERENCE</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;container&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;outputData&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;connection&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;location&#39;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;/projects/&#39;</span> <span class="o">+</span> <span class="n">PROJECT_ID</span> <span class="o">+</span> <span class="s1">&#39;/assets/trainings/&#39;</span>
+        <span class="p">}</span>
+
+    <span class="p">},</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">FEDERATED_LEARNING</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;tensorflow&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;spec&#39;</span><span class="p">:</span> <span class="p">{</span>
+               <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">untrained_model_id</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;model_file&#39;</span><span class="p">:</span> <span class="n">untrained_model_name</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;fusion_type&#39;</span><span class="p">:</span> <span class="s1">&#39;iter_avg&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;metrics&#39;</span><span class="p">:</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;rounds&#39;</span><span class="p">:</span> <span class="mi">99</span><span class="p">,</span>
+        <span class="s1">&#39;remote_training&#39;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;quorum&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">&#39;max_timeout&#39;</span><span class="p">:</span> <span class="mi">3600</span><span class="p">,</span>
+            <span class="s1">&#39;remote_training_systems&#39;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">rts_1_id</span> <span class="p">},</span> <span class="p">{</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">rts_2_id</span><span class="p">}</span> <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;hardware_spec&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;S&#39;</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;software_spec&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;runtime-22.1-py3.9&#39;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="n">aggregator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">aggregator_metadata</span><span class="p">,</span> <span class="n">asynchronous</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">aggregator_id</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">get_id</span><span class="p">(</span><span class="n">aggregator</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="local-training">
+<h2>Local training<a class="headerlink" href="#local-training" title="Permalink to this heading">¶</a></h2>
+<p>Training is performed locally by parties which connect to the aggregator.  The parties must be members of the project
+or space in which the aggregator is running and are identified to the Federated Learning aggregator as Remote Training Systems.</p>
+<section id="configure-and-start-local-training">
+<h3>Configure and start local training<a class="headerlink" href="#configure-and-start-local-training" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning</span> <span class="kn">import</span> <span class="n">APIClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">(</span> <span class="n">party_1_credentials</span> <span class="p">)</span>
+
+<span class="n">PROJECT_ID</span> <span class="o">=</span> <span class="s2">&quot;8ae1a720-83ed-4c57-b719-8dd086bd7ce0&quot;</span>
+<span class="n">client</span><span class="o">.</span><span class="n">set</span><span class="o">.</span><span class="n">default_project</span><span class="p">(</span> <span class="n">PROJECT_ID</span> <span class="p">)</span>
+
+<span class="c1"># The party needs, at mimimum, to specify how the data are loaded for training.  The data</span>
+<span class="c1"># handler class and any input to the class is provided.  In this case, the info block</span>
+<span class="c1"># contains a key to locate the training data from the current working directory.</span>
+<span class="n">party_metadata</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DATA_HANDLER</span><span class="p">:</span> <span class="p">{</span>
+                       <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="n">MNISTDataHandler</span><span class="p">,</span>
+                       <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="p">{</span>
+                          <span class="s2">&quot;npz_file&quot;</span><span class="p">:</span> <span class="s2">&quot;./training_data.npz&quot;</span>
+                       <span class="p">}</span>
+                 <span class="p">}</span>
+<span class="c1"># The party object is created</span>
+<span class="n">party</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">create_party</span><span class="p">(</span><span class="n">remote_training_system_id</span> <span class="o">=</span> <span class="s2">&quot;d516d42c-6c59-41f2-b7ca-c63d11ea79a1&quot;</span><span class="p">,</span> <span class="n">party_metadata</span><span class="p">)</span>
+<span class="c1"># Send training logging to standard output</span>
+<span class="n">party</span><span class="o">.</span><span class="n">monitor_logs</span><span class="p">()</span>
+<span class="c1"># Start training.  Training will run in the Python process that is executing this code.</span>
+<span class="c1"># The supplied aggregator_id refers to the Watson Machine Learning training job that will perform aggregation.</span>
+<span class="n">party</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">aggregator_id</span> <span class="o">=</span> <span class="s2">&quot;564fb126-9bfd-409b-beb3-5d401e4c50ec&quot;</span><span class="p">,</span> <span class="n">asynchronous</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="remote_training_system.RemoteTrainingSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">remote_training_system.</span></span><span class="sig-name descname"><span class="pre">RemoteTrainingSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote_training_system.html#RemoteTrainingSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#remote_training_system.RemoteTrainingSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>The RemoteTrainingSystem class represents a Federated Learning party and provides a list of identities
+that are permitted to join training as the RemoteTrainingSystem.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="remote_training_system.RemoteTrainingSystem.create_party">
+<span class="sig-name descname"><span class="pre">create_party</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_training_system_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">party_metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote_training_system.html#RemoteTrainingSystem.create_party"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#remote_training_system.RemoteTrainingSystem.create_party" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a party object using the specified remote training system id and the party metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>remote_training_system_id</strong> (<em>str</em>) – remote training system identifier</p></li>
+<li><p><strong>party_metadata</strong> (<em>dict</em>) – the party configuration</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a party object with the specified rts_id and configuration</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#party_wrapper.Party" title="party_wrapper.Party">Party</a></p>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">party_metadata</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">wml_client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DATA_HANDLER</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;npz_file&quot;</span><span class="p">:</span> <span class="s2">&quot;./data_party0.npz&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;MnistTFDataHandler&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;./mnist_keras_data_handler.py&quot;</span>
+    <span class="p">},</span>
+    <span class="n">wml_client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">LOCAL_TRAINING</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;LocalTrainingHandler&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;ibmfl.party.training.local_training_handler&quot;</span>
+    <span class="p">},</span>
+    <span class="n">wml_client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">HYPERPARAMS</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;epochs&quot;</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="n">party</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">create_party</span><span class="p">(</span><span class="n">remote_training_system_id</span><span class="p">,</span> <span class="n">party_metadata</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">party_metadata</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">wml_client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DATA_HANDLER</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;npz_file&quot;</span><span class="p">:</span> <span class="s2">&quot;./data_party0.npz&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="n">MnistTFDataHandler</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">party</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">create_party</span><span class="p">(</span><span class="n">remote_training_system_id</span><span class="p">,</span> <span class="n">party_metadata</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="remote_training_system.RemoteTrainingSystem.create_revision">
+<span class="sig-name descname"><span class="pre">create_revision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_training_system_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote_training_system.html#RemoteTrainingSystem.create_revision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#remote_training_system.RemoteTrainingSystem.create_revision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new remote training system revision.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>remote_training_system_id</strong> (<em>str</em>) – Unique remote training system ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>remote training system details</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">create_revision</span><span class="p">(</span><span class="n">remote_training_system_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="remote_training_system.RemoteTrainingSystem.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_training_systems_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote_training_system.html#RemoteTrainingSystem.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#remote_training_system.RemoteTrainingSystem.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the given <cite>remote_training_systems_id</cite> definition. <cite>space_id</cite> or <cite>project_id</cite> has to be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>remote_training_systems_id</strong> (<em>str</em>) – remote training system identifier</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>status (“SUCCESS” or “FAILED”)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">remote_training_systems_id</span><span class="o">=</span><span class="s1">&#39;6213cf1-252f-424b-b52d-5cdd9814956c&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="remote_training_system.RemoteTrainingSystem.get_details">
+<span class="sig-name descname"><span class="pre">get_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_training_system_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asynchronous</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote_training_system.html#RemoteTrainingSystem.get_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#remote_training_system.RemoteTrainingSystem.get_details" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Get metadata of the given remote training system. If <cite>remote_training_system_id</cite> is not specified,</dt><dd><p>metadata is returned for all remote training systems.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>remote_training_system_id</strong> (<em>str</em><em>, </em><em>optional</em>) – remote training system identifier</p></li>
+<li><p><strong>limit</strong> (<em>int</em><em>, </em><em>optional</em>) – limit number of fetched records</p></li>
+<li><p><strong>asynchronous</strong> (<em>bool</em><em>, </em><em>optional</em>) – if <cite>True</cite>, it will work as a generator</p></li>
+<li><p><strong>get_all</strong> (<em>bool</em><em>, </em><em>optional</em>) – if <cite>True</cite>, it will get all entries in ‘limited’ chunks</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>remote training system(s) metadata</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict (if remote_training_systems_id is not None) or {“resources”: [dict]} (if remote_training_systems_id is None)</p>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">remote_training_systems_id</span><span class="p">)</span>
+<span class="n">details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
+<span class="n">details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">get_all</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">details</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">asynchronous</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">get_all</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">details</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="remote_training_system.RemoteTrainingSystem.get_id">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_training_system_details</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote_training_system.html#RemoteTrainingSystem.get_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#remote_training_system.RemoteTrainingSystem.get_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ID of remote training system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>remote_training_system_details</strong> (<em>dict</em>) – metadata of the stored remote training system</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ID of stored remote training system</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">remote_training_system_id</span><span class="p">)</span>
+<span class="nb">id</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">get_id</span><span class="p">(</span><span class="n">details</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="remote_training_system.RemoteTrainingSystem.get_revision_details">
+<span class="sig-name descname"><span class="pre">get_revision_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_training_system_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rev_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote_training_system.html#RemoteTrainingSystem.get_revision_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#remote_training_system.RemoteTrainingSystem.get_revision_details" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get metadata from the specific revision of a stored remote system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>remote_training_system_id</strong> (<em>str</em>) – UID of remote training system</p></li>
+<li><p><strong>rev_id</strong> (<em>int</em>) – Unique id of the remote system revision</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>stored remote system revision metadata</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">remote_training_system_id</span><span class="p">,</span> <span class="n">rev_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="remote_training_system.RemoteTrainingSystem.list">
+<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote_training_system.html#RemoteTrainingSystem.list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#remote_training_system.RemoteTrainingSystem.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print stored remote training systems in a table format.
+If limit is set to None, only the first 50 records are shown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>limit</strong> (<em>int</em>) – limit number of fetched records</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="remote_training_system.RemoteTrainingSystem.list_revisions">
+<span class="sig-name descname"><span class="pre">list_revisions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_training_system_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote_training_system.html#RemoteTrainingSystem.list_revisions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#remote_training_system.RemoteTrainingSystem.list_revisions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print all revisions for the given remote_training_system_id in a table format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>remote_training_system_id</strong> (<em>str</em>) – Unique id of stored remote system</p></li>
+<li><p><strong>limit</strong> (<em>int</em><em>, </em><em>optional</em>) – limit number of fetched records</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">list_revisions</span><span class="p">(</span><span class="n">remote_training_system_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="remote_training_system.RemoteTrainingSystem.store">
+<span class="sig-name descname"><span class="pre">store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meta_props</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote_training_system.html#RemoteTrainingSystem.store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#remote_training_system.RemoteTrainingSystem.store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a remote training system. Either <cite>space_id</cite> or <cite>project_id</cite> has to be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>meta_props</strong> (<em>dict</em>) – metadata, to see available meta names use
+<code class="docutils literal notranslate"><span class="pre">client.remote_training_systems.ConfigurationMetaNames.get()</span></code></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>response json</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">NAME</span><span class="p">:</span> <span class="s2">&quot;my-resource&quot;</span><span class="p">,</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TAGS</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;tag1&quot;</span><span class="p">,</span> <span class="s2">&quot;tag2&quot;</span><span class="p">],</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">ORGANIZATION</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="s2">&quot;EU&quot;</span><span class="p">}</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">ALLOWED_IDENTITIES</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;43689024&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">}],</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">REMOTE_ADMIN</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;43689020&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">set</span><span class="o">.</span><span class="n">default_space</span><span class="p">(</span><span class="s1">&#39;3fc54cf1-252f-424b-b52d-5cdd9814987f&#39;</span><span class="p">)</span>
+<span class="n">details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">meta_props</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="remote_training_system.RemoteTrainingSystem.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_training_system_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">changes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote_training_system.html#RemoteTrainingSystem.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#remote_training_system.RemoteTrainingSystem.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates existing remote training system metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>remote_training_system_id</strong> (<em>str</em>) – remote training system identifier</p></li>
+<li><p><strong>changes</strong> (<em>dict</em>) – elements which should be changed, where keys are ConfigurationMetaNames</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>updated remote training system details</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">NAME</span><span class="p">:</span><span class="s2">&quot;updated_remote_training_system&quot;</span>
+<span class="p">}</span>
+<span class="n">details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">remote_training_systems</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">remote_training_system_id</span><span class="p">,</span> <span class="n">changes</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="party_wrapper.Party">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">party_wrapper.</span></span><span class="sig-name descname"><span class="pre">Party</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/party_wrapper.html#Party"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#party_wrapper.Party" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Party class embodies a Federated Learning party, with methods to run, cancel, and query local training.
+Refer to the <code class="docutils literal notranslate"><span class="pre">client.remote_training_system.create_party()</span></code> API for more information about creating an
+instance of the Party class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="party_wrapper.Party.cancel">
+<span class="sig-name descname"><span class="pre">cancel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/party_wrapper.html#Party.cancel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#party_wrapper.Party.cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop the local connection to the training on the party side.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">party</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="party_wrapper.Party.get_round">
+<span class="sig-name descname"><span class="pre">get_round</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/party_wrapper.html#Party.get_round"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#party_wrapper.Party.get_round" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current round number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the current round number</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">party</span><span class="o">.</span><span class="n">get_round</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="party_wrapper.Party.is_running">
+<span class="sig-name descname"><span class="pre">is_running</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/party_wrapper.html#Party.is_running"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#party_wrapper.Party.is_running" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the training job is running.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>if the job is running</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">party</span><span class="o">.</span><span class="n">is_running</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="party_wrapper.Party.monitor_logs">
+<span class="sig-name descname"><span class="pre">monitor_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'INFO'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/party_wrapper.html#Party.monitor_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#party_wrapper.Party.monitor_logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable logging of the training job to standard output.
+This method should be called before calling the <code class="docutils literal notranslate"><span class="pre">run()</span></code> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>log_level</strong> (<em>str</em><em>, </em><em>optional</em>) – log level specified by user</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">party</span><span class="o">.</span><span class="n">monitor_logs</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="party_wrapper.Party.monitor_metrics">
+<span class="sig-name descname"><span class="pre">monitor_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/party_wrapper.html#Party.monitor_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#party_wrapper.Party.monitor_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable output of training metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metrics_file</strong> (<em>str</em><em>, </em><em>optional</em>) – a filename specified by user to which the metrics should be written</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method outputs the metrics to stdout if a filename is not specified</p>
+</div>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">party</span><span class="o">.</span><span class="n">monitor_metrics</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="party_wrapper.Party.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregator_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asynchronous</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">600</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/party_wrapper.html#Party.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#party_wrapper.Party.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to a Federated Learning aggregator and run local training.
+Exactly one of <cite>aggregator_id</cite> and <cite>experiment_id</cite> must be supplied.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aggregator_id</strong> (<em>str</em><em>, </em><em>optional</em>) – <p>aggregator identifier</p>
+<ul>
+<li><p>If aggregator_id is supplied, the party will connect to the given aggregator.</p></li>
+</ul>
+</p></li>
+<li><p><strong>experiment_id</strong> (<em>str</em><em>, </em><em>optional</em>) – <p>experiment identifier</p>
+<ul>
+<li><dl class="simple">
+<dt>If experiment_id is supplied, the party will connect to the most recently created aggregator</dt><dd><p>for the experiment.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p></li>
+<li><p><strong>asynchronous</strong> (<em>bool</em><em>, </em><em>optional</em>) – <ul>
+<li><p><cite>True</cite>  - party starts to run the job in the background and progress can be checked later</p></li>
+<li><p><cite>False</cite> - method will wait until training is complete and then print the job status</p></li>
+</ul>
+</p></li>
+<li><p><strong>verify</strong> (<em>bool</em><em>, </em><em>optional</em>) – verify certificate</p></li>
+<li><p><strong>timeout</strong> (<em>int</em><em>, or </em><em>None for no timeout</em>) – <p>timeout in seconds</p>
+<ul>
+<li><p>If the aggregator is not ready within timeout seconds, exit.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">party</span><span class="o">.</span><span class="n">run</span><span class="p">(</span> <span class="n">aggregator_id</span> <span class="o">=</span> <span class="s2">&quot;69500105-9fd2-4326-ad27-7231aeb37ac8&quot;</span><span class="p">,</span> <span class="n">asynchronous</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">verify</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">)</span>
+<span class="n">party</span><span class="o">.</span><span class="n">run</span><span class="p">(</span> <span class="n">experiment_id</span> <span class="o">=</span> <span class="s2">&quot;2466fa06-1110-4169-a166-01959adec995&quot;</span><span class="p">,</span> <span class="n">asynchronous</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018-2023, IBM.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/federated_learning.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

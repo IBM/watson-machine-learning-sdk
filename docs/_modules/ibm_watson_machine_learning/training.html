@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ibm_watson_machine_learning.training &#8212; ibm-watson-machine-learning(V4) 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/wml_logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">IBM Watson Machine Learning</p>
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples.html">Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ibm_watson_machine_learning.training</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -----------------------------------------------------------------------------------------</span>
+<span class="c1">#  (C) Copyright IBM Corp. 2017- 2023.</span>
+<span class="c1">#  https://opensource.org/licenses/BSD-3-Clause</span>
+<span class="c1">#  -----------------------------------------------------------------------------------------</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">lomond</span> <span class="kn">import</span> <span class="n">WebSocket</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils</span> <span class="kn">import</span> <span class="n">print_text_header_h1</span><span class="p">,</span> <span class="n">print_text_header_h2</span><span class="p">,</span> <span class="n">TRAINING_RUN_DETAILS_TYPE</span><span class="p">,</span> <span class="n">group_metrics</span><span class="p">,</span> <span class="n">StatusLogger</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">TrainingConfigurationMetaNames</span><span class="p">,</span> <span class="n">TrainingConfigurationMetaNamesCp4d30</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span><span class="p">,</span> <span class="n">ApiRequestFailure</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.href_definitions</span> <span class="kn">import</span> <span class="n">is_uid</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
+<span class="kn">from</span> <span class="nn">ibm_boto3.exceptions</span> <span class="kn">import</span> <span class="n">Boto3Error</span>
+
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.messages.messages</span> <span class="kn">import</span> <span class="n">Messages</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;lomond&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Training"><a class="viewcode-back" href="../../core_api.html#client.Training">[docs]</a><span class="k">class</span> <span class="nc">Training</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Train new models.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="n">WMLResource</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ICP</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">ICP</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span> <span class="o">=</span> <span class="n">TrainingConfigurationMetaNames</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span> <span class="o">=</span> <span class="n">TrainingConfigurationMetaNamesCp4d30</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_is_training_uid</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;p\-[a-zA-Z0-9\-\_]+&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_is_training_url</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;\/v3\/models\/p\-[a-zA-Z0-9\-\_]+&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_is_model_definition_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;\/v2\/assets\/p\-[a-zA-Z0-9\-\_]+&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Training.get_status"><a class="viewcode-back" href="../../core_api.html#client.Training.get_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_uid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the status of a training created.</span>
+
+<span class="sd">        :param training_uid: training UID</span>
+<span class="sd">        :type training_uid: str</span>
+
+<span class="sd">        :return: training_status</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            training_status = client.training.get_status(training_uid)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="s1">&#39;training_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">WMLResource</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;status&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Getting trained model status failed. Unable to get model details for training_uid: </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">training_uid</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Training.get_details"><a class="viewcode-back" href="../../core_api.html#client.Training.get_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asynchronous</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">get_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">training_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tag_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">training_definition_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get metadata of training(s). If training_uid is not specified returns all model spaces metadata.</span>
+
+<span class="sd">        :param training_uid: Unique Id of training</span>
+<span class="sd">        :type training_uid: str, optional</span>
+<span class="sd">        :param limit: limit number of fetched records</span>
+<span class="sd">        :type limit: int, optional</span>
+<span class="sd">        :param asynchronous: if `True`, it will work as a generator</span>
+<span class="sd">        :type asynchronous: bool, optional</span>
+<span class="sd">        :param get_all:  if `True`, it will get all entries in &#39;limited&#39; chunks</span>
+<span class="sd">        :type get_all: bool, optional</span>
+<span class="sd">        :param training_type: filter the fetched list of trainings based on training type [&quot;pipeline&quot; or &quot;experiment&quot;]</span>
+<span class="sd">        :type training_type: str, optional</span>
+<span class="sd">        :param state: filter the fetched list of training based on their state:</span>
+<span class="sd">            [`queued`, `running`, `completed`, `failed`]</span>
+<span class="sd">        :type state: str, optional</span>
+<span class="sd">        :param tag_value: filter the fetched list of training based on ther tag value</span>
+<span class="sd">        :type tag_value: str, optional</span>
+<span class="sd">        :param training_definition_id: filter the fetched trainings which are using the given training definition</span>
+<span class="sd">        :type training_definition_id: str, optional</span>
+
+
+<span class="sd">        :return: metadata of training(s)</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">          - **dict** - if training_uid is not None</span>
+<span class="sd">          - **{&quot;resources&quot;: [dict]}** - if training_uid is None</span>
+
+<span class="sd">        **Examples**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            training_run_details = client.training.get_details(training_uid)</span>
+<span class="sd">            training_runs_details = client.training.get_details()</span>
+<span class="sd">            training_runs_details = client.training.get_details(limit=100)</span>
+<span class="sd">            training_runs_details = client.training.get_details(limit=100, get_all=True)</span>
+<span class="sd">            training_runs_details = []</span>
+<span class="sd">            for entry in client.training.get_details(limit=100, asynchronous=True, get_all=True):</span>
+<span class="sd">                training_runs_details.extend(entry)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">##For CP4D, check if either spce or project ID is set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_either_is_set</span><span class="p">()</span>
+        <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="s1">&#39;training_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_trainings_href</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">training_uid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">param_name</span><span class="p">:</span> <span class="n">param_value</span>
+                <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">param_value</span> <span class="ow">in</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="n">training_type</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="n">state</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s1">&#39;tag.value&#39;</span><span class="p">,</span> <span class="n">tag_value</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s1">&#39;training_definition_id&#39;</span><span class="p">,</span> <span class="n">training_definition_id</span><span class="p">)</span>
+                <span class="p">)</span> <span class="k">if</span> <span class="n">param_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">}</span>
+            <span class="c1"># note: If query params is an empty dict convert it back to None value</span>
+            <span class="n">query_params</span> <span class="o">=</span> <span class="n">query_params</span> <span class="k">if</span> <span class="n">query_params</span> <span class="o">!=</span> <span class="p">{}</span> <span class="k">else</span> <span class="kc">None</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_artifact_details</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">training_uid</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="s1">&#39;trained models&#39;</span><span class="p">,</span> <span class="n">_async</span><span class="o">=</span><span class="n">asynchronous</span><span class="p">,</span>
+                                              <span class="n">_all</span><span class="o">=</span><span class="n">get_all</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_artifact_details</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">training_uid</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="s1">&#39;trained models&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">_internal</span> <span class="ow">and</span> <span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;entity&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;feature_engineering_components&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;obm&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_46</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_47</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;obm_removal_message_cpd&quot;</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;obm_deprecation_message_cpd&quot;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;obm_removal_message_cloud&quot;</span><span class="p">))</span>
+
+            <span class="k">return</span> <span class="n">details</span></div>
+
+<div class="viewcode-block" id="Training.get_href"><a class="viewcode-back" href="../../core_api.html#client.Training.get_href">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_href</span><span class="p">(</span><span class="n">training_details</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get training href from training details.</span>
+
+<span class="sd">        :param training_details:  metadata of the training created</span>
+<span class="sd">        :type training_details: dict</span>
+
+<span class="sd">        :return: training href</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            training_details = client.training.get_details(training_uid)</span>
+<span class="sd">            run_url = client.training.get_href(training_details)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">training_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training_details&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;id&#39;</span> <span class="ow">in</span> <span class="n">training_details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metadata&#39;</span><span class="p">):</span>
+            <span class="n">training_id</span> <span class="o">=</span> <span class="n">WMLResource</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">training_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training_details&#39;</span><span class="p">,</span>
+                                                                      <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="s2">&quot;/ml/v4/trainings/&quot;</span><span class="o">+</span><span class="n">training_id</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type_of_details</span><span class="p">(</span><span class="n">training_details</span><span class="p">,</span> <span class="n">TRAINING_RUN_DETAILS_TYPE</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">WMLResource</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">training_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;href&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Training.get_uid"><a class="viewcode-back" href="../../core_api.html#client.Training.get_uid">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_uid</span><span class="p">(</span><span class="n">training_details</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This method is deprecated, please use ``get_id()`` instead.&quot;&quot;&quot;</span>
+
+        <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;This method is deprecated, please use get_id()&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This method is deprecated, please use get_id()&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">training_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training_details&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">WMLResource</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">training_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training_details&#39;</span><span class="p">,</span>
+                                                               <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;guid&#39;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Training</span><span class="o">.</span><span class="n">get_id</span><span class="p">(</span><span class="n">training_details</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Training.get_id"><a class="viewcode-back" href="../../core_api.html#client.Training.get_id">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="n">training_details</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get training id from training details.</span>
+
+<span class="sd">        :param training_details: metadata of the training created</span>
+<span class="sd">        :type training_details: dict</span>
+
+<span class="sd">        :return: Unique id of training</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            training_details = client.training.get_details(training_id)</span>
+<span class="sd">            training_id = client.training.get_id(training_details)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">training_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training_details&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">WMLResource</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">training_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training_details&#39;</span><span class="p">,</span>
+                                                           <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;id&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Training.run"><a class="viewcode-back" href="../../core_api.html#client.Training.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">,</span> <span class="n">asynchronous</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new Machine Learning training.</span>
+
+<span class="sd">        :param meta_props:  metadata of the training configuration. To see available meta names use:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                client.training.ConfigurationMetaNames.show()</span>
+
+<span class="sd">        :type meta_props: str</span>
+<span class="sd">        :param asynchronous:</span>
+<span class="sd">            * `True` - training job is submitted and progress can be checked later</span>
+<span class="sd">            * `False` - method will wait till job completion and print training stats</span>
+<span class="sd">        :type asynchronous: bool, optional</span>
+
+<span class="sd">        :return: metadata of the training created</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            You can provide one of the below values for training:</span>
+<span class="sd">             * client.training.ConfigurationMetaNames.EXPERIMENT</span>
+<span class="sd">             * client.training.ConfigurationMetaNames.PIPELINE</span>
+<span class="sd">             * client.training.ConfigurationMetaNames.MODEL_DEFINITION</span>
+
+<span class="sd">        **Examples**</span>
+
+<span class="sd">        Example meta_props for Training run creation in IBM Cloud Pak® for Data version 3.0.1 or above:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            metadata = {</span>
+<span class="sd">                client.training.ConfigurationMetaNames.NAME: &#39;Hand-written Digit Recognition&#39;,</span>
+<span class="sd">                client.training.ConfigurationMetaNames.DESCRIPTION: &#39;Hand-written Digit Recognition Training&#39;,</span>
+<span class="sd">                client.training.ConfigurationMetaNames.PIPELINE: {</span>
+<span class="sd">                    &quot;id&quot;: &quot;4cedab6d-e8e4-4214-b81a-2ddb122db2ab&quot;,</span>
+<span class="sd">                    &quot;rev&quot;: &quot;12&quot;,</span>
+<span class="sd">                    &quot;model_type&quot;: &quot;string&quot;,</span>
+<span class="sd">                    &quot;data_bindings&quot;: [</span>
+<span class="sd">                        {</span>
+<span class="sd">                            &quot;data_reference_name&quot;: &quot;string&quot;,</span>
+<span class="sd">                            &quot;node_id&quot;: &quot;string&quot;</span>
+<span class="sd">                        }</span>
+<span class="sd">                    ],</span>
+<span class="sd">                    &quot;nodes_parameters&quot;: [</span>
+<span class="sd">                        {</span>
+<span class="sd">                            &quot;node_id&quot;: &quot;string&quot;,</span>
+<span class="sd">                            &quot;parameters&quot;: {}</span>
+<span class="sd">                        }</span>
+<span class="sd">                    ],</span>
+<span class="sd">                    &quot;hardware_spec&quot;: {</span>
+<span class="sd">                        &quot;id&quot;: &quot;4cedab6d-e8e4-4214-b81a-2ddb122db2ab&quot;,</span>
+<span class="sd">                        &quot;rev&quot;: &quot;12&quot;,</span>
+<span class="sd">                        &quot;name&quot;: &quot;string&quot;,</span>
+<span class="sd">                        &quot;num_nodes&quot;: &quot;2&quot;</span>
+<span class="sd">                    }</span>
+<span class="sd">                },</span>
+<span class="sd">                client.training.ConfigurationMetaNames.TRAINING_DATA_REFERENCES: [{</span>
+<span class="sd">                    &#39;type&#39;: &#39;s3&#39;,</span>
+<span class="sd">                    &#39;connection&#39;: {},</span>
+<span class="sd">                    &#39;location&#39;: {&#39;href&#39;: &#39;v2/assets/asset1233456&#39;},</span>
+<span class="sd">                    &#39;schema&#39;: { &#39;id&#39;: &#39;t1&#39;, &#39;name&#39;: &#39;Tasks&#39;, &#39;fields&#39;: [ { &#39;name&#39;: &#39;duration&#39;, &#39;type&#39;: &#39;number&#39; } ]}</span>
+<span class="sd">                }],</span>
+<span class="sd">                client.training.ConfigurationMetaNames.TRAINING_RESULTS_REFERENCE: {</span>
+<span class="sd">                    &#39;id&#39; : &#39;string&#39;,</span>
+<span class="sd">                    &#39;connection&#39;: {</span>
+<span class="sd">                        &#39;endpoint_url&#39;: &#39;https://s3-api.us-geo.objectstorage.service.networklayer.com&#39;,</span>
+<span class="sd">                        &#39;access_key_id&#39;: &#39;***&#39;,</span>
+<span class="sd">                        &#39;secret_access_key&#39;: &#39;***&#39;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    &#39;location&#39;: {</span>
+<span class="sd">                        &#39;bucket&#39;: &#39;wml-dev-results&#39;,</span>
+<span class="sd">                        &#39;path&#39; : &quot;path&quot;</span>
+<span class="sd">                    }</span>
+<span class="sd">                    &#39;type&#39;: &#39;s3&#39;</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+
+<span class="sd">        Example meta_prop values for training run creation in other version:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            metadata = {</span>
+<span class="sd">                client.training.ConfigurationMetaNames.NAME: &#39;Hand-written Digit Recognition&#39;,</span>
+<span class="sd">                client.training.ConfigurationMetaNames.TRAINING_DATA_REFERENCES: [{</span>
+<span class="sd">                    &#39;connection&#39;: {</span>
+<span class="sd">                        &#39;endpoint_url&#39;: &#39;https://s3-api.us-geo.objectstorage.service.networklayer.com&#39;,</span>
+<span class="sd">                        &#39;access_key_id&#39;: &#39;***&#39;,</span>
+<span class="sd">                        &#39;secret_access_key&#39;: &#39;***&#39;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    &#39;source&#39;: {</span>
+<span class="sd">                        &#39;bucket&#39;: &#39;wml-dev&#39;,</span>
+<span class="sd">                    }</span>
+<span class="sd">                    &#39;type&#39;: &#39;s3&#39;</span>
+<span class="sd">                }],</span>
+<span class="sd">                client.training.ConfigurationMetaNames.TRAINING_RESULTS_REFERENCE: {</span>
+<span class="sd">                    &#39;connection&#39;: {</span>
+<span class="sd">                        &#39;endpoint_url&#39;: &#39;https://s3-api.us-geo.objectstorage.service.networklayer.com&#39;,</span>
+<span class="sd">                        &#39;access_key_id&#39;: &#39;***&#39;,</span>
+<span class="sd">                        &#39;secret_access_key&#39;: &#39;***&#39;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    &#39;target&#39;: {</span>
+<span class="sd">                        &#39;bucket&#39;: &#39;wml-dev-results&#39;,</span>
+<span class="sd">                    }</span>
+<span class="sd">                    &#39;type&#39;: &#39;s3&#39;</span>
+<span class="sd">                },</span>
+<span class="sd">                client.training.ConfigurationMetaNames.PIPELINE_UID : &quot;/v4/pipelines/&lt;PIPELINE-ID&gt;&quot;</span>
+<span class="sd">            }</span>
+<span class="sd">            training_details = client.training.run(definition_uid, meta_props=metadata)</span>
+<span class="sd">            training_uid = client.training.get_id(training_details)</span>
+
+<span class="sd">        Example of a Federated Learning training job:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            aggregator_metadata = {</span>
+<span class="sd">                wml_client.training.ConfigurationMetaNames.NAME: &#39;Federated_Learning_Tensorflow_MNIST&#39;,</span>
+<span class="sd">                wml_client.training.ConfigurationMetaNames.DESCRIPTION: &#39;MNIST digit recognition with Federated Learning using Tensorflow&#39;,</span>
+<span class="sd">                wml_client.training.ConfigurationMetaNames.TRAINING_DATA_REFERENCES: [],</span>
+<span class="sd">                wml_client.training.ConfigurationMetaNames.TRAINING_RESULTS_REFERENCE: {</span>
+<span class="sd">                    &#39;type&#39;: results_type,</span>
+<span class="sd">                    &#39;name&#39;: &#39;outputData&#39;,</span>
+<span class="sd">                    &#39;connection&#39;: {},</span>
+<span class="sd">                    &#39;location&#39;: { &#39;path&#39;: &#39;/projects/&#39; + PROJECT_ID + &#39;/assets/trainings/&#39;}</span>
+<span class="sd">                },</span>
+<span class="sd">                wml_client.training.ConfigurationMetaNames.FEDERATED_LEARNING: {</span>
+<span class="sd">                    &#39;model&#39;: {</span>
+<span class="sd">                        &#39;type&#39;: &#39;tensorflow&#39;,</span>
+<span class="sd">                        &#39;spec&#39;: {</span>
+<span class="sd">                        &#39;id&#39;: untrained_model_id</span>
+<span class="sd">                    },</span>
+<span class="sd">                    &#39;model_file&#39;: untrained_model_name</span>
+<span class="sd">                },</span>
+<span class="sd">                &#39;fusion_type&#39;: &#39;iter_avg&#39;,</span>
+<span class="sd">                &#39;metrics&#39;: &#39;accuracy&#39;,</span>
+<span class="sd">                &#39;epochs&#39;: 3,</span>
+<span class="sd">                &#39;rounds&#39;: 10,</span>
+<span class="sd">                &#39;remote_training&#39; : {</span>
+<span class="sd">                    &#39;quorum&#39;: 1.0,</span>
+<span class="sd">                    &#39;max_timeout&#39;: 3600,</span>
+<span class="sd">                    &#39;remote_training_systems&#39;: [ { &#39;id&#39;: prime_rts_id }, { &#39;id&#39;: nonprime_rts_id} ]</span>
+<span class="sd">                },</span>
+<span class="sd">                &#39;hardware_spec&#39;: {</span>
+<span class="sd">                    &#39;name&#39;: &#39;S&#39;</span>
+<span class="sd">                },</span>
+<span class="sd">                &#39;software_spec&#39;: {</span>
+<span class="sd">                    &#39;name&#39;: &#39;runtime-22.1-py3.9&#39;</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+
+<span class="sd">            aggregator = wml_client.training.run(aggregator_metadata, asynchronous=True)</span>
+<span class="sd">            aggregator_id = wml_client.training.get_id(aggregator)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">WMLResource</span><span class="o">.</span><span class="n">_chk_and_block_create_update_for_python36</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1">##For CP4D, check if either spce or project ID is set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_either_is_set</span><span class="p">()</span>
+        <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">meta_props</span><span class="p">,</span> <span class="s1">&#39;meta_props&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">asynchronous</span><span class="p">,</span> <span class="s1">&#39;asynchronous&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">meta_props</span><span class="p">)</span>
+        <span class="n">training_configuration_metadata</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sa">u</span><span class="s1">&#39;training_data_references&#39;</span><span class="p">:</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_DATA_REFERENCES</span><span class="p">],</span>
+            <span class="sa">u</span><span class="s1">&#39;results_reference&#39;</span><span class="p">:</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_RESULTS_REFERENCE</span><span class="p">]</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TEST_DATA_REFERENCES</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+            <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s1">&#39;test_data_references&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TEST_DATA_REFERENCES</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TEST_OUTPUT_DATA</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+            <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s1">&#39;test_output_data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TEST_OUTPUT_DATA</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TAGS</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+            <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;tags&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TAGS</span><span class="p">]</span>
+
+        <span class="c1"># TODO remove when training service starts copying such data on their own</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
+            <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">NAME</span><span class="p">]</span>
+            <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PIPELINE</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PIPELINE</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">EXPERIMENT</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">EXPERIMENT</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">MODEL_DEFINITION</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s1">&#39;model_definition&#39;</span><span class="p">]</span> <span class="o">=</span> \
+                    <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">MODEL_DEFINITION</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">SPACE_UID</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;space_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">SPACE_UID</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span>
+                    <span class="s2">&quot;It is mandatory to set the space/project id. Use client.set.default_space(&lt;SPACE_UID&gt;)/client.set.default_project(&lt;PROJECT_UID&gt;) to proceed.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s1">&#39;space_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s1">&#39;project_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">FEDERATED_LEARNING</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s1">&#39;federated_learning&#39;</span><span class="p">]</span> <span class="o">=</span> \
+                        <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">FEDERATED_LEARNING</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PIPELINE_UID</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;/v4/pipelines/&quot;</span><span class="o">+</span><span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PIPELINE_UID</span><span class="p">]</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PIPELINE_DATA_BINDINGS</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">][</span><span class="s2">&quot;data_bindings&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PIPELINE_DATA_BINDINGS</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PIPELINE_NODE_PARAMETERS</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">][</span><span class="s2">&quot;nodes_parameters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PIPELINE_NODE_PARAMETERS</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PIPELINE_MODEL_TYPE</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">][</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PIPELINE_MODEL_TYPE</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">EXPERIMENT_UID</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;experiment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;/v4/experiments/&quot;</span> <span class="o">+</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">EXPERIMENT_UID</span><span class="p">]</span>
+                <span class="p">}</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB_UID</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CAMS</span><span class="p">:</span>
+                    <span class="n">type_uid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_if_lib_or_def</span><span class="p">(</span><span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB_UID</span><span class="p">])</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;training_lib&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;href&quot;</span> <span class="p">:</span> <span class="n">type_uid</span><span class="p">}</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;training_lib&quot;</span><span class="p">][</span><span class="s2">&quot;href&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;href&quot;</span> <span class="p">:</span> <span class="s2">&quot;/v4/libraries/&quot;</span> <span class="o">+</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB_UID</span><span class="p">]}</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">COMMAND</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">meta_props</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB_RUNTIME_UID</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Invalid input. command, runtime are mandatory parameter for training_lib&#39;</span><span class="p">)</span>
+                <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;training_lib&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;command&quot;</span><span class="p">:</span><span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">COMMAND</span><span class="p">]})</span>
+                <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;training_lib&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;runtime&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;href&quot;</span> <span class="p">:</span> <span class="s2">&quot;/v4/runtimes/&quot;</span><span class="o">+</span><span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB_RUNTIME_UID</span><span class="p">]}})</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB_MODEL_TYPE</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;training_lib&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;model_type&quot;</span><span class="p">:</span>  <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB_MODEL_TYPE</span><span class="p">]})</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">COMPUTE</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;training_lib&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;compute&quot;</span><span class="p">:</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">COMPUTE</span><span class="p">]})</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB_PARAMETERS</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;training_lib&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB_PARAMETERS</span><span class="p">]})</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;training_lib&quot;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB</span><span class="p">]</span>
+                <span class="c1"># for model_definition asset - command, href and runtime are mandatory</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_model_definition_url</span><span class="p">(</span><span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB</span><span class="p">][</span><span class="s1">&#39;href&#39;</span><span class="p">])</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;command&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">or</span>
+                            <span class="s1">&#39;runtime&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TRAINING_LIB</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                        <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Invalid input. command, href, runtime are mandatory parameter for training_lib&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">SPACE_UID</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s2">&quot;space&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;/v4/spaces/&quot;</span><span class="o">+</span><span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">SPACE_UID</span><span class="p">]</span>
+                <span class="p">}</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CAMS</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s1">&#39;space&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;href&#39;</span><span class="p">:</span> <span class="s2">&quot;/v4/spaces/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span><span class="p">}</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">training_configuration_metadata</span><span class="p">[</span><span class="s1">&#39;project&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;href&#39;</span><span class="p">:</span> <span class="s2">&quot;/v2/projects/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span><span class="p">}</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;It is mandatory to set the space/project id. Use client.set.default_space(&lt;SPACE_UID&gt;)/client.set.default_project(&lt;PROJECT_UID&gt;) to proceed.&quot;</span><span class="p">)</span>
+
+        <span class="n">train_endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_trainings_href</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ICP</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span><span class="p">:</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">()</span>
+                <span class="k">if</span> <span class="s1">&#39;space_id&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;space_id&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;project_id&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;project_id&#39;</span><span class="p">)</span>
+                <span class="n">response_train_post</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">train_endpoint</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">training_configuration_metadata</span><span class="p">,</span>
+                                                    <span class="n">params</span><span class="o">=</span> <span class="n">params</span><span class="p">,</span>
+                                                    <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+             <span class="n">response_train_post</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">train_endpoint</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">training_configuration_metadata</span><span class="p">,</span>
+                                                <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">()</span>
+                <span class="k">if</span> <span class="s1">&#39;space_id&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;space_id&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;project_id&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;project_id&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;userfs&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;userfs&#39;</span><span class="p">)</span>
+
+                <span class="n">response_train_post</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">train_endpoint</span><span class="p">,</span>
+                                                    <span class="n">json</span><span class="o">=</span><span class="n">training_configuration_metadata</span><span class="p">,</span>
+                                                    <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                                                    <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">response_train_post</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">train_endpoint</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">training_configuration_metadata</span><span class="p">,</span>
+                                                    <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+        <span class="n">run_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">201</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training&#39;</span><span class="p">,</span> <span class="n">response_train_post</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">trained_model_guid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">(</span><span class="n">run_details</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">trained_model_guid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_uid</span><span class="p">(</span><span class="n">run_details</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">asynchronous</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">run_details</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">print_text_header_h1</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Running </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trained_model_guid</span><span class="p">))</span>
+
+            <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status</span><span class="p">(</span><span class="n">trained_model_guid</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">status</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;state&#39;</span><span class="p">]</span>
+
+            <span class="k">with</span> <span class="n">StatusLogger</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="k">as</span> <span class="n">status_logger</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;completed&#39;</span><span class="p">,</span> <span class="s1">&#39;canceled&#39;</span><span class="p">,</span> <span class="s1">&#39;failed&#39;</span><span class="p">]:</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+                    <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status</span><span class="p">(</span><span class="n">trained_model_guid</span><span class="p">)</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="n">status</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span>
+                    <span class="n">status_logger</span><span class="o">.</span><span class="n">log_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="sa">u</span><span class="s1">&#39;completed&#39;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Training of </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1"> finished successfully.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">trained_model_guid</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Training of </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1"> failed with status: </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trained_model_guid</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">)))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Response(</span><span class="si">{}</span><span class="s1">): </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">run_details</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">trained_model_guid</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Training.list"><a class="viewcode-back" href="../../core_api.html#client.Training.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asynchronous</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">get_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print stored trainings in a table format. If limit is set to None there will be only first 50 records shown.</span>
+
+<span class="sd">        :param limit: limit number of fetched records at once</span>
+<span class="sd">        :type limit: int, optional</span>
+<span class="sd">        :param asynchronous: if `True`, it will work as a generator</span>
+<span class="sd">        :type asynchronous: bool, optional</span>
+<span class="sd">        :param get_all: if `True`, it will get all entries in &#39;limited&#39; chunks</span>
+<span class="sd">        :type get_all: bool, optional</span>
+<span class="sd">        :param return_as_df: determinate if table should be returned as pandas.DataFrame object when asynchronous is False, default: True</span>
+<span class="sd">        :type return_as_df: bool, optional</span>
+
+<span class="sd">        **Examples**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.training.list()</span>
+<span class="sd">            training_runs_df = client.training.list(limit=100)</span>
+<span class="sd">            training_runs_df = client.training.list(limit=100, get_all=True)</span>
+<span class="sd">            training_runs_df = []</span>
+<span class="sd">            for entry in client.training.list(limit=100, asynchronous=True, get_all=True):</span>
+<span class="sd">                training_runs_df.extend(entry)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">##For CP4D, check if either spce or project ID is set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_either_is_set</span><span class="p">()</span>
+        <span class="k">def</span> <span class="nf">preprocess_details</span><span class="p">(</span><span class="n">details</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">resources</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;resources&#39;</span><span class="p">]</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;guid&#39;</span><span class="p">)),</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;status&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;state&#39;</span><span class="p">],</span>
+                       <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;created_at&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ID (training)&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;STATE&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;CREATED&#39;</span><span class="p">],</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                              <span class="n">default_limit</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">asynchronous</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">preprocess_details</span><span class="p">(</span><span class="n">details</span><span class="p">)</span> <span class="k">for</span> <span class="n">details</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span>
+                <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">asynchronous</span><span class="o">=</span><span class="n">asynchronous</span><span class="p">,</span> <span class="n">get_all</span><span class="o">=</span><span class="n">get_all</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">get_all</span><span class="o">=</span><span class="n">get_all</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">preprocess_details</span><span class="p">(</span><span class="n">details</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">return_as_df</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">table</span></div>
+
+<div class="viewcode-block" id="Training.list_subtrainings"><a class="viewcode-back" href="../../core_api.html#client.Training.list_subtrainings">[docs]</a>    <span class="k">def</span> <span class="nf">list_subtrainings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_uid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print the sub-trainings in a table format.</span>
+
+<span class="sd">        :param training_uid: training ID</span>
+<span class="sd">        :type training_uid: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.training.list_subtrainings()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">##For CP4D, check if either spce or project ID is set</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;Sub-trainings are no longer available for trainings, please use list_intermediate_models().&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_either_is_set</span><span class="p">()</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;experiment&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;Sub-trainings are available for training created via experiment only.&quot;</span><span class="p">)</span>
+        <span class="n">details_parent</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wml_credentials</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/v4/trainings?parent_id=&#39;</span> <span class="o">+</span> <span class="n">training_uid</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">(),</span>
+            <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">details_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s2">&quot;Get training details&quot;</span><span class="p">,</span> <span class="n">details_parent</span><span class="p">)</span>
+        <span class="n">resources</span> <span class="o">=</span> <span class="n">details_json</span><span class="p">[</span><span class="s2">&quot;resources&quot;</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;guid&#39;</span><span class="p">)),</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;status&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;state&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;created_at&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ID (sub_training)&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;STATE&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;CREATED&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Training.list_intermediate_models"><a class="viewcode-back" href="../../core_api.html#client.Training.list_intermediate_models">[docs]</a>    <span class="k">def</span> <span class="nf">list_intermediate_models</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_uid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print the intermediate_models in a table format.</span>
+
+<span class="sd">        :param training_uid: training ID</span>
+<span class="sd">        :type training_uid: str</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This method is not supported for IBM Cloud Pak® for Data.</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.training.list_intermediate_models()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">##For CP4D, check if either spce or project ID is set</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;This method is not supported for IBM Cloud Pak® for Data. &quot;</span> <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_either_is_set</span><span class="p">()</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1">#if status is completed then only lists only global_output else display message saying &quot;state value&quot;</span>
+        <span class="n">training_state</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;status&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;state&#39;</span><span class="p">]</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">training_state</span><span class="o">==</span><span class="s1">&#39;completed&#39;</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="s1">&#39;metrics&#39;</span> <span class="ow">in</span> <span class="n">details</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">details</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;status&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metrics&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">metrics_list</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;status&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;metrics&#39;</span><span class="p">]</span>
+                <span class="n">new_list</span><span class="o">=</span><span class="p">[]</span>
+                <span class="k">for</span> <span class="n">ml</span> <span class="ow">in</span> <span class="n">metrics_list</span><span class="p">:</span>
+                    <span class="c1"># if(ml[u&#39;context&#39;][u&#39;intermediate_model&#39;][u&#39;process&#39;]==&#39;global_output&#39;):</span>
+                    <span class="k">if</span> <span class="s1">&#39;context&#39;</span> <span class="ow">in</span> <span class="n">ml</span> <span class="ow">and</span> <span class="s1">&#39;intermediate_model&#39;</span> <span class="ow">in</span> <span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;context&#39;</span><span class="p">]:</span>
+                        <span class="n">name</span> <span class="o">=</span> <span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;context&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;intermediate_model&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="s1">&#39;location&#39;</span> <span class="ow">in</span> <span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;context&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;intermediate_model&#39;</span><span class="p">]:</span>
+                            <span class="n">path</span> <span class="o">=</span> <span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;context&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;intermediate_model&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;location&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                    <span class="n">accuracy</span><span class="o">=</span><span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ml_metrics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;training_accuracy&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">F1Micro</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ml_metrics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;training_f1_micro&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="n">F1Macro</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ml_metrics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;training_f1_macro&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="n">F1Weighted</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ml_metrics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;training_f1_weighted&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="n">logLoss</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ml_metrics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;training_neg_log_loss&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="n">PrecisionMicro</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ml_metrics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;training_precision_micro&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="n">PrecisionWeighted</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ml_metrics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;training_precision_weighted&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="n">PrecisionMacro</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ml_metrics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;training_precision_macro&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="n">RecallMacro</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ml_metrics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;training_recall_macro&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="n">RecallMicro</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ml_metrics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;training_recall_micro&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="n">RecallWeighted</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">ml</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;ml_metrics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;training_recall_weighted&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="n">createdAt</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span>
+                    <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">name</span><span class="p">,</span><span class="n">path</span><span class="p">,</span><span class="n">accuracy</span><span class="p">,</span><span class="n">F1Micro</span><span class="p">,</span><span class="n">F1Macro</span><span class="p">,</span><span class="n">F1Weighted</span><span class="p">,</span><span class="n">logLoss</span><span class="p">,</span><span class="n">PrecisionMicro</span><span class="p">,</span><span class="n">PrecisionMacro</span><span class="p">,</span><span class="n">PrecisionWeighted</span><span class="p">,</span><span class="n">RecallMicro</span><span class="p">,</span><span class="n">RecallMacro</span><span class="p">,</span><span class="n">RecallWeighted</span><span class="p">,</span><span class="n">createdAt</span><span class="p">])</span>
+                    <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+
+                <span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;NAME&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;PATH&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;F1Micro&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;F1Macro&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;F1Weighted&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;LogLoss&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;PrecisionMicro&#39;</span> <span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;PrecisionMacro&#39;</span><span class="p">,</span><span class="sa">u</span><span class="s1">&#39;PrecisionWeighted&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;RecallMicro&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;RecallMacro&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;RecallWeighted&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;CreatedAt&#39;</span> <span class="p">]</span>
+                <span class="n">table</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">([</span><span class="n">header</span><span class="p">]</span> <span class="o">+</span> <span class="n">new_list</span><span class="p">)</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+                <span class="c1">#self._list(new_list, [u&#39;NAME&#39;, u&#39;PATH&#39;, u&#39;Accuracy&#39;, u&#39;F1Micro&#39;, u&#39;F1Macro&#39;, u&#39;F1Weighted&#39;, u&#39;LogLoss&#39;, u&#39;PrecisionMicro&#39; , u&#39;PrecisionMacro&#39;,u&#39;PrecisionWeighted&#39;, u&#39;RecallMicro&#39;, u&#39;RecallMacro&#39;, u&#39;RecallWeighted&#39;, u&#39;CreatedAt&#39; ], None, 50)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; There is no intermediate model metrics are available for this training uid. &quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;state is not completed&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Training.cancel"><a class="viewcode-back" href="../../core_api.html#client.Training.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_uid</span><span class="p">,</span> <span class="n">hard_delete</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Cancel a training which is currently running and remove it. This method is also be used to delete metadata</span>
+<span class="sd">        details of the completed or canceled training run when `hard_delete` parameter is set to `True`.</span>
+
+<span class="sd">        :param training_uid: training UID</span>
+<span class="sd">        :type training_uid: str</span>
+<span class="sd">        :param hard_delete: specify `True` or `False`:</span>
+
+<span class="sd">            * `True` - to delete the completed or canceled training run</span>
+<span class="sd">            * `False` - to cancel the currently running training run</span>
+<span class="sd">        :type hard_delete: bool, optional</span>
+
+<span class="sd">        :return: status (&quot;SUCCESS&quot; or &quot;FAILED&quot;)</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.training.cancel(training_uid)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">##For CP4D, check if either spce or project ID is set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_either_is_set</span><span class="p">()</span>
+        <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">hard_delete</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
+                <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;hard_delete&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;true&#39;</span><span class="p">})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;hard_delete&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;true&#39;</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ICP</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
+            <span class="n">response_delete</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_training_href</span><span class="p">(</span><span class="n">training_uid</span><span class="p">),</span>
+                                          <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">(),</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response_delete</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_training_href</span><span class="p">(</span><span class="n">training_uid</span><span class="p">),</span>
+                                              <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">(),</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response_delete</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span> <span class="ow">and</span> \
+           <span class="n">response_delete</span><span class="o">.</span><span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s1">&#39;Job already completed with state&#39;</span> <span class="ow">in</span> <span class="n">response_delete</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Job is not running currently. Please use &#39;hard_delete=True&#39; parameter to force delete&quot;</span>
+                  <span class="s2">&quot; completed or canceled training runs.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;SUCCESS&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;trained model deletion&#39;</span><span class="p">,</span> <span class="n">response_delete</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_COS_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_uid</span><span class="p">,</span><span class="n">on_start</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{}):</span>
+        <span class="n">on_start</span><span class="p">()</span>
+        <span class="n">run_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">run_uid</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;connection&#39;</span> <span class="ow">in</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;results_reference&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;results_reference&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;connection&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">endpoint_url</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;results_reference&quot;</span><span class="p">][</span><span class="s2">&quot;connection&quot;</span><span class="p">][</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">]</span>
+            <span class="n">aws_access_key</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;results_reference&quot;</span><span class="p">][</span><span class="s2">&quot;connection&quot;</span><span class="p">][</span><span class="s2">&quot;access_key_id&quot;</span><span class="p">]</span>
+            <span class="n">aws_secret</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;results_reference&quot;</span><span class="p">][</span><span class="s2">&quot;connection&quot;</span><span class="p">][</span><span class="s2">&quot;secret_access_key&quot;</span><span class="p">]</span>
+            <span class="n">bucket</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;results_reference&quot;</span><span class="p">][</span><span class="s2">&quot;location&quot;</span><span class="p">][</span><span class="s2">&quot;bucket&quot;</span><span class="p">]</span>
+            <span class="c1"># try:</span>
+            <span class="c1">#     run_details[&quot;entity&quot;][&quot;training_results_reference&quot;][&quot;location&quot;][&quot;model_location&quot;]</span>
+            <span class="c1"># except:</span>
+            <span class="c1">#     raise WMLClientError(&quot;The training-run has not started. Error - &quot; + run_details[&quot;entity&quot;][&quot;status&quot;][&quot;error&quot;][&quot;errors&quot;][0][&quot;message&quot;])</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">bucket</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="n">bucket</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;results_reference&quot;</span><span class="p">][</span><span class="s2">&quot;target&quot;</span><span class="p">][</span><span class="s2">&quot;bucket&quot;</span><span class="p">]</span>
+            <span class="kn">import</span> <span class="nn">ibm_boto3</span>
+
+            <span class="n">client_cos</span> <span class="o">=</span> <span class="n">ibm_boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="n">service_name</span><span class="o">=</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">aws_access_key</span><span class="p">,</span>
+                                          <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">aws_secret</span><span class="p">,</span>
+                                          <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_url</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span><span class="p">:</span>
+                    <span class="n">logs</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results_reference&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">logs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; There is no logs details for this Training run, hence no logs.&quot;</span><span class="p">)</span>
+                        <span class="k">return</span>
+
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">logs</span> <span class="o">+</span> <span class="s2">&quot;/learner-1/training-log.txt&quot;</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;data/&quot;</span> <span class="o">+</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;guid&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;/pipeline-model.json&quot;</span>
+
+                        <span class="n">obj</span> <span class="o">=</span> <span class="n">client_cos</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+                        <span class="n">pipeline_model</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">((</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;Body&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>
+
+                    <span class="k">except</span> <span class="n">ibm_boto3</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ibm_botocore</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">ClientError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">ex</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">][</span><span class="s1">&#39;Code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;NoSuchKey&#39;</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Error - There is no training logs are found for the given training run id&quot;</span><span class="p">)</span>
+                            <span class="k">return</span>
+                         <span class="c1">#   print(&quot;ERROR - Cannot find pipeline_model.json in the bucket &quot;+ run_uid)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+                            <span class="k">return</span>
+                    <span class="k">if</span> <span class="n">pipeline_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">key</span> <span class="o">=</span> <span class="n">pipeline_model</span><span class="p">[</span><span class="s2">&quot;pipelines&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;parameters&quot;</span><span class="p">][</span><span class="s2">&quot;model_id&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;/learner-1/training-log.txt&quot;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Error - Cannot find the any logs for the given training run id&quot;</span><span class="p">)</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">client_cos</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;Body&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+            <span class="k">except</span> <span class="n">ibm_boto3</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ibm_botocore</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">ClientError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">ex</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">][</span><span class="s1">&#39;Code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;NoSuchKey&#39;</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR - Cannot find training-log.txt in the bucket&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR - Cannot get the training run log in the bucket&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; There is no connection details for this Training run, hence no logs.&quot;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_COS_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_uid</span><span class="p">,</span><span class="n">on_start</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{}):</span>
+        <span class="n">on_start</span><span class="p">()</span>
+        <span class="n">run_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">run_uid</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">endpoint_url</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;results_reference&quot;</span><span class="p">][</span><span class="s2">&quot;connection&quot;</span><span class="p">][</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">]</span>
+        <span class="n">aws_access_key</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;results_reference&quot;</span><span class="p">][</span><span class="s2">&quot;connection&quot;</span><span class="p">][</span><span class="s2">&quot;access_key_id&quot;</span><span class="p">]</span>
+        <span class="n">aws_secret</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;results_reference&quot;</span><span class="p">][</span><span class="s2">&quot;connection&quot;</span><span class="p">][</span><span class="s2">&quot;secret_access_key&quot;</span><span class="p">]</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;results_reference&quot;</span><span class="p">][</span><span class="s2">&quot;location&quot;</span><span class="p">][</span><span class="s2">&quot;bucket&quot;</span><span class="p">]</span>
+        <span class="c1"># try:</span>
+        <span class="c1">#     run_details[&quot;entity&quot;][&quot;training_results_reference&quot;][&quot;location&quot;][&quot;model_location&quot;]</span>
+        <span class="c1"># except:</span>
+        <span class="c1">#     raise WMLClientError(&quot;The training-run has not started. Error - &quot; + run_details[&quot;entity&quot;][&quot;status&quot;][&quot;error&quot;][&quot;errors&quot;][0][&quot;message&quot;])</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">bucket</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="n">bucket</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;results_reference&quot;</span><span class="p">][</span><span class="s2">&quot;target&quot;</span><span class="p">][</span><span class="s2">&quot;bucket&quot;</span><span class="p">]</span>
+        <span class="kn">import</span> <span class="nn">ibm_boto3</span>
+
+        <span class="n">client_cos</span> <span class="o">=</span> <span class="n">ibm_boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="n">service_name</span><span class="o">=</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">aws_access_key</span><span class="p">,</span>
+                                      <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">aws_secret</span><span class="p">,</span>
+                                      <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_url</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span><span class="p">:</span>
+                <span class="n">logs</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results_reference&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Metric log location details for this Training run is not available.&quot;</span><span class="p">)</span>
+                    <span class="k">return</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">logs</span> <span class="o">+</span> <span class="s2">&quot;/learner-1/evaluation-metrics.txt&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;guid&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;/pipeline-model.json&quot;</span>
+
+                    <span class="n">obj</span> <span class="o">=</span> <span class="n">client_cos</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+
+                    <span class="n">pipeline_model</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">((</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;Body&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>
+                <span class="k">except</span> <span class="n">ibm_boto3</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ibm_botocore</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">ClientError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+
+                    <span class="k">if</span> <span class="n">ex</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">][</span><span class="s1">&#39;Code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;NoSuchKey&#39;</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR - Cannot find pipeline_model.json in the bucket for training id &quot;</span><span class="o">+</span> <span class="n">run_uid</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;There is no training logs are found for the given training run id&quot;</span><span class="p">)</span>
+                        <span class="k">return</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+                        <span class="k">return</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">pipeline_model</span><span class="p">[</span><span class="s2">&quot;pipelines&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;parameters&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">[</span><span class="s2">&quot;model_id&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;/learner-1/evaluation-metrics.txt&quot;</span>
+
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">client_cos</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;Body&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+
+        <span class="k">except</span> <span class="n">ibm_boto3</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ibm_botocore</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">ClientError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ex</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">][</span><span class="s1">&#39;Code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;NoSuchKey&#39;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR - Cannot find evaluation-metrics.txt in the bucket&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR - Cannot get the location of evaluation-metrics.txt details in the bucket&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Training.monitor_logs"><a class="viewcode-back" href="../../core_api.html#client.Training.monitor_logs">[docs]</a>    <span class="k">def</span> <span class="nf">monitor_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_uid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print the logs of a training created.</span>
+
+<span class="sd">        :param training_uid: training UID</span>
+<span class="sd">        :type training_uid: str</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This method is not supported for IBM Cloud Pak® for Data.</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.training.monitor_logs(training_uid)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;Metrics logs are not supported. This method is not supported for IBM Cloud Pak® for Data. &quot;</span><span class="p">)</span>
+
+        <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_simple_monitor_logs</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">print_text_header_h1</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Log monitor started for training run: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">training_uid</span><span class="p">)))</span>
+
+        <span class="n">print_text_header_h2</span><span class="p">(</span><span class="s1">&#39;Log monitor done.&#39;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_simple_monitor_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_uid</span><span class="p">,</span> <span class="n">on_start</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{}):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">run_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ApiRequestFailure</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;404&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Could not find the training run details for the given training run id. &quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ex</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;status&quot;</span><span class="p">][</span><span class="s2">&quot;state&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;completed&quot;</span> <span class="ow">or</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span> <span class="ow">or</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;failed&quot;</span> <span class="ow">or</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;canceled&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_COS_logs</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span>
+                           <span class="k">lambda</span><span class="p">:</span> <span class="n">print_text_header_h1</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Log monitor started for training run: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">training_uid</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ICP</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span><span class="p">:</span>
+                    <span class="n">ws_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="s1">&#39;project_id&#39;</span> <span class="ow">in</span> <span class="n">ws_param</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">proj_id</span> <span class="o">=</span> <span class="n">ws_param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;project_id&#39;</span><span class="p">)</span>
+                        <span class="n">monitor_endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_credentials</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;https&#39;</span><span class="p">,</span>
+                                                                                 <span class="sa">u</span><span class="s1">&#39;wss&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;/ml/v4/trainings/&#39;</span> <span class="o">+</span> <span class="n">training_uid</span> <span class="o">+</span> <span class="s2">&quot;?project_id=&quot;</span> <span class="o">+</span> <span class="n">proj_id</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">space_id</span> <span class="o">=</span> <span class="n">ws_param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;space_id&#39;</span><span class="p">)</span>
+                        <span class="n">monitor_endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_credentials</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;https&#39;</span><span class="p">,</span>
+                                                                                 <span class="sa">u</span><span class="s1">&#39;wss&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;/ml/v4/trainings/&#39;</span> <span class="o">+</span> <span class="n">training_uid</span> <span class="o">+</span> <span class="s2">&quot;?space_id=&quot;</span> <span class="o">+</span> <span class="n">space_id</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">monitor_endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_credentials</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;https&#39;</span><span class="p">,</span>
+                                                                     <span class="sa">u</span><span class="s1">&#39;wss&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;/v4/trainings/&#39;</span> <span class="o">+</span> <span class="n">training_uid</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">monitor_endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_credentials</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;https&#39;</span><span class="p">,</span>
+                                                                         <span class="sa">u</span><span class="s1">&#39;wss&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;/v4/trainings/&#39;</span> <span class="o">+</span> <span class="n">training_uid</span>
+            <span class="n">websocket</span> <span class="o">=</span> <span class="n">WebSocket</span><span class="p">(</span><span class="n">monitor_endpoint</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">websocket</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="s2">&quot;Authorization&quot;</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">),</span> <span class="nb">bytes</span><span class="p">(</span><span class="s2">&quot;Bearer &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_get_token</span><span class="p">(),</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">websocket</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="s2">&quot;Authorization&quot;</span><span class="p">),</span> <span class="nb">bytes</span><span class="p">(</span><span class="s2">&quot;bearer &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_get_token</span><span class="p">()))</span>
+
+            <span class="n">on_start</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">websocket</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="sa">u</span><span class="s1">&#39;text&#39;</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                    <span class="n">entity</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="s1">&#39;status&#39;</span> <span class="ow">in</span> <span class="n">entity</span><span class="p">:</span>
+                      <span class="k">if</span> <span class="s1">&#39;message&#39;</span> <span class="ow">in</span> <span class="n">entity</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]:</span>
+                        <span class="n">message</span> <span class="o">=</span> <span class="n">entity</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">][</span><span class="s1">&#39;message&#39;</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                          <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+            <span class="n">websocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Training.monitor_metrics"><a class="viewcode-back" href="../../core_api.html#client.Training.monitor_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">monitor_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_uid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print the metrics of a training created.</span>
+
+<span class="sd">        :param training_uid: training UID</span>
+<span class="sd">        :type training_uid: str</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This method is not supported for IBM Cloud Pak® for Data.</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.training.monitor_metrics(training_uid)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;Metrics monitoring is not supported for IBM Cloud Pak® for Data&quot;</span><span class="p">)</span>
+
+        <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">run_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ApiRequestFailure</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;404&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Could not find the training run details for the given training run id. &quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ex</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">run_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;status&quot;</span><span class="p">][</span><span class="s2">&quot;state&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;completed&quot;</span> <span class="ow">or</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span> <span class="ow">or</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;failed&quot;</span> <span class="ow">or</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;canceled&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_COS_metrics</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span>
+                           <span class="k">lambda</span><span class="p">:</span> <span class="n">print_text_header_h1</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Log monitor started for training run: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">training_uid</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ICP</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span><span class="p">:</span>
+                    <span class="n">ws_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="s1">&#39;project_id&#39;</span> <span class="ow">in</span> <span class="n">ws_param</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">proj_id</span> <span class="o">=</span> <span class="n">ws_param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;project_id&#39;</span><span class="p">)</span>
+                        <span class="n">monitor_endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_credentials</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;https&#39;</span><span class="p">,</span>
+                                                                                 <span class="sa">u</span><span class="s1">&#39;wss&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;/ml/v4/trainings/&#39;</span> <span class="o">+</span> <span class="n">training_uid</span> <span class="o">+</span> <span class="s2">&quot;?project_id=&quot;</span> <span class="o">+</span> <span class="n">proj_id</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">space_id</span> <span class="o">=</span> <span class="n">ws_param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;space_id&#39;</span><span class="p">)</span>
+                        <span class="n">monitor_endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_credentials</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;https&#39;</span><span class="p">,</span>
+                                                                                 <span class="sa">u</span><span class="s1">&#39;wss&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;/ml/v4/trainings/&#39;</span> <span class="o">+</span> <span class="n">training_uid</span> <span class="o">+</span> <span class="s2">&quot;?space_id=&quot;</span> <span class="o">+</span> <span class="n">space_id</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">monitor_endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_credentials</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;https&#39;</span><span class="p">,</span>
+                                                                     <span class="sa">u</span><span class="s1">&#39;wss&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;/v4/trainings/&#39;</span> <span class="o">+</span> <span class="n">training_uid</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">monitor_endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_credentials</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;https&#39;</span><span class="p">,</span>
+                                                                         <span class="sa">u</span><span class="s1">&#39;wss&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;/v4/trainings/&#39;</span> <span class="o">+</span> <span class="n">training_uid</span>
+            <span class="n">websocket</span> <span class="o">=</span> <span class="n">WebSocket</span><span class="p">(</span><span class="n">monitor_endpoint</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">websocket</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="s2">&quot;Authorization&quot;</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">),</span> <span class="nb">bytes</span><span class="p">(</span><span class="s2">&quot;Bearer &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_get_token</span><span class="p">(),</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">websocket</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="s2">&quot;Authorization&quot;</span><span class="p">),</span> <span class="nb">bytes</span><span class="p">(</span><span class="s2">&quot;bearer &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_get_token</span><span class="p">()))</span>
+
+            <span class="n">print_text_header_h1</span><span class="p">(</span><span class="s1">&#39;Metric monitor started for training run: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">training_uid</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">websocket</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="sa">u</span><span class="s1">&#39;text&#39;</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                    <span class="n">entity</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="s1">&#39;status&#39;</span> <span class="ow">in</span> <span class="n">entity</span><span class="p">:</span>
+                        <span class="n">status</span> <span class="o">=</span> <span class="n">entity</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;status&#39;</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="sa">u</span><span class="s1">&#39;metrics&#39;</span> <span class="ow">in</span> <span class="n">status</span><span class="p">:</span>
+                            <span class="n">metrics</span> <span class="o">=</span> <span class="n">status</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metrics&#39;</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                             <span class="n">metric</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                             <span class="nb">print</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+
+            <span class="n">websocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+            <span class="n">print_text_header_h2</span><span class="p">(</span><span class="s1">&#39;Metric monitor done.&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Training.get_metrics"><a class="viewcode-back" href="../../core_api.html#client.Training.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_uid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get metrics.</span>
+
+<span class="sd">        :param training_uid: training UID</span>
+<span class="sd">        :type training_uid: str</span>
+
+<span class="sd">        :return: metrics of a training run</span>
+<span class="sd">        :rtype: list of dict</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            training_status = client.training.get_metrics(training_uid)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status</span><span class="p">(</span><span class="n">training_uid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;metrics&#39;</span> <span class="ow">in</span> <span class="n">status</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">status</span><span class="p">[</span><span class="s1">&#39;metrics&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;metrics&#39;</span> <span class="ow">in</span> <span class="n">details</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">details</span><span class="p">[</span><span class="s1">&#39;metrics&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;No metrics details are available for the given training_uid&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_latest_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_uid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get latest metrics values.</span>
+
+<span class="sd">        :param training_uid: ID of trained model</span>
+<span class="sd">        :type training_uid: str</span>
+
+<span class="sd">        :return: metric values</span>
+<span class="sd">        :rtype: list of dicts</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.training.get_latest_metrics(training_uid)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Training</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">training_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;training_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status</span><span class="p">(</span><span class="n">training_uid</span><span class="p">)</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">status</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metrics&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">latest_metrics</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">grouped_metrics</span> <span class="o">=</span> <span class="n">group_metrics</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">grouped_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">sorted_value</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="s1">&#39;iteration&#39;</span><span class="p">])</span>
+
+            <span class="n">latest_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sorted_value</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">latest_metrics</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018-2023, IBM.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

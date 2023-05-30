@@ -1,0 +1,38 @@
+DataConnection Modules
+======================
+
+DataConnection
+--------------
+
+.. autoclass:: ibm_watson_machine_learning.helpers.connections.connections.DataConnection
+   :members:
+   :exclude-members:
+   :undoc-members:
+   :show-inheritance:
+
+S3Location
+----------
+
+.. autoclass:: ibm_watson_machine_learning.helpers.connections.connections.S3Location
+   :members:
+   :exclude-members:
+   :undoc-members:
+   :show-inheritance:
+
+CloudAssetLocation
+------------------
+
+.. autoclass:: ibm_watson_machine_learning.helpers.connections.connections.CloudAssetLocation
+   :members:
+   :exclude-members:
+   :undoc-members:
+   :show-inheritance:
+
+DeploymentOutputAssetLocation
+-----------------------------
+
+.. autoclass:: ibm_watson_machine_learning.helpers.connections.connections.DeploymentOutputAssetLocation
+   :members:
+   :exclude-members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>IBM Cloud &#8212; ibm-watson-machine-learning(V4) 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystyle2.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="IBM Cloud Pak for Data" href="setup_cpd.html" />
+    <link rel="prev" title="Setup" href="setup.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/wml_logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">IBM Watson Machine Learning</p>
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="setup.html">Setup</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">IBM Cloud</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-machine-learning-frameworks">Supported machine learning frameworks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#authentication">Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="setup_cpd.html">IBM Cloud Pak for Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="ibm-cloud">
+<h1>IBM Cloud<a class="headerlink" href="#ibm-cloud" title="Permalink to this heading">¶</a></h1>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading">¶</a></h2>
+<p>Starting work with IBM Cloud refer to <a class="reference external" href="https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-wdp.html?audience=wdp">Getting started</a> section in main product documentation.</p>
+</section>
+<section id="supported-machine-learning-frameworks">
+<h2>Supported machine learning frameworks<a class="headerlink" href="#supported-machine-learning-frameworks" title="Permalink to this heading">¶</a></h2>
+<p>For the list of supported machine learning frameworks (models) on IBM Cloud, refer to
+<a class="reference external" href="https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/pm_service_supported_frameworks.html">Watson Machine Learning Documentation</a>.</p>
+</section>
+<section id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading">¶</a></h2>
+<p>To use Watson Machine learning APIs, create an instance of APIClient with authentication details.</p>
+<p><strong>Note:</strong> Depending on the region of your provisioned service instance, use one of the following as your url:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Dallas: <cite>https://us-south.ml.cloud.ibm.com</cite></p></li>
+<li><p>London: <cite>https://eu-gb.ml.cloud.ibm.com</cite></p></li>
+<li><p>Frankfurt: <cite>https://eu-de.ml.cloud.ibm.com</cite></p></li>
+<li><p>Tokyo: <cite>https://jp-tok.ml.cloud.ibm.com</cite></p></li>
+</ul>
+</div></blockquote>
+<p><strong>Note:</strong> To determine <cite>apikey</cite> go to <a class="reference external" href="https://cloud.ibm.com/iam/apikeys">https://cloud.ibm.com/iam/apikeys</a> and generate your apikey.</p>
+<p>Example of creating the client using apikey:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning</span> <span class="kn">import</span> <span class="n">APIClient</span>
+
+<span class="n">wml_credentials</span> <span class="o">=</span> <span class="p">{</span>
+                   <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://us-south.ml.cloud.ibm.com&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;apikey&quot;</span><span class="p">:</span><span class="s2">&quot;***********&quot;</span>
+                  <span class="p">}</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">(</span><span class="n">wml_credentials</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Example of creating the client using token:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning</span> <span class="kn">import</span> <span class="n">APIClient</span>
+
+<span class="n">wml_credentials</span> <span class="o">=</span> <span class="p">{</span>
+                   <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://us-south.ml.cloud.ibm.com&quot;</span><span class="p">,</span>
+                   <span class="s2">&quot;token&quot;</span><span class="p">:</span><span class="s2">&quot;***********&quot;</span><span class="p">,</span>
+                  <span class="p">}</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">(</span><span class="n">wml_credentials</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> Setting default space/project id is mandatory. For details, refer to <code class="docutils literal notranslate"><span class="pre">client.set.default_space()</span></code> API in this document.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018-2023, IBM.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/setup_cloud.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

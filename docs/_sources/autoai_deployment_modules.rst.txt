@@ -1,0 +1,22 @@
+Deployment Modules for AutoAI models
+====================================
+
+Web Service
+-----------
+For usage instruction see :ref:`working-with-web-service`.
+
+.. autoclass:: ibm_watson_machine_learning.deployment.WebService
+   :members:
+   :exclude-members:
+   :undoc-members:
+   :show-inheritance:
+
+Batch
+-----
+For usage instruction see :ref:`working-with-batch`.
+
+.. autoclass:: ibm_watson_machine_learning.deployment.Batch
+   :members:
+   :exclude-members:
+   :undoc-members:
+   :show-inheritance:

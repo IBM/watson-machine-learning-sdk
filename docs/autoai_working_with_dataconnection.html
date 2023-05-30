@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Working with DataConnection &#8212; ibm-watson-machine-learning(V4) 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystyle2.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="AutoAI experiment" href="autoai_experiment.html" />
+    <link rel="prev" title="Working with AutoAI class and optimizer" href="autoai_working_with_class_and_optimizer.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/wml_logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">IBM Watson Machine Learning</p>
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api.html#modules">Modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="core_api.html">Core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="federated_learning.html">Federated Learning</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="autoai.html">AutoAI</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="autoai_working_with_class_and_optimizer.html">Working with AutoAI class and optimizer</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Working with DataConnection</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#cloud-dataconnection-initialization">Cloud DataConnection Initialization</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#upload-your-training-dataset">Upload your training dataset</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#download-your-training-dataset">Download your training dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="autoai_experiment.html">AutoAI experiment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dataconnection_modules.html">DataConnection Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoai_deployment_modules.html">Deployment Modules for AutoAI models</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="working-with-dataconnection">
+<h1>Working with DataConnection<a class="headerlink" href="#working-with-dataconnection" title="Permalink to this heading">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">DataConnection</span></code> is the base class to start working with your data storage needed for AutoAI backend.
+You can use it to fetch training data and store all of the results.
+There are several ways you can use the <code class="docutils literal notranslate"><span class="pre">DataConnection</span></code> object. This is a basic scenario.</p>
+<p>To start an AutoAI experiment, first specify where your training dataset is located.
+Currently, AutoAI supports Cloud Object Storage (COS) and data assets on Cloud.</p>
+<section id="cloud-dataconnection-initialization">
+<h2>Cloud DataConnection Initialization<a class="headerlink" href="#cloud-dataconnection-initialization" title="Permalink to this heading">¶</a></h2>
+<p>To upload your experiment dataset, you must initialize <code class="docutils literal notranslate"><span class="pre">DataConnection</span></code> with your COS credentials.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.autoai.helpers.connections</span> <span class="kn">import</span> <span class="n">S3Location</span><span class="p">,</span> <span class="n">DataConnection</span>
+
+<span class="n">connection_details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connections</span><span class="o">.</span><span class="n">create</span><span class="p">({</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">connections</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">NAME</span><span class="p">:</span> <span class="s2">&quot;Connection to COS&quot;</span><span class="p">,</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">connections</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DATASOURCE_TYPE</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">connections</span><span class="o">.</span><span class="n">get_datasource_type_uid_by_name</span><span class="p">(</span><span class="s1">&#39;bluemixcloudobjectstorage&#39;</span><span class="p">),</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">connections</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PROPERTIES</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;bucket&#39;</span><span class="p">:</span> <span class="s1">&#39;bucket_name&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;access_key&#39;</span><span class="p">:</span> <span class="s1">&#39;COS access key id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;secret_key&#39;</span><span class="p">:</span> <span class="s1">&#39;COS secret access key&#39;</span>
+        <span class="s1">&#39;iam_url&#39;</span><span class="p">:</span> <span class="s1">&#39;COS iam url&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="s1">&#39;COS endpoint url&#39;</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+
+<span class="n">connection_id</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connections</span><span class="o">.</span><span class="n">get_uid</span><span class="p">(</span><span class="n">connection_details</span><span class="p">)</span>
+
+<span class="c1"># note: this DataConnection will be used as a reference where to find your training dataset</span>
+<span class="n">training_data_connection</span> <span class="o">=</span> <span class="n">DataConnection</span><span class="p">(</span>
+        <span class="n">connection_asset_id</span><span class="o">=</span><span class="n">connection_id</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="n">S3Location</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="s1">&#39;bucket_name&#39;</span><span class="p">,</span>   <span class="c1"># note: COS bucket name where training dataset is located</span>
+                            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;my_path&#39;</span>  <span class="c1"># note: path within bucket where your training dataset is located</span>
+                            <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="c1"># note: this DataConnection will be used as a reference where to save all of the AutoAI experiment results</span>
+<span class="n">results_connection</span> <span class="o">=</span> <span class="n">DataConnection</span><span class="p">(</span>
+        <span class="n">connection_asset_id</span><span class="o">=</span><span class="n">connection_id</span><span class="p">,</span>
+        <span class="c1"># note: bucket name and path could be different or the same as specified in the training_data_connection</span>
+        <span class="n">location</span><span class="o">=</span><span class="n">S3Location</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="s1">&#39;bucket_name&#39;</span><span class="p">,</span>
+                            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;my_path&#39;</span>
+                            <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="upload-your-training-dataset">
+<h2>Upload your training dataset<a class="headerlink" href="#upload-your-training-dataset" title="Permalink to this heading">¶</a></h2>
+<p>An AutoAI experiment should be able to access your training data.
+If you do not have a training dataset stored already,
+you can do it by invoking the <code class="docutils literal notranslate"><span class="pre">write()</span></code> method of the <code class="docutils literal notranslate"><span class="pre">DataConnection</span></code> object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">training_data_connection</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;local_path_to_the_dataset&#39;</span><span class="p">,</span> <span class="n">remote_name</span><span class="o">=</span><span class="s1">&#39;training_dataset.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="download-your-training-dataset">
+<h2>Download your training dataset<a class="headerlink" href="#download-your-training-dataset" title="Permalink to this heading">¶</a></h2>
+<p>To download a stored dataset, use the <code class="docutils literal notranslate"><span class="pre">read()</span></code> method of the <code class="docutils literal notranslate"><span class="pre">DataConnection</span></code> object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">training_data_connection</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>   <span class="c1"># note: returns a pandas DataFrame</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018-2023, IBM.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/autoai_working_with_dataconnection.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
