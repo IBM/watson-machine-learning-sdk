@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ibm_watson_machine_learning.runtimes &#8212; ibm-watson-machine-learning(V4) 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/wml_logo2.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">IBM Watson Machine Learning</p>
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../samples.html">Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ibm_watson_machine_learning.runtimes</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -----------------------------------------------------------------------------------------</span>
+<span class="c1">#  (C) Copyright IBM Corp. 2018- 2023.</span>
+<span class="c1">#  https://opensource.org/licenses/BSD-3-Clause</span>
+<span class="c1">#  -----------------------------------------------------------------------------------------</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
+<span class="n">requests</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">urllib3</span><span class="o">.</span><span class="n">disable_warnings</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils</span> <span class="kn">import</span> <span class="n">INSTANCE_DETAILS_TYPE</span><span class="p">,</span> <span class="n">RUNTIME_SPEC_DETAILS_TYPE</span><span class="p">,</span> <span class="n">MODEL_DETAILS_TYPE</span><span class="p">,</span> <span class="n">LIBRARY_DETAILS_TYPE</span><span class="p">,</span> <span class="n">FUNCTION_DETAILS_TYPE</span><span class="p">,</span> <span class="n">get_type_of_details</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.href_definitions</span> <span class="kn">import</span> <span class="n">is_uid</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">RuntimeMetaNames</span><span class="p">,</span> <span class="n">LibraryMetaNames</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.libs.repo.mlrepositoryartifact</span> <span class="kn">import</span> <span class="n">MLRepositoryArtifact</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.libs.repo.mlrepository</span> <span class="kn">import</span> <span class="n">MetaProps</span><span class="p">,</span> <span class="n">MetaNames</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.href_definitions</span> <span class="kn">import</span> <span class="n">API_VERSION</span><span class="p">,</span> <span class="n">SPACES</span><span class="p">,</span><span class="n">PIPELINES</span><span class="p">,</span> <span class="n">LIBRARIES</span><span class="p">,</span> <span class="n">EXPERIMENTS</span><span class="p">,</span> <span class="n">RUNTIMES</span><span class="p">,</span> <span class="n">DEPLOYMENTS</span>
+
+
+<span class="k">def</span> <span class="nf">LibraryDefinition</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">platform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_definition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">custom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">command</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">space_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">WMLResource</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">WMLResource</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">WMLResource</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">platform</span><span class="p">,</span> <span class="s1">&#39;platform&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">WMLResource</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">WMLResource</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;filepath&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">WMLResource</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">model_definition</span><span class="p">,</span> <span class="s1">&#39;model_definition&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">WMLResource</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">custom</span><span class="p">,</span> <span class="s1">&#39;custom&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">WMLResource</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="s1">&#39;command&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">WMLResource</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="s1">&#39;tags&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">WMLResource</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">space_uid</span><span class="p">,</span> <span class="s1">&#39;space_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">definition</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">version</span><span class="p">,</span>
+        <span class="s1">&#39;filepath&#39;</span><span class="p">:</span> <span class="n">filepath</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
+
+    <span class="k">if</span> <span class="n">platform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;platform&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">platform</span>
+    <span class="k">if</span> <span class="n">model_definition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;model_definition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_definition</span>
+    <span class="k">if</span> <span class="n">custom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;custom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">custom</span>
+    <span class="k">if</span> <span class="n">command</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">command</span>
+    <span class="k">if</span> <span class="n">tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tags</span>
+    <span class="k">if</span> <span class="n">space_uid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;space_uid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">space_uid</span>
+    <span class="k">return</span> <span class="n">definition</span>
+
+
+<div class="viewcode-block" id="Runtimes"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes">[docs]</a><span class="k">class</span> <span class="nc">Runtimes</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create Runtime Specs and associated Custom Libraries.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        There are a list of pre-defined runtimes available. To see the list of pre-defined runtimes, use:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.runtimes.list(pre_defined=True)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="n">WMLResource</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">client</span><span class="o">.</span><span class="n">ICP</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">client</span><span class="o">.</span><span class="n">WSD</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span><span class="p">:</span>
+            <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;instance_details&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type_of_details</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">details</span><span class="p">,</span> <span class="n">INSTANCE_DETAILS_TYPE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span> <span class="o">=</span> <span class="n">RuntimeMetaNames</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span> <span class="o">=</span> <span class="n">LibraryMetaNames</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ICP</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">ICP</span>
+
+    <span class="k">def</span> <span class="nf">_create_library_from_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definition</span><span class="p">,</span> <span class="n">runtime_definition</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_meta_prop</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_meta_prop</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_meta_prop</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="s1">&#39;platform&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_meta_prop</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_meta_prop</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="s1">&#39;filepath&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_meta_prop</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="s1">&#39;model_defintion&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_meta_prop</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="s1">&#39;custom&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_meta_prop</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="s1">&#39;command&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_meta_prop</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="s1">&#39;tags&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_meta_prop</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="s1">&#39;space_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">lib_metadata</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">NAME</span><span class="p">:</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">VERSION</span><span class="p">:</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">PLATFORM</span><span class="p">:</span>
+                <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;platform&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s1">&#39;platform&#39;</span> <span class="ow">in</span> <span class="n">definition</span> <span class="ow">and</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;platform&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">runtime_definition</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PLATFORM</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+                    <span class="s2">&quot;versions&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">runtime_definition</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PLATFORM</span><span class="p">][</span><span class="s1">&#39;version&#39;</span><span class="p">]]</span>
+                <span class="p">},</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">FILEPATH</span><span class="p">:</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;filepath&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">MODEL_DEFINITION</span><span class="p">:</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;model_definiton&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">COMMAND</span><span class="p">:</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">CUSTOM</span><span class="p">:</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;custom&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">TAGS</span><span class="p">:</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">SPACE_UID</span><span class="p">:</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;space_uid&#39;</span><span class="p">],</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="s1">&#39;description&#39;</span> <span class="ow">in</span> <span class="n">definition</span><span class="p">:</span>
+            <span class="n">lib_metadata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;tags&#39;</span> <span class="ow">in</span> <span class="n">definition</span><span class="p">:</span>
+            <span class="n">lib_metadata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">TAGS</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;model_definition&#39;</span> <span class="ow">in</span> <span class="n">definition</span><span class="p">:</span>
+            <span class="n">lib_metadata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">MODEL_DEFINITION</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;model_definition&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;custom&#39;</span> <span class="ow">in</span> <span class="n">definition</span><span class="p">:</span>
+            <span class="n">lib_metadata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">CUSTOM</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;custom&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;command&#39;</span> <span class="ow">in</span> <span class="n">definition</span><span class="p">:</span>
+            <span class="n">lib_metadata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">COMMAND</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;space_uid&#39;</span> <span class="ow">in</span> <span class="n">definition</span><span class="p">:</span>
+            <span class="n">lib_metadata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">SPACE_UID</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span><span class="p">[</span><span class="s1">&#39;space_uid&#39;</span><span class="p">]</span>
+
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">store_library</span><span class="p">(</span><span class="n">lib_metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_library_uid</span><span class="p">(</span><span class="n">details</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Runtimes.store_library"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.store_library">[docs]</a>    <span class="k">def</span> <span class="nf">store_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a library.</span>
+
+<span class="sd">        :param meta_props:  metadata of the library configuration. To see available meta names use:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                client.runtimes.LibraryMetaNames.get()</span>
+
+<span class="sd">        :type meta_props: dict</span>
+<span class="sd">        :return: metadata of the library created</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            library_details = client.runtimes.store_library({</span>
+<span class="sd">                client.runtimes.LibraryMetaNames.NAME: &quot;libraries_custom&quot;,</span>
+<span class="sd">                client.runtimes.LibraryMetaNames.DESCRIPTION: &quot;custom libraries for scoring&quot;,</span>
+<span class="sd">                client.runtimes.LibraryMetaNames.FILEPATH: custom_library_path,</span>
+<span class="sd">                client.runtimes.LibraryMetaNames.VERSION: &quot;1.0&quot;,</span>
+<span class="sd">                client.runtimes.LibraryMetaNames.PLATFORM: {&quot;name&quot;: &quot;python&quot;, &quot;versions&quot;: [&quot;3.5&quot;]}</span>
+<span class="sd">            })</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">meta_props</span><span class="p">)</span>
+
+        <span class="n">lib_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">_generate_resource_metadata</span><span class="p">(</span><span class="n">meta_props</span><span class="p">,</span> <span class="n">with_validation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CAMS</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">lib_metadata</span><span class="p">[</span><span class="s1">&#39;space&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;href&#39;</span><span class="p">:</span> <span class="s2">&quot;/v4/spaces/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span>
+                    <span class="s2">&quot;It is mandatory is set the space. Use client.set.default_space(&lt;SPACE_GUID&gt;) to set the space.&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response_post</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_custom_libraries_href</span><span class="p">(),</span> <span class="n">json</span><span class="o">=</span><span class="n">lib_metadata</span><span class="p">,</span>
+                                          <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+            <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">201</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;saving libraries&#39;</span><span class="p">,</span> <span class="n">response_post</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">FILEPATH</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_credentials</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;url&#39;</span><span class="p">]</span>
+                    <span class="n">libraries_content_url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">details</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;href&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/content&#39;</span>
+
+                    <span class="n">put_header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">(</span><span class="n">no_content_type</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">FILEPATH</span><span class="p">],</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">data</span><span class="p">:</span>
+                        <span class="n">response_definition_put</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">libraries_content_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">put_header</span><span class="p">)</span>
+
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;saving libraries content&#39;</span><span class="p">,</span> <span class="n">response_definition_put</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Failure during creation of libraries.&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">details</span></div>
+
+    <span class="k">def</span> <span class="nf">_create_runtime_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">custom_libs_list</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">NAME</span> <span class="p">:</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">NAME</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PLATFORM</span><span class="p">:</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PLATFORM</span><span class="p">],</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DESCRIPTION</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">CUSTOM</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">CUSTOM</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">CUSTOM</span><span class="p">]}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">COMPUTE</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">COMPUTE</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">COMPUTE</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">SPACE_UID</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">SPACE_UID</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;/v4/spaces/&quot;</span><span class="o">+</span><span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">SPACE_UID</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CAMS</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;space&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;href&#39;</span><span class="p">:</span> <span class="s2">&quot;/v4/spaces/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span>
+                    <span class="s2">&quot;It is mandatory to set the space. Use client.set.default_space(&lt;SPACE_UID&gt;) to proceed.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">custom_libs_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">custom_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">custom_libs_list</span><span class="p">:</span>
+                <span class="n">each_href</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;/v4/libraries/&quot;</span> <span class="o">+</span> <span class="n">uid</span><span class="p">}</span>
+                <span class="n">custom_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">each_href</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;custom_libraries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">custom_list</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">CONFIGURATION_FILEPATH</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="n">MetaNames</span><span class="o">.</span><span class="n">CONTENT_LOCATION</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">CONFIGURATION_FILEPATH</span><span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response_post</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_runtimes_href</span><span class="p">(),</span> <span class="n">json</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+                                          <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+            <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">201</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;saving runtimes&#39;</span><span class="p">,</span> <span class="n">response_post</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">CONFIGURATION_FILEPATH</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">runtimes_content_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_credentials</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;url&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">details</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;href&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/content&#39;</span>
+
+                    <span class="n">put_header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">(</span><span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;text/plain&quot;</span><span class="p">)</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">CONFIGURATION_FILEPATH</span><span class="p">],</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">data</span><span class="p">:</span>
+                        <span class="n">response_definition_put</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">runtimes_content_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">put_header</span><span class="p">)</span>
+
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;saving runtimes content&#39;</span><span class="p">,</span> <span class="n">response_definition_put</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Failure during creation of runtime.&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">details</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;guid&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Runtimes.store"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.store">[docs]</a>    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a runtime.</span>
+
+<span class="sd">        :param meta_props:  metadata of the runtime configuration. To see available meta names use:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                client.runtimes.ConfigurationMetaNames.get()</span>
+
+<span class="sd">        :type meta_props: dict</span>
+
+<span class="sd">        :return: metadata of the runtime created</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        **Examples**</span>
+
+<span class="sd">        Creating a library:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            lib_meta = {</span>
+<span class="sd">                client.runtimes.LibraryMetaNames.NAME: &quot;libraries_custom&quot;,</span>
+<span class="sd">                client.runtimes.LibraryMetaNames.DESCRIPTION: &quot;custom libraries for scoring&quot;,</span>
+<span class="sd">                client.runtimes.LibraryMetaNames.FILEPATH: &quot;/home/user/my_lib.zip&quot;,</span>
+<span class="sd">                client.runtimes.LibraryMetaNames.VERSION: &quot;1.0&quot;,</span>
+<span class="sd">                client.runtimes.LibraryMetaNames.PLATFORM: {&quot;name&quot;: &quot;python&quot;, &quot;versions&quot;: [&quot;3.5&quot;]}</span>
+<span class="sd">            }</span>
+
+<span class="sd">            custom_library_details = client.runtimes.store_library(lib_meta)</span>
+<span class="sd">            custom_library_uid = client.runtimes.get_library_uid(custom_library_details)</span>
+
+<span class="sd">        Creating a runtime:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            runtime_meta = {</span>
+<span class="sd">                client.runtimes.ConfigurationMetaNames.NAME: &quot;runtime_spec_python_3.5&quot;,</span>
+<span class="sd">                client.runtimes.ConfigurationMetaNames.DESCRIPTION: &quot;test&quot;,</span>
+<span class="sd">                client.runtimes.ConfigurationMetaNames.PLATFORM: {</span>
+<span class="sd">                    &quot;name&quot;: &quot;python&quot;,</span>
+<span class="sd">                    &quot;version&quot;: &quot;3.5&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                client.runtimes.ConfigurationMetaNames.LIBRARIES_UIDS: [custom_library_uid] # already existing lib is linked here</span>
+<span class="sd">            }</span>
+
+<span class="sd">            runtime_details = client.runtimes.store(runtime_meta)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">WMLResource</span><span class="o">.</span><span class="n">_chk_and_block_create_update_for_python36</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">meta_props</span><span class="p">)</span>
+
+        <span class="n">custom_libs_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># if self.ConfigurationMetaNames.LIBRARIES_DEFINITIONS in meta_props:</span>
+        <span class="c1">#     custom_libs_list.extend(</span>
+        <span class="c1">#         [self._create_library_from_definition(definition, meta_props) for definition in</span>
+        <span class="c1">#          meta_props[self.ConfigurationMetaNames.LIBRARIES_DEFINITIONS]]</span>
+        <span class="c1">#     )</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">LIBRARIES_UIDS</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
+            <span class="n">custom_libs_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">LIBRARIES_UIDS</span><span class="p">])</span>
+
+        <span class="n">runtime_uid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_runtime_spec</span><span class="p">(</span><span class="n">custom_libs_list</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Runtimes.get_details"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pre_defined</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get metadata of stored runtime(s). If runtime UID is not specified returns all runtimes metadata.</span>
+
+<span class="sd">        :param runtime_uid: runtime UID</span>
+<span class="sd">        :type runtime_uid: str, optional</span>
+<span class="sd">        :param pre_defined: boolean indicating to display predefined runtimes only</span>
+<span class="sd">        :type pre_defined: bool, optional</span>
+<span class="sd">        :param limit: limit number of fetched records</span>
+<span class="sd">        :type limit: int, optional</span>
+
+<span class="sd">        :return: metadata of runtime(s)</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            - **dict** - if runtime_uid is not None</span>
+<span class="sd">            - **{&quot;resources&quot;: [dict]}** - if runtime_uid is None</span>
+
+<span class="sd">        **Examples**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            runtime_details = client.runtimes.get_details(runtime_uid)</span>
+<span class="sd">            runtime_details = client.runtimes.get_details(runtime_uid=runtime_uid)</span>
+<span class="sd">            runtime_details = client.runtimes.get_details()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;runtime_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># if runtime_uid is not None and not is_uid(runtime_uid):</span>
+        <span class="c1">#     raise WMLClientError(u&#39;\&#39;runtime_uid\&#39; is not an uid: \&#39;{}\&#39;&#39;.format(runtime_uid))</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_runtimes_href</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">runtime_uid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_no_space_artifact_details</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="s1">&#39;runtime specs&#39;</span><span class="p">,</span> <span class="n">pre_defined</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pre_defined</span><span class="p">:</span>
+         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_artifact_details</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="s1">&#39;runtime specs&#39;</span><span class="p">,</span><span class="n">pre_defined</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_artifact_details</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="s1">&#39;runtime specs&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Runtimes.get_library_details"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_library_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_library_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get metadata of stored librarie(s). If library UID is not specified returns all libraries metadata.</span>
+
+<span class="sd">        :param library_uid: library UID</span>
+<span class="sd">        :type library_uid: str, optional</span>
+<span class="sd">        :param limit: limit number of fetched records</span>
+<span class="sd">        :type limit: int, optional</span>
+
+<span class="sd">        :return: metadata of library(s)</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            - **dict** - if runtime_uid is not None</span>
+<span class="sd">            - **{&quot;resources&quot;: [dict]}** - if runtime_uid is None</span>
+
+<span class="sd">        **Examples**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            library_details = client.runtimes.get_library_details(library_uid)</span>
+<span class="sd">            library_details = client.runtimes.get_library_details(library_uid=library_uid)</span>
+<span class="sd">            library_details = client.runtimes.get_library_details()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">library_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;library_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">library_uid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_uid</span><span class="p">(</span><span class="n">library_uid</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">library_uid</span><span class="se">\&#39;</span><span class="s1"> is not an uid: </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">library_uid</span><span class="p">))</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_custom_libraries_href</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">library_uid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_no_space_artifact_details</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="s1">&#39;libraries&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_artifact_details</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="s1">&#39;libraries&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Runtimes.get_href"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_href">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_href</span><span class="p">(</span><span class="n">details</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get runtime href from runtime details.</span>
+
+<span class="sd">        :param details: metadata of the runtime</span>
+<span class="sd">        :type details: dict</span>
+
+<span class="sd">        :return: runtime href</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            runtime_details = client.runtimes.get_details(runtime_uid)</span>
+<span class="sd">            runtime_href = client.runtimes.get_href(runtime_details)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;details&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type_of_details</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="p">[</span><span class="n">RUNTIME_SPEC_DETAILS_TYPE</span><span class="p">,</span> <span class="n">MODEL_DETAILS_TYPE</span><span class="p">,</span> <span class="n">FUNCTION_DETAILS_TYPE</span><span class="p">])</span>
+
+        <span class="n">details_type</span> <span class="o">=</span> <span class="n">get_type_of_details</span><span class="p">(</span><span class="n">details</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">details_type</span> <span class="o">==</span> <span class="n">RUNTIME_SPEC_DETAILS_TYPE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Runtimes</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="s1">&#39;runtime_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="s1">&#39;href&#39;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">details_type</span> <span class="o">==</span> <span class="n">MODEL_DETAILS_TYPE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Runtimes</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="s1">&#39;model_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">,</span> <span class="s1">&#39;runtime&#39;</span><span class="p">,</span> <span class="s1">&#39;href&#39;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">details_type</span> <span class="o">==</span> <span class="n">FUNCTION_DETAILS_TYPE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Runtimes</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="s1">&#39;function_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">,</span> <span class="s1">&#39;runtime&#39;</span><span class="p">,</span> <span class="s1">&#39;href&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Unexpected details type: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">details_type</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Runtimes.get_uid"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_uid">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_uid</span><span class="p">(</span><span class="n">details</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get runtime uid from runtime details.</span>
+
+<span class="sd">        :param details: metadata of the runtime</span>
+<span class="sd">        :type details: dict</span>
+
+<span class="sd">        :return: runtime UID</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            runtime_details = client.runtimes.get_details(runtime_uid)</span>
+<span class="sd">            runtime_uid = client.runtimes.get_uid(runtime_details)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;details&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type_of_details</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="p">[</span><span class="n">RUNTIME_SPEC_DETAILS_TYPE</span><span class="p">,</span> <span class="n">MODEL_DETAILS_TYPE</span><span class="p">,</span> <span class="n">FUNCTION_DETAILS_TYPE</span><span class="p">])</span>
+
+        <span class="n">details_type</span> <span class="o">=</span> <span class="n">get_type_of_details</span><span class="p">(</span><span class="n">details</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">details_type</span> <span class="o">==</span> <span class="n">RUNTIME_SPEC_DETAILS_TYPE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Runtimes</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="s1">&#39;runtime_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="s1">&#39;guid&#39;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">details_type</span> <span class="o">==</span> <span class="n">MODEL_DETAILS_TYPE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Runtimes</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="s1">&#39;model_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">,</span> <span class="s1">&#39;runtime&#39;</span><span class="p">,</span> <span class="s1">&#39;href&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">details_type</span> <span class="o">==</span> <span class="n">FUNCTION_DETAILS_TYPE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Runtimes</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="s1">&#39;function_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">,</span> <span class="s1">&#39;runtime&#39;</span><span class="p">,</span> <span class="s1">&#39;href&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Unexpected details type: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">details_type</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Runtimes.get_library_href"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_library_href">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_library_href</span><span class="p">(</span><span class="n">library_details</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get library href from library details.</span>
+
+<span class="sd">        :param library_details: metadata of the library</span>
+<span class="sd">        :type library_details: dict</span>
+
+<span class="sd">        :return: library href</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            library_details = client.runtimes.get_library_details(library_uid)</span>
+<span class="sd">            library_url = client.runtimes.get_library_href(library_details)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">library_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;library_details&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type_of_details</span><span class="p">(</span><span class="n">library_details</span><span class="p">,</span> <span class="n">LIBRARY_DETAILS_TYPE</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Runtimes</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">library_details</span><span class="p">,</span> <span class="s1">&#39;library_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="s1">&#39;href&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Runtimes.get_library_uid"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_library_uid">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_library_uid</span><span class="p">(</span><span class="n">library_details</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get library uid from library details.</span>
+
+<span class="sd">        :param library_details: metadata of the library</span>
+<span class="sd">        :type library_details: dict</span>
+
+<span class="sd">        :return: library UID</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            library_details = client.runtimes.get_library_details(library_uid)</span>
+<span class="sd">            library_uid = client.runtimes.get_library_uid(library_details)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">library_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;library_details&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type_of_details</span><span class="p">(</span><span class="n">library_details</span><span class="p">,</span> <span class="n">LIBRARY_DETAILS_TYPE</span><span class="p">)</span>
+
+        <span class="c1"># TODO error handling</span>
+        <span class="k">return</span> <span class="n">Runtimes</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">library_details</span><span class="p">,</span> <span class="s1">&#39;library_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="s1">&#39;guid&#39;</span><span class="p">])</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_runtimes_uids_for_lib</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">runtime_details</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Return list of runtimes which contains library_uid that is passed.</span>
+        <span class="k">if</span> <span class="n">runtime_details</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">runtime_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;guid&#39;</span><span class="p">],</span>
+            <span class="nb">filter</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">any</span><span class="p">(</span>
+                    <span class="nb">filter</span><span class="p">(</span>
+                        <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">library_uid</span> <span class="ow">in</span> <span class="n">y</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">],</span>
+                        <span class="n">x</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;custom_libraries&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;custom_libraries&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="p">[])</span>
+                <span class="p">),</span>
+                <span class="n">runtime_details</span><span class="p">[</span><span class="s1">&#39;resources&#39;</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="p">))</span>
+
+<div class="viewcode-block" id="Runtimes.delete"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">with_libraries</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete a runtime.</span>
+
+<span class="sd">        :param runtime_uid: runtime UID</span>
+<span class="sd">        :type runtime_uid: str</span>
+<span class="sd">        :param with_libraries: boolean value indicating an option to delete the libraries associated with the runtime</span>
+<span class="sd">        :type with_libraries: bool, optional</span>
+
+<span class="sd">        :return: status (&quot;SUCCESS&quot; or &quot;FAILED&quot;)</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.runtimes.delete(deployment_uid)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;runtime_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">with_libraries</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;autoremove&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">runtime_uid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_uid</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">runtime_uid</span><span class="se">\&#39;</span><span class="s1"> is not an uid: </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">with_libraries</span><span class="p">:</span>
+            <span class="n">runtime_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">)</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_runtime_href</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">)</span>
+
+        <span class="n">response_delete</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+
+        <span class="k">if</span> <span class="n">with_libraries</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;custom_libraries&#39;</span> <span class="ow">in</span> <span class="n">runtime_details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]:</span>
+                <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
+                <span class="n">custom_libs_uids</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">runtime_details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;custom_libraries&#39;</span><span class="p">])</span>
+                <span class="n">custom_libs_to_remove</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_runtimes_uids_for_lib</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">details</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="n">custom_libs_uids</span>
+                <span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">custom_libs_to_remove</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Deleting orphaned library </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1"> during autoremove delete.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uid</span><span class="p">))</span>
+                    <span class="n">delete_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_library</span><span class="p">(</span><span class="n">uid</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">delete_status</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;runtime deletion&#39;</span><span class="p">,</span> <span class="n">response_delete</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_delete_orphaned_libraries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete all custom libraries without runtime.</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.runtimes.delete_orphaned_libraries()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lib_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_library_details</span><span class="p">()</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">lib</span> <span class="ow">in</span> <span class="n">lib_details</span><span class="p">[</span><span class="s1">&#39;resources&#39;</span><span class="p">]:</span>
+            <span class="n">lib_uid</span> <span class="o">=</span> <span class="n">lib</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;guid&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_runtimes_uids_for_lib</span><span class="p">(</span><span class="n">lib_uid</span><span class="p">,</span> <span class="n">details</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Deleting orphaned </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1"> library... &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lib_uid</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">library_endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_custom_library_href</span><span class="p">(</span><span class="n">lib_uid</span><span class="p">)</span>
+                <span class="n">response_delete</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">library_endpoint</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;library deletion&#39;</span><span class="p">,</span> <span class="n">response_delete</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SUCCESS&#39;</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+
+<div class="viewcode-block" id="Runtimes.delete_library"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.delete_library">[docs]</a>    <span class="k">def</span> <span class="nf">delete_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete a library.</span>
+
+<span class="sd">        :param library_uid: library UID</span>
+<span class="sd">        :type library_uid: str</span>
+
+<span class="sd">        :return: status (&quot;SUCCESS&quot; or &quot;FAILED&quot;)</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.runtimes.delete_library(library_uid)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">library_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;library_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">library_endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_custom_library_href</span><span class="p">(</span><span class="n">library_uid</span><span class="p">)</span>
+
+        <span class="n">response_delete</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">library_endpoint</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;library deletion&#39;</span><span class="p">,</span> <span class="n">response_delete</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Runtimes.list"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pre_defined</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print stored runtimes in a table format. If limit is set to None there will be only first 50 records shown.</span>
+
+<span class="sd">        :param limit: limit number of fetched records</span>
+<span class="sd">        :type limit: int, optional</span>
+<span class="sd">        :param pre_defined: boolean indicating to display predefined runtimes only</span>
+<span class="sd">        :type pre_defined: bool, optional</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.runtimes.list()</span>
+<span class="sd">            client.runtimes.list(pre_defined=True)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">pre_defined</span><span class="o">=</span><span class="n">pre_defined</span><span class="p">)</span>
+        <span class="n">resources</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;resources&#39;</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;guid&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;created_at&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;platform&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;GUID&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;NAME&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;CREATED&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;PLATFORM&#39;</span><span class="p">],</span> <span class="n">limit</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_list_runtimes_for_libraries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># TODO make public when the time&#39;ll come</span>
+        <span class="sd">&quot;&quot;&quot;Print runtimes uids for libraries in a table format.</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.runtimes.list_runtimes_for_libraries()</span>
+<span class="sd">            client.runtimes.list_runtimes_for_libraries(library_uid)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_library_details</span><span class="p">()</span>
+        <span class="n">runtime_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;guid&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;version&#39;</span><span class="p">],</span>
+             <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_runtimes_uids_for_lib</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;guid&#39;</span><span class="p">],</span> <span class="n">runtime_details</span><span class="p">)))</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span>
+            <span class="n">details</span><span class="p">[</span><span class="s1">&#39;resources&#39;</span><span class="p">]]</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+
+        <span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;GUID&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;NAME&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;VERSION&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;RUNTIME SPECS&#39;</span><span class="p">]</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">([</span><span class="n">header</span><span class="p">]</span> <span class="o">+</span> <span class="n">values</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Runtimes.list_libraries"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.list_libraries">[docs]</a>    <span class="k">def</span> <span class="nf">list_libraries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print stored libraries in a table format. If runtime UID is not provided, all libraries are listed else,</span>
+<span class="sd">        libraries associated with a runtime are listed. If limit is set to None there will be only first 50 records</span>
+<span class="sd">        shown.</span>
+
+<span class="sd">        :param runtime_uid: runtime UID</span>
+<span class="sd">        :type runtime_uid: str, optional</span>
+<span class="sd">        :param limit: limit number of fetched records</span>
+<span class="sd">        :type limit: int, optional</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.runtimes.list_libraries()</span>
+<span class="sd">            client.runtimes.list_libraries(runtime_uid)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;runtime_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">runtime_uid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_library_details</span><span class="p">()</span>
+
+            <span class="n">resources</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;resources&#39;</span><span class="p">]</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;guid&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;version&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;created_at&#39;</span><span class="p">],</span>
+                       <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;platform&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;platform&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;versions&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span>
+                      <span class="n">resources</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;GUID&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;NAME&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;VERSION&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;CREATED&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;PLATFORM NAME&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;PLATFORM VERSIONS&#39;</span><span class="p">],</span> <span class="n">limit</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s1">&#39;custom_libraries&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;custom_libraries&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No libraries found for this runtime.&#39;</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;href&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;custom_libraries&#39;</span><span class="p">]]</span>
+
+
+            <span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+
+            <span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;GUID&#39;</span><span class="p">]</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">([</span><span class="n">header</span><span class="p">]</span> <span class="o">+</span> <span class="n">values</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Runtimes.download_configuration"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.download_configuration">[docs]</a>    <span class="k">def</span> <span class="nf">download_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;runtime_configuration.yaml&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Downloads configuration file for runtime with specified uid.</span>
+
+<span class="sd">        :param runtime_uid: UID of runtime</span>
+<span class="sd">        :type runtime_uid: str</span>
+<span class="sd">        :param filename: filename of downloaded archive</span>
+<span class="sd">        :type filename: str, optional</span>
+
+<span class="sd">        :return: path to the downloaded runtime configuration</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            filename=&quot;runtime.yml&quot;</span>
+<span class="sd">            client.runtimes.download_configuration(runtime_uid, filename=filename)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;runtime_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_uid</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">runtime_uid</span><span class="se">\&#39;</span><span class="s1"> is not an uid: </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">))</span>
+
+        <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_runtime_href</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/content&#39;</span>
+
+        <span class="n">response_get</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">download_url</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">response_get</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_file</span><span class="p">:</span>
+                <span class="n">new_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response_get</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+                <span class="n">new_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Successfully downloaded runtime configuration file: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">filename</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">response_get</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span> <span class="ow">and</span> <span class="s2">&quot;content_does_not_exist&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">response_get</span><span class="o">.</span><span class="n">text</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Unable to download configuration. download configruation can be invoked &#39;</span>
+                                     <span class="sa">u</span><span class="s1">&#39;only when CONFIGURATION_FILEPATH meta prop is set during store. &#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Unable to download configuration content: &#39;</span> <span class="o">+</span> <span class="n">response_get</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Runtimes.download_library"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.download_library">[docs]</a>    <span class="k">def</span> <span class="nf">download_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Downloads library content with specified uid.</span>
+
+<span class="sd">        :param library_uid: UID of library</span>
+<span class="sd">        :type library_uid: str</span>
+<span class="sd">        :param filename: filename of downloaded archive, default value: `&lt;LIBRARY-NAME&gt;-&lt;LIBRARY-VERSION&gt;.zip`</span>
+<span class="sd">        :type filename: str, optional</span>
+
+<span class="sd">        :return: path to the downloaded library content</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            filename=&quot;library.tgz&quot;</span>
+<span class="sd">            client.runtimes.download_library(runtime_uid, filename=filename)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">library_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;library_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_uid</span><span class="p">(</span><span class="n">library_uid</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">library_uid</span><span class="se">\&#39;</span><span class="s1"> is not an uid: </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">library_uid</span><span class="p">))</span>
+
+        <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_custom_library_href</span><span class="p">(</span><span class="n">library_uid</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/content&#39;</span>
+
+        <span class="n">response_get</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">download_url</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_library_details</span><span class="p">(</span><span class="n">library_uid</span><span class="p">)</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">.zip&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;version&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">response_get</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_file</span><span class="p">:</span>
+                <span class="n">new_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response_get</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+                <span class="n">new_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Successfully downloaded library content: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">filename</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Unable to download library content: &#39;</span> <span class="o">+</span> <span class="n">response_get</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Runtimes.update_library"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.update_library">[docs]</a>    <span class="k">def</span> <span class="nf">update_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">changes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Updates existing library metadata.</span>
+
+<span class="sd">        :param library_uid: UID of library which definition should be updated</span>
+<span class="sd">        :type library_uid: str</span>
+<span class="sd">        :param changes: elements which should be changed, where keys are ConfigurationMetaNames</span>
+<span class="sd">        :type changes: dict</span>
+
+<span class="sd">        :return: metadata of updated library</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            metadata = {</span>
+<span class="sd">                client.runtimes.LibraryMetaNames.NAME: &quot;updated_lib&quot;</span>
+<span class="sd">            }</span>
+
+<span class="sd">            library_details = client.runtimes.update_library(library_uid, changes=metadata)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">WMLResource</span><span class="o">.</span><span class="n">_chk_and_block_create_update_for_python36</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">library_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;library_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">changes</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;changes&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_library_details</span><span class="p">(</span><span class="n">library_uid</span><span class="p">)</span>
+
+        <span class="n">patch_payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">_generate_patch_payload</span><span class="p">(</span><span class="n">details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">],</span> <span class="n">changes</span><span class="p">,</span> <span class="n">with_validation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_custom_library_href</span><span class="p">(</span><span class="n">library_uid</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">patch_payload</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+        <span class="n">updated_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;library patch&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">updated_details</span></div>
+
+<div class="viewcode-block" id="Runtimes.update_runtime"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.update_runtime">[docs]</a>    <span class="k">def</span> <span class="nf">update_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">changes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Updates existing runtime metadata.</span>
+
+<span class="sd">        :param runtime_uid: UID of runtime which definition should be updated</span>
+<span class="sd">        :type runtime_uid: str</span>
+<span class="sd">        :param changes: elements which should be changed, where keys are ConfigurationMetaNames</span>
+<span class="sd">        :type changes: dict</span>
+
+<span class="sd">        :return: metadata of updated runtime</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            metadata = {</span>
+<span class="sd">                client.runtimes.ConfigurationMetaNames.NAME: &quot;updated_runtime&quot;</span>
+<span class="sd">            }</span>
+
+<span class="sd">            runtime_details = client.runtimes.update(runtime_uid, changes=metadata)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">WMLResource</span><span class="o">.</span><span class="n">_chk_and_block_create_update_for_python36</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;runtime_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">changes</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;changes&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">)</span>
+
+        <span class="n">patch_payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LibraryMetaNames</span><span class="o">.</span><span class="n">_generate_patch_payload</span><span class="p">(</span><span class="n">details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">],</span> <span class="n">changes</span><span class="p">,</span> <span class="n">with_validation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_runtime_href</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">patch_payload</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+        <span class="n">updated_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;library patch&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">updated_details</span></div>
+
+<div class="viewcode-block" id="Runtimes.clone_runtime"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.clone_runtime">[docs]</a>    <span class="k">def</span> <span class="nf">clone_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">space_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;copy&quot;</span><span class="p">,</span> <span class="n">rev_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new runtime identical with the given runtime either in the same space or in a new space.</span>
+<span class="sd">        All dependent assets will be cloned too.</span>
+
+<span class="sd">        :param runtime_uid: UID of the runtime to be cloned</span>
+<span class="sd">        :type runtime_uid: str</span>
+<span class="sd">        :param space_id: UID of the space to which the runtime needs to be cloned</span>
+<span class="sd">        :type space_id: str, optional</span>
+<span class="sd">        :param action: action specifying &quot;copy&quot; or &quot;move&quot;</span>
+<span class="sd">        :type action: str, optional</span>
+<span class="sd">        :param rev_id: revision ID of the runtime</span>
+<span class="sd">        :type rev_id: str, optional</span>
+
+<span class="sd">        :return: metadata of the runtime cloned</span>
+<span class="sd">        :rtype**: dict</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            * If revision id is not specified, all revisions of the artifact are cloned.</span>
+
+<span class="sd">            * Space guid is mandatory for &quot;move&quot; action.</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.runtimes.clone_runtime(runtime_uid=artifact_id,space_id=space_uid,action=&quot;copy&quot;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">,</span> <span class="s1">&#39;runtime_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">clone_meta</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">space_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">clone_meta</span><span class="p">[</span><span class="s2">&quot;space&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;href&quot;</span><span class="p">:</span> <span class="n">API_VERSION</span> <span class="o">+</span> <span class="n">SPACES</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">space_id</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">action</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">clone_meta</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span>
+        <span class="k">if</span> <span class="n">rev_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">clone_meta</span><span class="p">[</span><span class="s2">&quot;rev&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rev_id</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_runtime_href</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">)</span>
+
+        <span class="n">response_post</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">clone_meta</span><span class="p">,</span>
+                                          <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="n">expected_status_code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">operationName</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;cloning runtime&#39;</span><span class="p">,</span>
+                                            <span class="n">response</span><span class="o">=</span><span class="n">response_post</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">details</span></div>
+
+<div class="viewcode-block" id="Runtimes.clone_library"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.clone_library">[docs]</a>    <span class="k">def</span> <span class="nf">clone_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">space_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;copy&quot;</span><span class="p">,</span> <span class="n">rev_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new function library with the given library either in the same space or in a new space.</span>
+<span class="sd">        All dependent assets will be cloned too.</span>
+
+<span class="sd">        :param library_uid: UID of the library to be cloned</span>
+<span class="sd">        :type library_uid: str</span>
+<span class="sd">        :param space_id: UID of the space to which the library needs to be cloned</span>
+<span class="sd">        :type space_id: str, optional</span>
+<span class="sd">        :param action: action specifying &quot;copy&quot; or &quot;move&quot;</span>
+<span class="sd">        :type action: str, optional</span>
+<span class="sd">        :param rev_id: revision ID of the library</span>
+<span class="sd">        :type rev_id: str, optional</span>
+
+<span class="sd">        :return: metadata of the library cloned</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            * If revision id is not specified, all revisions of the artifact are cloned.</span>
+
+<span class="sd">            * Space guid is mandatory for &quot;move&quot; action.</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            client.runtimes.clone_library(library_uid=artifact_id, space_id=space_uid, action=&quot;copy&quot;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Runtimes</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">library_uid</span><span class="p">,</span> <span class="s1">&#39;library_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">clone_meta</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">space_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">clone_meta</span><span class="p">[</span><span class="s2">&quot;space&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;href&quot;</span><span class="p">:</span> <span class="n">API_VERSION</span> <span class="o">+</span> <span class="n">SPACES</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">space_id</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">action</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">clone_meta</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span>
+        <span class="k">if</span> <span class="n">rev_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">clone_meta</span><span class="p">[</span><span class="s2">&quot;rev&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rev_id</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_custom_library_href</span><span class="p">(</span><span class="n">library_uid</span><span class="p">)</span>
+
+        <span class="n">response_post</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">clone_meta</span><span class="p">,</span>
+                                          <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="n">expected_status_code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">operationName</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;cloning library&#39;</span><span class="p">,</span>
+                                            <span class="n">response</span><span class="o">=</span><span class="n">response_post</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">details</span></div></div>
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018-2023, IBM.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

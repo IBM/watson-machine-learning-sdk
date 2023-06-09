@@ -96,6 +96,14 @@ Repository
 .. autoclass:: metanames.PipelineMetanames
     :members:
 
+Runtimes
+--------
+.. autoclass:: ibm_watson_machine_learning.runtimes.Runtimes
+    :members:
+
+.. autoclass:: metanames.RuntimeMetaNames
+    :members:
+
 Script
 ------
 .. autoclass:: client.Script
