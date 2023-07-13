@@ -8,7 +8,7 @@ For supported product offerings refer to :ref:`Product Offerings<product-offerin
 
 
 .. toctree::
-    :maxdepth: 5
+    :maxdepth: 3
 
     install
     setup
