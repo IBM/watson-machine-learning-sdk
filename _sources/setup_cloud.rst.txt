@@ -1,13 +1,13 @@
-IBM Cloud
-=========
+Cloud Pak for Data as a Service
+===============================
 
 Requirements
 ------------
-Starting work with IBM Cloud refer to `Getting started <https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-wdp.html?audience=wdp>`__ section in main product documentation.
+Starting work with IBM Cloud Pak for Data as a Service refer to `Getting started <https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-wdp.html?audience=wdp>`__ section in main product documentation.
 
 Supported machine learning frameworks
 -------------------------------------
-For the list of supported machine learning frameworks (models) on IBM Cloud, refer to
+For the list of supported machine learning frameworks (models) on IBM Cloud Pak for Data as a Service, refer to
 `Watson Machine Learning Documentation <https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/pm_service_supported_frameworks.html>`__.
 
 Authentication

@@ -17,3 +17,4 @@ Modules
     core_api
     federated_learning
     autoai
+    foundation_models

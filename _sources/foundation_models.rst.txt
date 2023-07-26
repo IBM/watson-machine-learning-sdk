@@ -1,0 +1,26 @@
+Foundation Models
+=================
+
+Model
+-----
+
+.. autoclass:: ibm_watson_machine_learning.foundation_models.Model
+   :members:
+   :exclude-members:
+   :undoc-members:
+   :show-inheritance:
+
+Enums
+-----
+
+.. autoclass:: metanames.GenTextParamsMetaNames
+    :members:
+
+.. autoclass:: metanames.GenTextReturnOptMetaNames
+    :members:
+
+.. automodule:: ibm_watson_machine_learning.foundation_models.utils.enums
+   :members:
+   :exclude-members:
+   :undoc-members:
+   :show-inheritance:

@@ -3,7 +3,7 @@ Installation
 The `ibm-watson-machine-learning` Python library is publicly available
 on PyPI: https://pypi.org/project/ibm-watson-machine-learning/.
 
-To install it for use with IBM Cloud services, type:
+The package can be installed with pip: 
 
 ::
 
@@ -18,11 +18,12 @@ Product Offerings
 -----------------
 The python package supports the following product offerings:
 
-- `IBM Cloud <https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/welcome-main.html?audience=wdp>`_
+- `IBM Cloud Pak for Data as a Service <https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/welcome-main.html?audience=wdp>`_
 - IBM Cloud Pak for Data:
     - `Version 3.5 <https://www.ibm.com/docs/en/cloud-paks/cp-data/3.5.0>`_
     - `Version 4.0 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0>`_
     - `Version 4.5 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.5.x>`_
     - `Version 4.6 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.6.x>`_
+    - `Version 4.7 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.7.x>`_
 
 Differences in above product offerings are further described in section :doc:`setup`.
