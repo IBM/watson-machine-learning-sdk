@@ -224,8 +224,8 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model_id</strong> (<em>str</em>) – the type of model to use</p></li>
-<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – parameters to use during generate requests</p></li>
 <li><p><strong>credentials</strong> (<em>dict</em>) – credentials to Watson Machine Learning instance</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – parameters to use during generate requests</p></li>
 <li><p><strong>project_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio project</p></li>
 <li><p><strong>space_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio space</p></li>
 <li><p><strong>verify</strong> (<em>bool</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – <p>user can pass as verify one of following:</p>
@@ -270,8 +270,8 @@ will generate a completion text as generated_text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>params</strong> (<em>dict</em>) – meta props for text generation, use <code class="docutils literal notranslate"><span class="pre">client.foundation_models.ConfigurationMetaNames.show()</span></code> to view the list of MetaNames</p></li>
-<li><p><strong>prompt</strong> (<em>str</em><em>,</em>) – the prompt string</p></li>
+<li><p><strong>params</strong> (<em>dict</em>) – meta props for text generation, use <code class="docutils literal notranslate"><span class="pre">ibm_watson_machine_learning.metanames.GenTextParamsMetaNames().show()</span></code> to view the list of MetaNames</p></li>
+<li><p><strong>prompt</strong> (<em>str</em>) – the prompt string</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -297,8 +297,8 @@ will generate a completion text as generated_text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>params</strong> (<em>dict</em>) – meta props for text generation, use <code class="docutils literal notranslate"><span class="pre">client.foundation_models.ConfigurationMetaNames.show()</span></code> to view the list of MetaNames</p></li>
-<li><p><strong>prompt</strong> (<em>str</em><em>,</em>) – the prompt string</p></li>
+<li><p><strong>params</strong> (<em>dict</em>) – meta props for text generation, use <code class="docutils literal notranslate"><span class="pre">ibm_watson_machine_learning.metanames.GenTextParamsMetaNames().show()</span></code> to view the list of MetaNames</p></li>
+<li><p><strong>prompt</strong> (<em>str</em>) – the prompt string</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -318,7 +318,7 @@ will generate a completion text as generated_text.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.Model.get_details">
-<span class="sig-name descname"><span class="pre">get_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asynchronous</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model.get_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model.get_details" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_details</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model.get_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model.get_details" title="Permalink to this definition">#</a></dt>
 <dd><p>Get model’s details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
