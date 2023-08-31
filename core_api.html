@@ -19,7 +19,8 @@
   body {
     --color-code-background: #eeffcc;
   --color-code-foreground: black;
-  --color-brand-primary: #0F62FE;
+  --font-stack: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, Segoe UI, Arial, sans-serif;
+  --font-stack--monospace: 'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, Lucida Console, monospace;
   
   }
   @media not print {
@@ -174,7 +175,11 @@
 <li class="toctree-l3"><a class="reference internal" href="autoai_deployment_modules.html">Deployment Modules for AutoAI models</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="foundation_models.html">Foundation Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="foundation_models.html">Foundation Models</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Foundation Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="model.html">Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fm_extensions.html">Extensions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
@@ -532,7 +537,7 @@ Supported for IBM Cloud Pak for Data only, version 4.0.4 and above.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="metanames.ConnectionMetaNames">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metanames.</span></span><span class="sig-name descname"><span class="pre">ConnectionMetaNames</span></span><a class="reference internal" href="_modules/metanames.html#ConnectionMetaNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metanames.ConnectionMetaNames" title="Permalink to this definition">#</a></dt>
-<dd><p>Set of MetaNames for Spaces Specs.</p>
+<dd><p>Set of MetaNames for Connection.</p>
 <p>Available MetaNames:</p>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
@@ -540,7 +545,7 @@ Supported for IBM Cloud Pak for Data only, version 4.0.4 and above.</p>
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
@@ -835,7 +840,7 @@ If limit is set to None there will be only first 50 records shown.</p>
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
@@ -1429,80 +1434,80 @@ and it starts a deployment with the provided asset id/rev. Deployment id remains
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Example value</p></td>
 <td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>TAGS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">['string1',</span> <span class="pre">'string2']</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">['string']</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">['string1',</span> <span class="pre">'string2']</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>NAME</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">my_deployment</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">my_deployment</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>DESCRIPTION</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">my_deployment</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">my_deployment</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>CUSTOM</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>ASSET</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'4cedab6d-e8e4-4214-b81a-2ddb122db2ab',</span> <span class="pre">'rev':</span> <span class="pre">'1'}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'4cedab6d-e8e4-4214-b81a-2ddb122db2ab',</span> <span class="pre">'rev':</span> <span class="pre">'1'}</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>HARDWARE_SPEC</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'3342-1ce536-20dc-4444-aac7-7284cf3befc'}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'3342-1ce536-20dc-4444-aac7-7284cf3befc'}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>HYBRID_PIPELINE_HARDWARE_SPECS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'node_runtime_id':</span> <span class="pre">'auto_ai.kb',</span> <span class="pre">'hardware_spec':</span> <span class="pre">{'id':</span> <span class="pre">'3342-1ce536-20dc-4444-aac7-7284cf3befc',</span> <span class="pre">'num_nodes':</span> <span class="pre">'2'}}]</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'node_runtime_id':</span> <span class="pre">'auto_ai.kb',</span> <span class="pre">'hardware_spec':</span> <span class="pre">{'id':</span> <span class="pre">'3342-1ce536-20dc-4444-aac7-7284cf3befc',</span> <span class="pre">'num_nodes':</span> <span class="pre">'2'}}]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>ONLINE</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>BATCH</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>R_SHINY</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'authentication':</span> <span class="pre">'anyone_with_url'}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'authentication':</span> <span class="pre">'anyone_with_url'}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>VIRTUAL</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>OWNER</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">&lt;owner_id&gt;</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;owner_id&gt;</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -1520,44 +1525,44 @@ and it starts a deployment with the provided asset id/rev. Deployment id remains
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Example value</p></td>
 <td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">jobs</span> <span class="pre">test</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">jobs</span> <span class="pre">test</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>INPUT_DATA</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'fields':</span> <span class="pre">['name',</span> <span class="pre">'age',</span> <span class="pre">'occupation'],</span> <span class="pre">'values':</span> <span class="pre">[['john',</span> <span class="pre">23,</span> <span class="pre">'student']]}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'name(optional)':</span> <span class="pre">'string',</span> <span class="pre">'id(optional)':</span> <span class="pre">'string',</span> <span class="pre">'fields(optional)':</span> <span class="pre">'array[string]',</span> <span class="pre">'values':</span> <span class="pre">'array[array[string]]'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'fields':</span> <span class="pre">['name',</span> <span class="pre">'age',</span> <span class="pre">'occupation'],</span> <span class="pre">'values':</span> <span class="pre">[['john',</span> <span class="pre">23,</span> <span class="pre">'student']]}]</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>INPUT_DATA_REFERENCES</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'id(optional)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'connection(required)':</span> <span class="pre">{'href(required)':</span> <span class="pre">'string'},</span> <span class="pre">'location(required)':</span> <span class="pre">{'bucket':</span> <span class="pre">'string',</span> <span class="pre">'path':</span> <span class="pre">'string'},</span> <span class="pre">'schema(optional)':</span> <span class="pre">{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'fields(required)':</span> <span class="pre">[{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'nullable(optional)':</span> <span class="pre">'string'}]}}]</span></code></p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>OUTPUT_DATA_REFERENCE</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'connection(required)':</span> <span class="pre">{'href(required)':</span> <span class="pre">'string'},</span> <span class="pre">'location(required)':</span> <span class="pre">{'bucket':</span> <span class="pre">'string',</span> <span class="pre">'path':</span> <span class="pre">'string'},</span> <span class="pre">'schema(optional)':</span> <span class="pre">{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'fields(required)':</span> <span class="pre">[{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'nullable(optional)':</span> <span class="pre">'string'}]}}</span></code></p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>EVALUATIONS_SPEC</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'id':</span> <span class="pre">'string',</span> <span class="pre">'input_target':</span> <span class="pre">'string',</span> <span class="pre">'metrics_names':</span> <span class="pre">['auroc',</span> <span class="pre">'accuracy']}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'id(optional)':</span> <span class="pre">'string',</span> <span class="pre">'input_target(optional)':</span> <span class="pre">'string',</span> <span class="pre">'metrics_names(optional)':</span> <span class="pre">'array[string]'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'id':</span> <span class="pre">'string',</span> <span class="pre">'input_target':</span> <span class="pre">'string',</span> <span class="pre">'metrics_names':</span> <span class="pre">['auroc',</span> <span class="pre">'accuracy']}]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>ENVIRONMENT_VARIABLES</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'my_env_var1':</span> <span class="pre">'env_var_value1',</span> <span class="pre">'my_env_var2':</span> <span class="pre">'env_var_value2'}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'my_env_var1':</span> <span class="pre">'env_var_value1',</span> <span class="pre">'my_env_var2':</span> <span class="pre">'env_var_value2'}</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -1575,32 +1580,32 @@ and it starts a deployment with the provided asset id/rev. Deployment id remains
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Example value</p></td>
 <td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>INPUT_DATA</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'fields':</span> <span class="pre">['name',</span> <span class="pre">'age',</span> <span class="pre">'occupation'],</span> <span class="pre">'values':</span> <span class="pre">[['john',</span> <span class="pre">23,</span> <span class="pre">'student']]}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'name(optional)':</span> <span class="pre">'string',</span> <span class="pre">'id(optional)':</span> <span class="pre">'string',</span> <span class="pre">'fields(optional)':</span> <span class="pre">'array[string]',</span> <span class="pre">'values':</span> <span class="pre">'array[array[string]]'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'fields':</span> <span class="pre">['name',</span> <span class="pre">'age',</span> <span class="pre">'occupation'],</span> <span class="pre">'values':</span> <span class="pre">[['john',</span> <span class="pre">23,</span> <span class="pre">'student']]}]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>INPUT_DATA_REFERENCES</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'fields':</span> <span class="pre">['name',</span> <span class="pre">'age',</span> <span class="pre">'occupation'],</span> <span class="pre">'values':</span> <span class="pre">[['john',</span> <span class="pre">23,</span> <span class="pre">'student']]}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'name(optional)':</span> <span class="pre">'string',</span> <span class="pre">'id(optional)':</span> <span class="pre">'string',</span> <span class="pre">'fields(optional)':</span> <span class="pre">'array[string]',</span> <span class="pre">'values':</span> <span class="pre">'array[array[string]]'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'fields':</span> <span class="pre">['name',</span> <span class="pre">'age',</span> <span class="pre">'occupation'],</span> <span class="pre">'values':</span> <span class="pre">[['john',</span> <span class="pre">23,</span> <span class="pre">'student']]}]</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>OUTPUT_DATA</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'name(optional)':</span> <span class="pre">'string'}]</span></code></p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>OUTPUT_DATA_REFERENCES</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'name(optional)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'connection(required)':</span> <span class="pre">{'endpoint_url(required)':</span> <span class="pre">'string',</span> <span class="pre">'access_key_id(required)':</span> <span class="pre">'string',</span> <span class="pre">'secret_access_key(required)':</span> <span class="pre">'string'},</span> <span class="pre">'location(required)':</span> <span class="pre">{'bucket':</span> <span class="pre">'string',</span> <span class="pre">'path':</span> <span class="pre">'string'},</span> <span class="pre">'schema(optional)':</span> <span class="pre">{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'fields(required)':</span> <span class="pre">[{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'nullable(optional)':</span> <span class="pre">'string'}]}}</span></code></p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>SOLVE_PARAMETERS</p></td>
 <td><p>dict</p></td>
@@ -2119,7 +2124,7 @@ default client space or project will be taken</p></li>
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>ASSET_ID</p></td>
 <td><p>str</p></td>
@@ -2317,7 +2322,7 @@ default client space or project will be taken</p></li>
 <dl class="py class">
 <dt class="sig sig-object py" id="metanames.HwSpecMetaNames">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metanames.</span></span><span class="sig-name descname"><span class="pre">HwSpecMetaNames</span></span><a class="reference internal" href="_modules/metanames.html#HwSpecMetaNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metanames.HwSpecMetaNames" title="Permalink to this definition">#</a></dt>
-<dd><p>Set of MetaNames for Software Specifications Specs.</p>
+<dd><p>Set of MetaNames for Hardware Specifications Specs.</p>
 <p>Available MetaNames:</p>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
@@ -2325,12 +2330,12 @@ default client space or project will be taken</p></li>
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.6</span> <span class="pre">with</span> <span class="pre">pre-installed</span> <span class="pre">ML</span> <span class="pre">package</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.10</span> <span class="pre">with</span> <span class="pre">pre-installed</span> <span class="pre">ML</span> <span class="pre">package</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>DESCRIPTION</p></td>
 <td><p>str</p></td>
@@ -2680,50 +2685,50 @@ If limit is set to None there will be only first 50 records shown.</p>
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Example value</p></td>
 <td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">my_model_definition</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">my_model_definition</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>DESCRIPTION</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">my</span> <span class="pre">model_definition</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">my</span> <span class="pre">model_definition</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>PLATFORM</p></td>
 <td><p>dict</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'name':</span> <span class="pre">'python',</span> <span class="pre">'versions':</span> <span class="pre">['3.5']}</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'versions(required)':</span> <span class="pre">['versions']}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'name':</span> <span class="pre">'python',</span> <span class="pre">'versions':</span> <span class="pre">['3.10']}</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>VERSION</p></td>
 <td><p>str</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>COMMAND</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">convolutional_network.py</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">convolutional_network.py</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>CUSTOM</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'field1':</span> <span class="pre">'value1'}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'field1':</span> <span class="pre">'value1'}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>SPACE_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -2984,12 +2989,12 @@ If limit is set to None there will be only first 50 records shown.</p>
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.6</span> <span class="pre">with</span> <span class="pre">pre-installed</span> <span class="pre">ML</span> <span class="pre">package</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.10</span> <span class="pre">with</span> <span class="pre">pre-installed</span> <span class="pre">ML</span> <span class="pre">package</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>DESCRIPTION</p></td>
 <td><p>str</p></td>
@@ -4630,56 +4635,56 @@ which should be changed for specific model_uid, this parameters is valid only fo
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Example value</p></td>
 <td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">my_model</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">my_model</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>DESCRIPTION</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">my_description</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">my_description</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>INPUT_DATA_SCHEMA</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'1',</span> <span class="pre">'type':</span> <span class="pre">'struct',</span> <span class="pre">'fields':</span> <span class="pre">[{'name':</span> <span class="pre">'x',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}},</span> <span class="pre">{'name':</span> <span class="pre">'y',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}}]}</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'fields(required)':</span> <span class="pre">[{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'nullable(optional)':</span> <span class="pre">'string'}]}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'1',</span> <span class="pre">'type':</span> <span class="pre">'struct',</span> <span class="pre">'fields':</span> <span class="pre">[{'name':</span> <span class="pre">'x',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}},</span> <span class="pre">{'name':</span> <span class="pre">'y',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}}]}</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>TRAINING_DATA_REFERENCES</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'name(optional)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'connection(required)':</span> <span class="pre">{'endpoint_url(required)':</span> <span class="pre">'string',</span> <span class="pre">'access_key_id(required)':</span> <span class="pre">'string',</span> <span class="pre">'secret_access_key(required)':</span> <span class="pre">'string'},</span> <span class="pre">'location(required)':</span> <span class="pre">{'bucket':</span> <span class="pre">'string',</span> <span class="pre">'path':</span> <span class="pre">'string'},</span> <span class="pre">'schema(optional)':</span> <span class="pre">{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'fields(required)':</span> <span class="pre">[{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'nullable(optional)':</span> <span class="pre">'string'}]}}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>TEST_DATA_REFERENCES</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'name(optional)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'connection(required)':</span> <span class="pre">{'endpoint_url(required)':</span> <span class="pre">'string',</span> <span class="pre">'access_key_id(required)':</span> <span class="pre">'string',</span> <span class="pre">'secret_access_key(required)':</span> <span class="pre">'string'},</span> <span class="pre">'location(required)':</span> <span class="pre">{'bucket':</span> <span class="pre">'string',</span> <span class="pre">'path':</span> <span class="pre">'string'},</span> <span class="pre">'schema(optional)':</span> <span class="pre">{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'fields(required)':</span> <span class="pre">[{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'nullable(optional)':</span> <span class="pre">'string'}]}}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>OUTPUT_DATA_SCHEMA</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'1',</span> <span class="pre">'type':</span> <span class="pre">'struct',</span> <span class="pre">'fields':</span> <span class="pre">[{'name':</span> <span class="pre">'x',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}},</span> <span class="pre">{'name':</span> <span class="pre">'y',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}}]}</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'fields(required)':</span> <span class="pre">[{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'nullable(optional)':</span> <span class="pre">'string'}]}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'1',</span> <span class="pre">'type':</span> <span class="pre">'struct',</span> <span class="pre">'fields':</span> <span class="pre">[{'name':</span> <span class="pre">'x',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}},</span> <span class="pre">{'name':</span> <span class="pre">'y',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}}]}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>LABEL_FIELD</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">PRODUCT_LINE</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PRODUCT_LINE</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>TRANSFORMED_LABEL_FIELD</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">PRODUCT_LINE_IX</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PRODUCT_LINE_IX</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>TAGS</p></td>
 <td><p>list</p></td>
@@ -4690,38 +4695,38 @@ which should be changed for specific model_uid, this parameters is valid only fo
 <tr class="row-odd"><td><p>SIZE</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'in_memory':</span> <span class="pre">0,</span> <span class="pre">'content':</span> <span class="pre">0}</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'in_memory(optional)':</span> <span class="pre">'string',</span> <span class="pre">'content(optional)':</span> <span class="pre">'string'}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'in_memory':</span> <span class="pre">0,</span> <span class="pre">'content':</span> <span class="pre">0}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>PIPELINE_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">53628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">53628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>RUNTIME_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">53628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">53628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>TYPE</p></td>
 <td><p>str</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">mllib_2.1</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mllib_2.1</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>CUSTOM</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>DOMAIN</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Watson</span> <span class="pre">Machine</span> <span class="pre">Learning</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Watson</span> <span class="pre">Machine</span> <span class="pre">Learning</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>HYPER_PARAMETERS</p></td>
 <td><p>dict</p></td>
@@ -4738,38 +4743,38 @@ which should be changed for specific model_uid, this parameters is valid only fo
 <tr class="row-odd"><td><p>IMPORT</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'connection':</span> <span class="pre">{'endpoint_url':</span> <span class="pre">'https://s3-api.us-geo.objectstorage.softlayer.net',</span> <span class="pre">'access_key_id':</span> <span class="pre">'***',</span> <span class="pre">'secret_access_key':</span> <span class="pre">'***'},</span> <span class="pre">'location':</span> <span class="pre">{'bucket':</span> <span class="pre">'train-data',</span> <span class="pre">'path':</span> <span class="pre">'training_path'},</span> <span class="pre">'type':</span> <span class="pre">'s3'}</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'name(optional)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'connection(required)':</span> <span class="pre">{'endpoint_url(required)':</span> <span class="pre">'string',</span> <span class="pre">'access_key_id(required)':</span> <span class="pre">'string',</span> <span class="pre">'secret_access_key(required)':</span> <span class="pre">'string'},</span> <span class="pre">'location(required)':</span> <span class="pre">{'bucket':</span> <span class="pre">'string',</span> <span class="pre">'path':</span> <span class="pre">'string'}}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'connection':</span> <span class="pre">{'endpoint_url':</span> <span class="pre">'https://s3-api.us-geo.objectstorage.softlayer.net',</span> <span class="pre">'access_key_id':</span> <span class="pre">'***',</span> <span class="pre">'secret_access_key':</span> <span class="pre">'***'},</span> <span class="pre">'location':</span> <span class="pre">{'bucket':</span> <span class="pre">'train-data',</span> <span class="pre">'path':</span> <span class="pre">'training_path'},</span> <span class="pre">'type':</span> <span class="pre">'s3'}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>TRAINING_LIB_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">53628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">53628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>MODEL_DEFINITION_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">53628d6_cdee13-35d3-s8989343</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">53628d6_cdee13-35d3-s8989343</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>SOFTWARE_SPEC_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">53628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">53628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>TF_MODEL_PARAMS</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'save_format':</span> <span class="pre">'None',</span> <span class="pre">'signatures':</span> <span class="pre">'struct',</span> <span class="pre">'options':</span> <span class="pre">'None',</span> <span class="pre">'custom_objects':</span> <span class="pre">'string'}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'save_format':</span> <span class="pre">'None',</span> <span class="pre">'signatures':</span> <span class="pre">'struct',</span> <span class="pre">'options':</span> <span class="pre">'None',</span> <span class="pre">'custom_objects':</span> <span class="pre">'string'}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>FAIRNESS_INFO</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'favorable_labels':</span> <span class="pre">['X']}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'favorable_labels':</span> <span class="pre">['X']}</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -4788,62 +4793,62 @@ which should be changed for specific model_uid, this parameters is valid only fo
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Example value</p></td>
 <td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Hand-written</span> <span class="pre">Digit</span> <span class="pre">Recognition</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Hand-written</span> <span class="pre">Digit</span> <span class="pre">Recognition</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>DESCRIPTION</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Hand-written</span> <span class="pre">Digit</span> <span class="pre">Recognition</span> <span class="pre">training</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Hand-written</span> <span class="pre">Digit</span> <span class="pre">Recognition</span> <span class="pre">training</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>TAGS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'value':</span> <span class="pre">'dsx-project.&lt;project-guid&gt;',</span> <span class="pre">'description':</span> <span class="pre">'DSX</span> <span class="pre">project</span> <span class="pre">guid'}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'value(required)':</span> <span class="pre">'string',</span> <span class="pre">'description(optional)':</span> <span class="pre">'string'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'value':</span> <span class="pre">'dsx-project.&lt;project-guid&gt;',</span> <span class="pre">'description':</span> <span class="pre">'DSX</span> <span class="pre">project</span> <span class="pre">guid'}]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>EVALUATION_METHOD</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">multiclass</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">multiclass</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>EVALUATION_METRICS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'name':</span> <span class="pre">'accuracy',</span> <span class="pre">'maximize':</span> <span class="pre">False}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'maximize(optional)':</span> <span class="pre">'boolean'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'name':</span> <span class="pre">'accuracy',</span> <span class="pre">'maximize':</span> <span class="pre">False}]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>TRAINING_REFERENCES</p></td>
 <td><p>list</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'pipeline':</span> <span class="pre">{'href':</span> <span class="pre">'/v4/pipelines/6d758251-bb01-4aa5-a7a3-72339e2ff4d8'}}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'pipeline(optional)':</span> <span class="pre">{'href(required)':</span> <span class="pre">'string',</span> <span class="pre">'data_bindings(optional)':</span> <span class="pre">[{'data_reference(required)':</span> <span class="pre">'string',</span> <span class="pre">'node_id(required)':</span> <span class="pre">'string'}],</span> <span class="pre">'nodes_parameters(optional)':</span> <span class="pre">[{'node_id(required)':</span> <span class="pre">'string',</span> <span class="pre">'parameters(required)':</span> <span class="pre">'dict'}]},</span> <span class="pre">'training_lib(optional)':</span> <span class="pre">{'href(required)':</span> <span class="pre">'string',</span> <span class="pre">'compute(optional)':</span> <span class="pre">{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'nodes(optional)':</span> <span class="pre">'number'},</span> <span class="pre">'runtime(optional)':</span> <span class="pre">{'href(required)':</span> <span class="pre">'string'},</span> <span class="pre">'command(optional)':</span> <span class="pre">'string',</span> <span class="pre">'parameters(optional)':</span> <span class="pre">'dict'}}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'pipeline':</span> <span class="pre">{'href':</span> <span class="pre">'/v4/pipelines/6d758251-bb01-4aa5-a7a3-72339e2ff4d8'}}]</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>SPACE_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>LABEL_COLUMN</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">label</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">label</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>CUSTOM</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'field1':</span> <span class="pre">'value1'}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'field1':</span> <span class="pre">'value1'}</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -4861,74 +4866,74 @@ which should be changed for specific model_uid, this parameters is valid only fo
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Example value</p></td>
 <td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">ai_function</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ai_function</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>DESCRIPTION</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">This</span> <span class="pre">is</span> <span class="pre">ai</span> <span class="pre">function</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">This</span> <span class="pre">is</span> <span class="pre">ai</span> <span class="pre">function</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>RUNTIME_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">53628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">53628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>SOFTWARE_SPEC_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">53628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">53628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>INPUT_DATA_SCHEMAS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'id':</span> <span class="pre">'1',</span> <span class="pre">'type':</span> <span class="pre">'struct',</span> <span class="pre">'fields':</span> <span class="pre">[{'name':</span> <span class="pre">'x',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}},</span> <span class="pre">{'name':</span> <span class="pre">'y',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}}]}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'fields(required)':</span> <span class="pre">[{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'nullable(optional)':</span> <span class="pre">'string'}]}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'id':</span> <span class="pre">'1',</span> <span class="pre">'type':</span> <span class="pre">'struct',</span> <span class="pre">'fields':</span> <span class="pre">[{'name':</span> <span class="pre">'x',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}},</span> <span class="pre">{'name':</span> <span class="pre">'y',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}}]}]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>OUTPUT_DATA_SCHEMAS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'id':</span> <span class="pre">'1',</span> <span class="pre">'type':</span> <span class="pre">'struct',</span> <span class="pre">'fields':</span> <span class="pre">[{'name':</span> <span class="pre">'multiplication',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}}]}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'fields(required)':</span> <span class="pre">[{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'nullable(optional)':</span> <span class="pre">'string'}]}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'id':</span> <span class="pre">'1',</span> <span class="pre">'type':</span> <span class="pre">'struct',</span> <span class="pre">'fields':</span> <span class="pre">[{'name':</span> <span class="pre">'multiplication',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">False,</span> <span class="pre">'metadata':</span> <span class="pre">{}}]}]</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>TAGS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'value':</span> <span class="pre">'ProjectA',</span> <span class="pre">'description':</span> <span class="pre">'Functions</span> <span class="pre">created</span> <span class="pre">for</span> <span class="pre">ProjectA'}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'value(required)':</span> <span class="pre">'string',</span> <span class="pre">'description(optional)':</span> <span class="pre">'string'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'value':</span> <span class="pre">'ProjectA',</span> <span class="pre">'description':</span> <span class="pre">'Functions</span> <span class="pre">created</span> <span class="pre">for</span> <span class="pre">ProjectA'}]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>TYPE</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">python</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">python</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>CUSTOM</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>SAMPLE_SCORING_INPUT</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'input_data':</span> <span class="pre">[{'fields':</span> <span class="pre">['name',</span> <span class="pre">'age',</span> <span class="pre">'occupation'],</span> <span class="pre">'values':</span> <span class="pre">[['john',</span> <span class="pre">23,</span> <span class="pre">'student'],</span> <span class="pre">['paul',</span> <span class="pre">33,</span> <span class="pre">'engineer']]}]}</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'id(optional)':</span> <span class="pre">'string',</span> <span class="pre">'fields(optional)':</span> <span class="pre">'array',</span> <span class="pre">'values(optional)':</span> <span class="pre">'array'}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'input_data':</span> <span class="pre">[{'fields':</span> <span class="pre">['name',</span> <span class="pre">'age',</span> <span class="pre">'occupation'],</span> <span class="pre">'values':</span> <span class="pre">[['john',</span> <span class="pre">23,</span> <span class="pre">'student'],</span> <span class="pre">['paul',</span> <span class="pre">33,</span> <span class="pre">'engineer']]}]}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>SPACE_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3628d69-ced9-4f43-a8cd-9954344039a8</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -4946,74 +4951,74 @@ which should be changed for specific model_uid, this parameters is valid only fo
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Example value</p></td>
 <td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Hand-written</span> <span class="pre">Digit</span> <span class="pre">Recognitionu</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Hand-written</span> <span class="pre">Digit</span> <span class="pre">Recognitionu</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>DESCRIPTION</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Hand-written</span> <span class="pre">Digit</span> <span class="pre">Recognition</span> <span class="pre">training</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Hand-written</span> <span class="pre">Digit</span> <span class="pre">Recognition</span> <span class="pre">training</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>SPACE_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>TAGS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'value':</span> <span class="pre">'dsx-project.&lt;project-guid&gt;',</span> <span class="pre">'description':</span> <span class="pre">'DSX</span> <span class="pre">project</span> <span class="pre">guid'}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'value(required)':</span> <span class="pre">'string',</span> <span class="pre">'description(optional)':</span> <span class="pre">'string'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'value':</span> <span class="pre">'dsx-project.&lt;project-guid&gt;',</span> <span class="pre">'description':</span> <span class="pre">'DSX</span> <span class="pre">project</span> <span class="pre">guid'}]</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>DOCUMENT</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'doc_type':</span> <span class="pre">'pipeline',</span> <span class="pre">'version':</span> <span class="pre">'2.0',</span> <span class="pre">'primary_pipeline':</span> <span class="pre">'dlaas_only',</span> <span class="pre">'pipelines':</span> <span class="pre">[{'id':</span> <span class="pre">'dlaas_only',</span> <span class="pre">'runtime_ref':</span> <span class="pre">'hybrid',</span> <span class="pre">'nodes':</span> <span class="pre">[{'id':</span> <span class="pre">'training',</span> <span class="pre">'type':</span> <span class="pre">'model_node',</span> <span class="pre">'op':</span> <span class="pre">'dl_train',</span> <span class="pre">'runtime_ref':</span> <span class="pre">'DL',</span> <span class="pre">'inputs':</span> <span class="pre">[],</span> <span class="pre">'outputs':</span> <span class="pre">[],</span> <span class="pre">'parameters':</span> <span class="pre">{'name':</span> <span class="pre">'tf-mnist',</span> <span class="pre">'description':</span> <span class="pre">'Simple</span> <span class="pre">MNIST</span> <span class="pre">model</span> <span class="pre">implemented</span> <span class="pre">in</span> <span class="pre">TF',</span> <span class="pre">'command':</span> <span class="pre">'python3</span> <span class="pre">convolutional_network.py</span> <span class="pre">--trainImagesFile</span> <span class="pre">${DATA_DIR}/train-images-idx3-ubyte.gz</span> <span class="pre">--trainLabelsFile</span> <span class="pre">${DATA_DIR}/train-labels-idx1-ubyte.gz</span> <span class="pre">--testImagesFile</span> <span class="pre">${DATA_DIR}/t10k-images-idx3-ubyte.gz</span> <span class="pre">--testLabelsFile</span> <span class="pre">${DATA_DIR}/t10k-labels-idx1-ubyte.gz</span> <span class="pre">--learningRate</span> <span class="pre">0.001</span> <span class="pre">--trainingIters</span> <span class="pre">6000',</span> <span class="pre">'compute':</span> <span class="pre">{'name':</span> <span class="pre">'k80',</span> <span class="pre">'nodes':</span> <span class="pre">1},</span> <span class="pre">'training_lib_href':</span> <span class="pre">'/v4/libraries/64758251-bt01-4aa5-a7ay-72639e2ff4d2/content'},</span> <span class="pre">'target_bucket':</span> <span class="pre">'wml-dev-results'}]}]}</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'doc_type(required)':</span> <span class="pre">'string',</span> <span class="pre">'version(required)':</span> <span class="pre">'string',</span> <span class="pre">'primary_pipeline(required)':</span> <span class="pre">'string',</span> <span class="pre">'pipelines(required)':</span> <span class="pre">[{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'runtime_ref(required)':</span> <span class="pre">'string',</span> <span class="pre">'nodes(required)':</span> <span class="pre">[{'id':</span> <span class="pre">'string',</span> <span class="pre">'type':</span> <span class="pre">'string',</span> <span class="pre">'inputs':</span> <span class="pre">'list',</span> <span class="pre">'outputs':</span> <span class="pre">'list',</span> <span class="pre">'parameters':</span> <span class="pre">{'training_lib_href':</span> <span class="pre">'string'}}]}]}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'doc_type':</span> <span class="pre">'pipeline',</span> <span class="pre">'version':</span> <span class="pre">'2.0',</span> <span class="pre">'primary_pipeline':</span> <span class="pre">'dlaas_only',</span> <span class="pre">'pipelines':</span> <span class="pre">[{'id':</span> <span class="pre">'dlaas_only',</span> <span class="pre">'runtime_ref':</span> <span class="pre">'hybrid',</span> <span class="pre">'nodes':</span> <span class="pre">[{'id':</span> <span class="pre">'training',</span> <span class="pre">'type':</span> <span class="pre">'model_node',</span> <span class="pre">'op':</span> <span class="pre">'dl_train',</span> <span class="pre">'runtime_ref':</span> <span class="pre">'DL',</span> <span class="pre">'inputs':</span> <span class="pre">[],</span> <span class="pre">'outputs':</span> <span class="pre">[],</span> <span class="pre">'parameters':</span> <span class="pre">{'name':</span> <span class="pre">'tf-mnist',</span> <span class="pre">'description':</span> <span class="pre">'Simple</span> <span class="pre">MNIST</span> <span class="pre">model</span> <span class="pre">implemented</span> <span class="pre">in</span> <span class="pre">TF',</span> <span class="pre">'command':</span> <span class="pre">'python3</span> <span class="pre">convolutional_network.py</span> <span class="pre">--trainImagesFile</span> <span class="pre">${DATA_DIR}/train-images-idx3-ubyte.gz</span> <span class="pre">--trainLabelsFile</span> <span class="pre">${DATA_DIR}/train-labels-idx1-ubyte.gz</span> <span class="pre">--testImagesFile</span> <span class="pre">${DATA_DIR}/t10k-images-idx3-ubyte.gz</span> <span class="pre">--testLabelsFile</span> <span class="pre">${DATA_DIR}/t10k-labels-idx1-ubyte.gz</span> <span class="pre">--learningRate</span> <span class="pre">0.001</span> <span class="pre">--trainingIters</span> <span class="pre">6000',</span> <span class="pre">'compute':</span> <span class="pre">{'name':</span> <span class="pre">'k80',</span> <span class="pre">'nodes':</span> <span class="pre">1},</span> <span class="pre">'training_lib_href':</span> <span class="pre">'/v4/libraries/64758251-bt01-4aa5-a7ay-72639e2ff4d2/content'},</span> <span class="pre">'target_bucket':</span> <span class="pre">'wml-dev-results'}]}]}</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>CUSTOM</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'field1':</span> <span class="pre">'value1'}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'field1':</span> <span class="pre">'value1'}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>IMPORT</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'connection':</span> <span class="pre">{'endpoint_url':</span> <span class="pre">'https://s3-api.us-geo.objectstorage.softlayer.net',</span> <span class="pre">'access_key_id':</span> <span class="pre">'***',</span> <span class="pre">'secret_access_key':</span> <span class="pre">'***'},</span> <span class="pre">'location':</span> <span class="pre">{'bucket':</span> <span class="pre">'train-data',</span> <span class="pre">'path':</span> <span class="pre">'training_path'},</span> <span class="pre">'type':</span> <span class="pre">'s3'}</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'name(optional)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'connection(required)':</span> <span class="pre">{'endpoint_url(required)':</span> <span class="pre">'string',</span> <span class="pre">'access_key_id(required)':</span> <span class="pre">'string',</span> <span class="pre">'secret_access_key(required)':</span> <span class="pre">'string'},</span> <span class="pre">'location(required)':</span> <span class="pre">{'bucket':</span> <span class="pre">'string',</span> <span class="pre">'path':</span> <span class="pre">'string'}}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'connection':</span> <span class="pre">{'endpoint_url':</span> <span class="pre">'https://s3-api.us-geo.objectstorage.softlayer.net',</span> <span class="pre">'access_key_id':</span> <span class="pre">'***',</span> <span class="pre">'secret_access_key':</span> <span class="pre">'***'},</span> <span class="pre">'location':</span> <span class="pre">{'bucket':</span> <span class="pre">'train-data',</span> <span class="pre">'path':</span> <span class="pre">'training_path'},</span> <span class="pre">'type':</span> <span class="pre">'s3'}</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>RUNTIMES</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'id':</span> <span class="pre">'id',</span> <span class="pre">'name':</span> <span class="pre">'tensorflow',</span> <span class="pre">'version':</span> <span class="pre">'1.13-py3'}]</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'id':</span> <span class="pre">'id',</span> <span class="pre">'name':</span> <span class="pre">'tensorflow',</span> <span class="pre">'version':</span> <span class="pre">'1.13-py3'}]</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>COMMAND</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">convolutional_network.py</span> <span class="pre">--trainImagesFile</span> <span class="pre">train-images-idx3-ubyte.gz</span> <span class="pre">--trainLabelsFile</span> <span class="pre">train-labels-idx1-ubyte.gz</span> <span class="pre">--testImagesFile</span> <span class="pre">t10k-images-idx3-ubyte.gz</span> <span class="pre">--testLabelsFile</span> <span class="pre">t10k-labels-idx1-ubyte.gz</span> <span class="pre">--learningRate</span> <span class="pre">0.001</span> <span class="pre">--trainingIters</span> <span class="pre">6000</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">convolutional_network.py</span> <span class="pre">--trainImagesFile</span> <span class="pre">train-images-idx3-ubyte.gz</span> <span class="pre">--trainLabelsFile</span> <span class="pre">train-labels-idx1-ubyte.gz</span> <span class="pre">--testImagesFile</span> <span class="pre">t10k-images-idx3-ubyte.gz</span> <span class="pre">--testLabelsFile</span> <span class="pre">t10k-labels-idx1-ubyte.gz</span> <span class="pre">--learningRate</span> <span class="pre">0.001</span> <span class="pre">--trainingIters</span> <span class="pre">6000</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>LIBRARY_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">fb9752c9-301a-415d-814f-cf658d7b856a</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fb9752c9-301a-415d-814f-cf658d7b856a</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>COMPUTE</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'name':</span> <span class="pre">'k80',</span> <span class="pre">'nodes':</span> <span class="pre">1}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'name':</span> <span class="pre">'k80',</span> <span class="pre">'nodes':</span> <span class="pre">1}</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -5535,62 +5540,62 @@ shown.</p>
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Example value</p></td>
 <td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">runtime_spec_python_3.5</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">runtime_spec_python_3.10</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>DESCRIPTION</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">sample</span> <span class="pre">runtime</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sample</span> <span class="pre">runtime</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>PLATFORM</p></td>
 <td><p>dict</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:python&quot;,&quot;version&quot;:&quot;3.5&quot;)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'version(required)':</span> <span class="pre">'version'}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:python&quot;,&quot;version&quot;:&quot;3.10&quot;)</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>LIBRARIES_UIDS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">['46dc9cf1-252f-424b-b52d-5cdd9814987f']</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">['46dc9cf1-252f-424b-b52d-5cdd9814987f']</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>CONFIGURATION_FILEPATH</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">/home/env_config.yaml</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/home/env_config.yaml</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>TAGS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'value':</span> <span class="pre">'dsx-project.&lt;project-guid&gt;',</span> <span class="pre">'description':</span> <span class="pre">'DSX</span> <span class="pre">project</span> <span class="pre">guid'}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'value(required)':</span> <span class="pre">'string',</span> <span class="pre">'description(optional)':</span> <span class="pre">'string'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'value':</span> <span class="pre">'dsx-project.&lt;project-guid&gt;',</span> <span class="pre">'description':</span> <span class="pre">'DSX</span> <span class="pre">project</span> <span class="pre">guid'}]</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>CUSTOM</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{&quot;field1&quot;:</span> <span class="pre">&quot;value1&quot;}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{&quot;field1&quot;:</span> <span class="pre">&quot;value1&quot;}</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>SPACE_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">46dc9cf1-252f-424b-b52d-5cdd9814987f</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">46dc9cf1-252f-424b-b52d-5cdd9814987f</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>COMPUTE</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'name':</span> <span class="pre">'name1',</span> <span class="pre">'nodes':</span> <span class="pre">1}</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'nodes(optional)':</span> <span class="pre">'string'}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'name':</span> <span class="pre">'name1',</span> <span class="pre">'nodes':</span> <span class="pre">1}</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -5909,7 +5914,7 @@ The metadata and attachment at <cite>script_uid</cite> is taken and a revision i
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
@@ -6681,38 +6686,38 @@ in case of unsupported or deprecated software specs</p></li>
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Example value</p></td>
 <td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.6</span> <span class="pre">with</span> <span class="pre">pre-installed</span> <span class="pre">ML</span> <span class="pre">package</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.10</span> <span class="pre">with</span> <span class="pre">pre-installed</span> <span class="pre">ML</span> <span class="pre">package</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>DESCRIPTION</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">my_description</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">my_description</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>PACKAGE_EXTENSIONS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'guid':</span> <span class="pre">'value'}]</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'guid':</span> <span class="pre">'value'}]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>SOFTWARE_CONFIGURATION</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'platform':</span> <span class="pre">{'name':</span> <span class="pre">'python',</span> <span class="pre">'version':</span> <span class="pre">'3.6'}}</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'platform(required)':</span> <span class="pre">'string'}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'platform':</span> <span class="pre">{'name':</span> <span class="pre">'python',</span> <span class="pre">'version':</span> <span class="pre">'3.10'}}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>BASE_SOFTWARE_SPECIFICATION</p></td>
 <td><p>dict</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'guid':</span> <span class="pre">'BASE_SOFTWARE_SPECIFICATION_ID'}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'guid':</span> <span class="pre">'BASE_SOFTWARE_SPECIFICATION_ID'}</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -7052,7 +7057,10 @@ cloud. Note that STORAGE and COMPUTE are applicable only for cloud.</p>
     <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="s1">&#39;spaces&#39;</span><span class="p">,</span>
     <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">STORAGE</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;resource_crn&quot;</span><span class="p">:</span> <span class="s2">&quot;provide crn of the COS storage&quot;</span><span class="p">},</span>
     <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">COMPUTE</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;test_instance&quot;</span><span class="p">,</span>
-                                                   <span class="s2">&quot;crn&quot;</span><span class="p">:</span> <span class="s2">&quot;provide crn of the instance&quot;</span><span class="p">}</span>
+                                                   <span class="s2">&quot;crn&quot;</span><span class="p">:</span> <span class="s2">&quot;provide crn of the instance&quot;</span><span class="p">},</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">STAGE</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;production&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                                                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stage_name&quot;</span><span class="p">},</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TAGS</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sample_tag_1&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_tag_2&quot;</span><span class="p">]</span>
 <span class="p">}</span>
 <span class="n">spaces_details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">meta_props</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
 </pre></div>
@@ -7131,7 +7139,7 @@ STORAGE and COMPUTE are applicable only for cloud.</p>
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>NAME</p></td>
 <td><p>str</p></td>
@@ -7153,6 +7161,16 @@ STORAGE and COMPUTE are applicable only for cloud.</p>
 <td><p>N</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'name':</span> <span class="pre">'name',</span> <span class="pre">'crn':</span> <span class="pre">'crn</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">instance'}</span></code></p></td>
 </tr>
+<tr class="row-even"><td><p>STAGE</p></td>
+<td><p>dict</p></td>
+<td><p>N</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'production':</span> <span class="pre">True,</span> <span class="pre">'name':</span> <span class="pre">'name</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">stage'}</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>TAGS</p></td>
+<td><p>list</p></td>
+<td><p>N</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">['sample_tag']</span></code></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -7169,20 +7187,20 @@ STORAGE and COMPUTE are applicable only for cloud.</p>
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Example value</p></td>
 <td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>MEMBERS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'id':</span> <span class="pre">'iam-id1',</span> <span class="pre">'role':</span> <span class="pre">'editor',</span> <span class="pre">'type':</span> <span class="pre">'user',</span> <span class="pre">'state':</span> <span class="pre">'active'},</span> <span class="pre">{'id':</span> <span class="pre">'iam-id2',</span> <span class="pre">'role':</span> <span class="pre">'viewer',</span> <span class="pre">'type':</span> <span class="pre">'user',</span> <span class="pre">'state':</span> <span class="pre">'active'}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'role(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'state(optional)':</span> <span class="pre">'string'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'id':</span> <span class="pre">'iam-id1',</span> <span class="pre">'role':</span> <span class="pre">'editor',</span> <span class="pre">'type':</span> <span class="pre">'user',</span> <span class="pre">'state':</span> <span class="pre">'active'},</span> <span class="pre">{'id':</span> <span class="pre">'iam-id2',</span> <span class="pre">'role':</span> <span class="pre">'viewer',</span> <span class="pre">'type':</span> <span class="pre">'user',</span> <span class="pre">'state':</span> <span class="pre">'active'}]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>MEMBER</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'iam-id1',</span> <span class="pre">'role':</span> <span class="pre">'editor',</span> <span class="pre">'type':</span> <span class="pre">'user',</span> <span class="pre">'state':</span> <span class="pre">'active'}</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'iam-id1',</span> <span class="pre">'role':</span> <span class="pre">'editor',</span> <span class="pre">'type':</span> <span class="pre">'user',</span> <span class="pre">'state':</span> <span class="pre">'active'}</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -7629,110 +7647,110 @@ details of the completed or canceled training run when <cite>hard_delete</cite> 
 <tr class="row-odd"><td><p>MetaName</p></td>
 <td><p>Type</p></td>
 <td><p>Required</p></td>
-<td><p>Example value</p></td>
 <td><p>Schema</p></td>
+<td><p>Example value</p></td>
 </tr>
 <tr class="row-even"><td><p>TRAINING_DATA_REFERENCES</p></td>
 <td><p>list</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'connection':</span> <span class="pre">{'href':</span> <span class="pre">'/v2/connections/2d07a6b4-8fa9-43ab-91c8-befcd9dab8d2?space_id=440ada9b-af87-4da8-a9fa-a5450825e260'},</span> <span class="pre">'location':</span> <span class="pre">{'bucket':</span> <span class="pre">'train-data',</span> <span class="pre">'path':</span> <span class="pre">'training_path'},</span> <span class="pre">'type':</span> <span class="pre">'connection_asset',</span> <span class="pre">'schema':</span> <span class="pre">{'id':</span> <span class="pre">'1',</span> <span class="pre">'fields':</span> <span class="pre">[{'name':</span> <span class="pre">'x',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">'False'}]}}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'name(optional)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'connection(required)':</span> <span class="pre">{'href(required)':</span> <span class="pre">'string'},</span> <span class="pre">'location(required)':</span> <span class="pre">{'bucket':</span> <span class="pre">'string',</span> <span class="pre">'path':</span> <span class="pre">'string'},</span> <span class="pre">'schema(optional)':</span> <span class="pre">{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'fields(required)':</span> <span class="pre">[{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'nullable(optional)':</span> <span class="pre">'string'}]}}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'connection':</span> <span class="pre">{'href':</span> <span class="pre">'/v2/connections/2d07a6b4-8fa9-43ab-91c8-befcd9dab8d2?space_id=440ada9b-af87-4da8-a9fa-a5450825e260'},</span> <span class="pre">'location':</span> <span class="pre">{'bucket':</span> <span class="pre">'train-data',</span> <span class="pre">'path':</span> <span class="pre">'training_path'},</span> <span class="pre">'type':</span> <span class="pre">'connection_asset',</span> <span class="pre">'schema':</span> <span class="pre">{'id':</span> <span class="pre">'1',</span> <span class="pre">'fields':</span> <span class="pre">[{'name':</span> <span class="pre">'x',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">'False'}]}}]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>TRAINING_RESULTS_REFERENCE</p></td>
 <td><p>dict</p></td>
 <td><p>Y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'connection':</span> <span class="pre">{'href':</span> <span class="pre">'/v2/connections/2d07a6b4-8fa9-43ab-91c8-befcd9dab8d2?space_id=440ada9b-af87-4da8-a9fa-a5450825e260'},</span> <span class="pre">'location':</span> <span class="pre">{'bucket':</span> <span class="pre">'test-results',</span> <span class="pre">'path':</span> <span class="pre">'training_path'},</span> <span class="pre">'type':</span> <span class="pre">'connection_asset'}</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'name(optional)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'connection(required)':</span> <span class="pre">{'href(required)':</span> <span class="pre">'string'},</span> <span class="pre">'location(required)':</span> <span class="pre">{'bucket':</span> <span class="pre">'string',</span> <span class="pre">'path':</span> <span class="pre">'string'}}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'connection':</span> <span class="pre">{'href':</span> <span class="pre">'/v2/connections/2d07a6b4-8fa9-43ab-91c8-befcd9dab8d2?space_id=440ada9b-af87-4da8-a9fa-a5450825e260'},</span> <span class="pre">'location':</span> <span class="pre">{'bucket':</span> <span class="pre">'test-results',</span> <span class="pre">'path':</span> <span class="pre">'training_path'},</span> <span class="pre">'type':</span> <span class="pre">'connection_asset'}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>TEST_DATA_REFERENCES</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'connection':</span> <span class="pre">{'href':</span> <span class="pre">'/v2/connections/2d07a6b4-8fa9-43ab-91c8-befcd9dab8d2?space_id=440ada9b-af87-4da8-a9fa-a5450825e260'},</span> <span class="pre">'location':</span> <span class="pre">{'bucket':</span> <span class="pre">'train-data',</span> <span class="pre">'path':</span> <span class="pre">'training_path'},</span> <span class="pre">'type':</span> <span class="pre">'connection_asset',</span> <span class="pre">'schema':</span> <span class="pre">{'id':</span> <span class="pre">'1',</span> <span class="pre">'fields':</span> <span class="pre">[{'name':</span> <span class="pre">'x',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">'False'}]}}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'name(optional)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'connection(required)':</span> <span class="pre">{'href(required)':</span> <span class="pre">'string'},</span> <span class="pre">'location(required)':</span> <span class="pre">{'bucket':</span> <span class="pre">'string',</span> <span class="pre">'path':</span> <span class="pre">'string'},</span> <span class="pre">'schema(optional)':</span> <span class="pre">{'id(required)':</span> <span class="pre">'string',</span> <span class="pre">'fields(required)':</span> <span class="pre">[{'name(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'nullable(optional)':</span> <span class="pre">'string'}]}}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'connection':</span> <span class="pre">{'href':</span> <span class="pre">'/v2/connections/2d07a6b4-8fa9-43ab-91c8-befcd9dab8d2?space_id=440ada9b-af87-4da8-a9fa-a5450825e260'},</span> <span class="pre">'location':</span> <span class="pre">{'bucket':</span> <span class="pre">'train-data',</span> <span class="pre">'path':</span> <span class="pre">'training_path'},</span> <span class="pre">'type':</span> <span class="pre">'connection_asset',</span> <span class="pre">'schema':</span> <span class="pre">{'id':</span> <span class="pre">'1',</span> <span class="pre">'fields':</span> <span class="pre">[{'name':</span> <span class="pre">'x',</span> <span class="pre">'type':</span> <span class="pre">'double',</span> <span class="pre">'nullable':</span> <span class="pre">'False'}]}}]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>TAGS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'value':</span> <span class="pre">'string',</span> <span class="pre">'description':</span> <span class="pre">'string'}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'value(required)':</span> <span class="pre">'string',</span> <span class="pre">'description(optional)':</span> <span class="pre">'string'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'value':</span> <span class="pre">'string',</span> <span class="pre">'description':</span> <span class="pre">'string'}]</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>PIPELINE_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>EXPERIMENT_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>PIPELINE_DATA_BINDINGS</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'data_reference_name':</span> <span class="pre">'string',</span> <span class="pre">'node_id':</span> <span class="pre">'string'}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'data_reference_name(required)':</span> <span class="pre">'string',</span> <span class="pre">'node_id(required)':</span> <span class="pre">'string'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'data_reference_name':</span> <span class="pre">'string',</span> <span class="pre">'node_id':</span> <span class="pre">'string'}]</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>PIPELINE_NODE_PARAMETERS</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[{'node_id':</span> <span class="pre">'string',</span> <span class="pre">'parameters':</span> <span class="pre">{}}]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'node_id(required)':</span> <span class="pre">'string',</span> <span class="pre">'parameters(required)':</span> <span class="pre">'dict'}]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[{'node_id':</span> <span class="pre">'string',</span> <span class="pre">'parameters':</span> <span class="pre">{}}]</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>SPACE_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>TRAINING_LIB</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'href':</span> <span class="pre">'/v4/libraries/3c1ce536-20dc-426e-aac7-7284cf3befc6',</span> <span class="pre">'compute':</span> <span class="pre">{'name':</span> <span class="pre">'k80',</span> <span class="pre">'nodes':</span> <span class="pre">0},</span> <span class="pre">'runtime':</span> <span class="pre">{'href':</span> <span class="pre">'/v4/runtimes/3c1ce536-20dc-426e-aac7-7284cf3befc6'},</span> <span class="pre">'command':</span> <span class="pre">'python3</span> <span class="pre">convolutional_network.py',</span> <span class="pre">'parameters':</span> <span class="pre">{}}</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'href(required)':</span> <span class="pre">'string',</span> <span class="pre">'type(required)':</span> <span class="pre">'string',</span> <span class="pre">'runtime(optional)':</span> <span class="pre">{'href':</span> <span class="pre">'string'},</span> <span class="pre">'command(optional)':</span> <span class="pre">'string',</span> <span class="pre">'parameters(optional)':</span> <span class="pre">'dict'}</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'href':</span> <span class="pre">'/v4/libraries/3c1ce536-20dc-426e-aac7-7284cf3befc6',</span> <span class="pre">'compute':</span> <span class="pre">{'name':</span> <span class="pre">'k80',</span> <span class="pre">'nodes':</span> <span class="pre">0},</span> <span class="pre">'runtime':</span> <span class="pre">{'href':</span> <span class="pre">'/v4/runtimes/3c1ce536-20dc-426e-aac7-7284cf3befc6'},</span> <span class="pre">'command':</span> <span class="pre">'python3</span> <span class="pre">convolutional_network.py',</span> <span class="pre">'parameters':</span> <span class="pre">{}}</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>TRAINING_LIB_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>TRAINING_LIB_MODEL_TYPE</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>TRAINING_LIB_RUNTIME_UID</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>TRAINING_LIB_PARAMETERS</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>COMMAND</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>COMPUTE</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3c1ce536-20dc-426e-aac7-7284cf3befc6</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>PIPELINE_MODEL_TYPE</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">tensorflow_1.1.3-py3</span></code></p></td>
 <td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tensorflow_1.1.3-py3</span></code></p></td>
 </tr>
 </tbody>
 </table>

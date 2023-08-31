@@ -19,7 +19,8 @@
   body {
     --color-code-background: #eeffcc;
   --color-code-foreground: black;
-  --color-brand-primary: #0F62FE;
+  --font-stack: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, Segoe UI, Arial, sans-serif;
+  --font-stack--monospace: 'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, Lucida Console, monospace;
   
   }
   @media not print {
@@ -174,7 +175,11 @@
 <li class="toctree-l3"><a class="reference internal" href="autoai_deployment_modules.html">Deployment Modules for AutoAI models</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="foundation_models.html">Foundation Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="foundation_models.html">Foundation Models</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Foundation Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="model.html">Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fm_extensions.html">Extensions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
@@ -258,6 +263,7 @@ development.</p>
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
 </section>

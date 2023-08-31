@@ -10,6 +10,9 @@ Configure optimizer with one data source
 
 For an AutoAI object initialization WML credentials (with apikey and url) and one of ``project_id`` or ``space_id``.
 
+.. hint::
+        You can copy the project_id from Project's Manage tab (Project -> Manage -> General -> Details).
+
 .. code-block:: python
 
     from ibm_watson_machine_learning.experiment import AutoAI
@@ -36,95 +39,6 @@ For an AutoAI object initialization WML credentials (with apikey and url) and on
                      AutoAI.Transformers.MAX
                      ]
             )
-
-Configure optimizer with joined data (IBM Cloud Pak for Data only)
-------------------------------------------------------------------
-
-**Warning!** Not supported for IBM Cloud.
-
-AutoAI allows you to combine data from multiple data sources into a single data source input for the experiment.
-
-**Important**: The AutoAI feature for joining multiple data sources into a single training data set
-is not supported in Cloud Pak for Data 4.6 release and later.
-
-To define a join graph, define all data connections with an additional parameter: ``data_join_node_name``.
-
-.. code-block:: python
-
-    main_conn = DataConnection(
-        data_join_node_name="main",
-        location=FSLocation(path=data_cos_path + 'group_customer_main.csv'))
-
-    customers_transactions_conn = DataConnection(
-        data_join_node_name=["customers", "transactions"],
-        location=FSLocation(path=data_cos_path + 'group_customer.xlsx'))
-
-    customers_conn = DataConnection(
-        data_join_node_name="customers",
-        location=FSLocation(path=data_cos_path + 'group_customer_customers.csv'))
-
-    transactions_conn = DataConnection(
-        data_join_node_name="transactions",
-        location=FSLocation(path=data_cos_path + 'group_customer_transactions.csv'))
-
-    purchases_conn = DataConnection(
-        data_join_node_name="purchases",
-        location=FSLocation(path=data_cos_path + 'group_customer_purchase.csv'))
-
-    products_conn = DataConnection(
-        data_join_node_name="products",
-        location=FSLocation(path=data_cos_path + 'group_customer_products.csv'))
-
-    results_connection = DataConnection(
-        location=FSLocation(path=results_cos_path))
-
-    data_connections = [main_conn,
-                        customers_transactions_conn,
-                        purchases_conn,
-                        products_conn]
-
-Next step is to create a join graph object (instance of the DataJoinGraph class). When you create the object, you can add additional parameters for specific files that contain data. For example, ``csv_separator`` for csv, or ``sheet_name`` for xlsx.
-
-Using ``data_join_node_name``, you can first define graph nodes and then graph edges.
-
-.. code-block:: python
-
-    data_join_graph = DataJoinGraph()
-    data_join_graph.node(name="main", csv_separator=";")
-    data_join_graph.node(name="customers", sheet_name="customers")
-    data_join_graph.node(name="transactions", sheet_name="transactions")
-    data_join_graph.node(name="purchases")
-    data_join_graph.node(name="products")
-    data_join_graph.edge(from_node="main", to_node="customers",
-                         from_column=["group_customer_id"], to_column=["group_customer_id"])
-    data_join_graph.edge(from_node="main", to_node="transactions",
-                         from_column=["transaction_id"], to_column=["transaction_id"])
-    data_join_graph.edge(from_node="main", to_node="purchases",
-                         from_column=["group_id"], to_column=["group_id"])
-    data_join_graph.edge(from_node="transactions", to_node="products",
-                         from_column=["product_id"], to_column=["product_id"])
-
-You can now use your join graph in the optimizer configuration step.
-
-In a multi-data source scenario, a join graph is passed as a parameter:
-
-.. code-block:: python
-
-    experiment = AutoAI(wml_credentials,
-        space_id='76g53e0-0b32-4a0e-9152-3d50324855ddb')
-    )
-
-    pipeline_optimizer = experiment.optimizer(
-        name='obm scenario',
-        prediction_type=AutoAI.PredictionType.REGRESSION,
-        prediction_column='next_purchase',
-        scoring=AutoAI.Metrics.LOG_LOSS,
-        max_number_of_estimators=1,
-        daub_include_only_estimators=[experiment.RegressionAlgorithms.LGBM],
-        data_join_graph=data_join_graph,
-        t_shirt_size=experiment.TShirtSize.L,
-        test_size=0.1
-    )
 
 Configure optimizer for time series forecasting
 ----------------------------------------------------------------

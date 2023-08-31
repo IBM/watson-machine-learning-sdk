@@ -53,3 +53,6 @@ Example of creating the client using token:
    client = APIClient(wml_credentials)
 
 **Note:** Setting default space/project id is mandatory. For details, refer to ``client.set.default_space()`` API in this document.
+
+.. hint::
+    You can copy the project_id from Project's Manage tab (Project -> Manage -> General -> Details).

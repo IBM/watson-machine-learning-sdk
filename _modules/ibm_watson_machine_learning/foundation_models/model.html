@@ -18,7 +18,8 @@
   body {
     --color-code-background: #eeffcc;
   --color-code-foreground: black;
-  --color-brand-primary: #0F62FE;
+  --font-stack: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, Segoe UI, Arial, sans-serif;
+  --font-stack--monospace: 'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, Lucida Console, monospace;
   
   }
   @media not print {
@@ -173,7 +174,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../autoai_deployment_modules.html">Deployment Modules for AutoAI models</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../../foundation_models.html">Foundation Models</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../foundation_models.html">Foundation Models</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Foundation Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../model.html">Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fm_extensions.html">Extensions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../samples.html">Samples</a></li>
@@ -216,7 +221,11 @@
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
 <span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.messages.messages</span> <span class="kn">import</span> <span class="n">Messages</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils</span> <span class="kn">import</span> <span class="n">INSTANCE_DETAILS_TYPE</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning</span> <span class="kn">import</span> <span class="n">APIClient</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span>
@@ -228,7 +237,7 @@
 <span class="n">_DEFAULT_LIST_LENGTH</span> <span class="o">=</span> <span class="mi">50</span>
 
 
-<div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../../foundation_models.html#ibm_watson_machine_learning.foundation_models.Model">[docs]</a><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+<div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model">[docs]</a><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantiate the model interface.</span>
 
 <span class="sd">    :param model_id: the type of model to use</span>
@@ -253,6 +262,12 @@
 <span class="sd">        - `True` - default path to truststore will be taken</span>
 <span class="sd">        - `False` - no verification will be made</span>
 <span class="sd">    :type verify: bool or str, optional</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        One of these parameters is required: [&#39;project_id &#39;, &#39;space_id&#39;]</span>
+
+<span class="sd">    .. hint::</span>
+<span class="sd">        You can copy the project_id from Project&#39;s Manage tab (Project -&gt; Manage -&gt; General -&gt; Details).</span>
 
 <span class="sd">    **Example**</span>
 
@@ -308,7 +323,7 @@
 
         <span class="n">WMLResource</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Model.get_details"><a class="viewcode-back" href="../../../foundation_models.html#ibm_watson_machine_learning.foundation_models.Model.get_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Model.get_details"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.get_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get model&#39;s details</span>
 
 <span class="sd">        :return: model&#39;s details</span>
@@ -330,7 +345,7 @@
 
         <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">models</span> <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;model_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Model.generate"><a class="viewcode-back" href="../../../foundation_models.html#ibm_watson_machine_learning.foundation_models.Model.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Model.generate"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a text prompt as input, and parameters the selected model (model_id)</span>
 <span class="sd">        will generate a completion text as generated_text.</span>
 
@@ -374,14 +389,25 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span><span class="p">:</span>
             <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;space_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span>
 
-        <span class="n">response_scoring</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="k">if</span> <span class="s1">&#39;parameters&#39;</span> <span class="ow">in</span> <span class="n">payload</span> <span class="ow">and</span> <span class="s1">&#39;return_options&#39;</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="s1">&#39;return_options&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input_text&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">or</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="s1">&#39;return_options&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input_tokens&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;fm_required_parameters_not_provided&quot;</span><span class="p">))</span>
+
+        <span class="n">retries</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">retries</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">response_scoring</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
                 <span class="n">url</span><span class="o">=</span><span class="n">generate_text_url</span><span class="p">,</span>
                 <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
                 <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">response_scoring</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">429</span> <span class="ow">and</span> <span class="s1">&#39;user_rate_limit_reached&#39;</span> <span class="ow">in</span> <span class="n">response_scoring</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">retries</span><span class="p">)</span>
+                <span class="n">retries</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;generate&#39;</span><span class="p">,</span> <span class="n">response_scoring</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Model.generate_text"><a class="viewcode-back" href="../../../foundation_models.html#ibm_watson_machine_learning.foundation_models.Model.generate_text">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Model.generate_text"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate_text">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a text prompt as input, and parameters the selected model (model_id)</span>
 <span class="sd">        will generate a completion text as generated_text.</span>
 

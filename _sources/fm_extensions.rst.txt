@@ -1,0 +1,58 @@
+Extensions
+==========
+
+LangChain
+---------
+
+.. autoclass:: ibm_watson_machine_learning.foundation_models.extensions.langchain.llm.WatsonxLLM
+    :members:
+
+
+Example od usage **SimpleSequentialChain**
+
+.. code-block:: python
+
+    from ibm_watson_machine_learning.foundation_models.extensions.langchain.llm import WatsonxLLM
+    from ibm_watson_machine_learning.foundation_models.utils.enums import ModelTypes, DecodingMethods
+    from ibm_watson_machine_learning.metanames import GenTextParamsMetaNames as GenParams
+
+    from langchain import PromptTemplate
+    from langchain.chains import LLMChain, SimpleSequentialChain
+
+    params = {
+        GenParams.MAX_NEW_TOKENS: 100,
+        GenParams.MIN_NEW_TOKENS: 1,
+        GenParams.DECODING_METHOD: DecodingMethods.SAMPLE,
+        GenParams.TEMPERATURE: 0.5,
+        GenParams.TOP_K: 50,
+        GenParams.TOP_P: 1
+    }
+    credentials = {
+        'url': "https://us-south.ml.cloud.ibm.com",
+        'apikey' : "*****"
+    }
+    project = "*****"
+
+    pt1 = PromptTemplate(
+        input_variables=["topic"],
+        template="Generate a random question about {topic}: Question: ")
+    pt2 = PromptTemplate(
+        input_variables=["question"],
+        template="Answer the following question: {question}")
+
+    flan_ul2_llm = WatsonxLLM(
+        model_id='google/flan-ul2',
+        credentials=credentials,
+        params=params,
+        project_id=project_id)
+    flan_t5_llm = WatsonxLLM(
+        model_id="google/flan-t5-xxl",
+        credentials=credentials,
+        project_id=project_id)
+
+    prompt_to_flan_ul2 = LLMChain(llm=flan_ul2_llm, prompt=pt1)
+    flan_ul2_to_flan_t5 = LLMChain(llm=flan_t5_llm, prompt=pt2)
+
+    qa = SimpleSequentialChain(chains=[prompt_to_flan_ul2, flan_ul2_to_flan_t5], verbose=True)
+    qa.run("cat")
+

@@ -1,26 +1,13 @@
 Foundation Models
 =================
 
-Model
------
+.. warning::
+    Warning! Supported only for IBM watsonx as a Service.
 
-.. autoclass:: ibm_watson_machine_learning.foundation_models.Model
-   :members:
-   :exclude-members:
-   :undoc-members:
-   :show-inheritance:
+Modules
+-------
 
-Enums
------
+.. toctree::
 
-.. autoclass:: metanames.GenTextParamsMetaNames
-    :members:
-
-.. autoclass:: metanames.GenTextReturnOptMetaNames
-    :members:
-
-.. automodule:: ibm_watson_machine_learning.foundation_models.utils.enums
-   :members:
-   :exclude-members:
-   :undoc-members:
-   :show-inheritance:
+    model
+    fm_extensions

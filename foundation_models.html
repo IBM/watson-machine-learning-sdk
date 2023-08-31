@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Samples" href="samples.html" /><link rel="prev" title="Deployment Modules for AutoAI models" href="autoai_deployment_modules.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Model" href="model.html" /><link rel="prev" title="Deployment Modules for AutoAI models" href="autoai_deployment_modules.html" />
 
     <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
         <title>Foundation Models - IBM Watson Machine Learning</title>
@@ -19,7 +19,8 @@
   body {
     --color-code-background: #eeffcc;
   --color-code-foreground: black;
-  --color-brand-primary: #0F62FE;
+  --font-stack: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, Segoe UI, Arial, sans-serif;
+  --font-stack--monospace: 'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, Lucida Console, monospace;
   
   }
   @media not print {
@@ -174,7 +175,11 @@
 <li class="toctree-l3"><a class="reference internal" href="autoai_deployment_modules.html">Deployment Modules for AutoAI models</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Foundation Models</a></li>
+<li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">Foundation Models</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Foundation Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="model.html">Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fm_extensions.html">Extensions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
@@ -213,312 +218,51 @@
         <article role="main">
           <section id="foundation-models">
 <h1>Foundation Models<a class="headerlink" href="#foundation-models" title="Permalink to this heading">#</a></h1>
-<section id="model">
-<h2>Model<a class="headerlink" href="#model" title="Permalink to this heading">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.Model">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ibm_watson_machine_learning.foundation_models.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credentials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">WMLResource</span></code></p>
-<p>Instantiate the model interface.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>model_id</strong> (<em>str</em>) – the type of model to use</p></li>
-<li><p><strong>credentials</strong> (<em>dict</em>) – credentials to Watson Machine Learning instance</p></li>
-<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – parameters to use during generate requests</p></li>
-<li><p><strong>project_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio project</p></li>
-<li><p><strong>space_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio space</p></li>
-<li><p><strong>verify</strong> (<em>bool</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – <p>user can pass as verify one of following:</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Warning! Supported only for IBM watsonx as a Service.</p>
+</div>
+<section id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
 <ul>
-<li><p>the path to a CA_BUNDLE file</p></li>
-<li><p>the path of directory with certificates of trusted CAs</p></li>
-<li><p><cite>True</cite> - default path to truststore will be taken</p></li>
-<li><p><cite>False</cite> - no verification will be made</p></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.Model.generate"><code class="docutils literal notranslate"><span class="pre">Model.generate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.Model.generate_text"><code class="docutils literal notranslate"><span class="pre">Model.generate_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.Model.get_details"><code class="docutils literal notranslate"><span class="pre">Model.get_details()</span></code></a></li>
 </ul>
-</p></li>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#enums">Enums</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="model.html#metanames.GenTextParamsMetaNames"><code class="docutils literal notranslate"><span class="pre">GenTextParamsMetaNames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#metanames.GenTextReturnOptMetaNames"><code class="docutils literal notranslate"><span class="pre">GenTextReturnOptMetaNames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods"><code class="docutils literal notranslate"><span class="pre">DecodingMethods</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods.GREEDY"><code class="docutils literal notranslate"><span class="pre">DecodingMethods.GREEDY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods.SAMPLE"><code class="docutils literal notranslate"><span class="pre">DecodingMethods.SAMPLE</span></code></a></li>
 </ul>
-</dd>
-</dl>
-<p><strong>Example</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models</span> <span class="kn">import</span> <span class="n">Model</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">GenTextParamsMetaNames</span> <span class="k">as</span> <span class="n">GenParams</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.enums</span> <span class="kn">import</span> <span class="n">ModelTypes</span><span class="p">,</span> <span class="n">DecodingMethods</span>
-
-<span class="c1"># To display example params enter</span>
-<span class="n">GenParams</span><span class="p">()</span><span class="o">.</span><span class="n">get_example_values</span><span class="p">()</span>
-
-<span class="n">generate_params</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">GenParams</span><span class="o">.</span><span class="n">MAX_NEW_TOKENS</span><span class="p">:</span> <span class="mi">25</span>
-<span class="p">}</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span>
-    <span class="n">model_id</span><span class="o">=</span><span class="n">ModelTypes</span><span class="o">.</span><span class="n">FLAN_UL2</span><span class="p">,</span>
-    <span class="n">params</span><span class="o">=</span><span class="n">generate_params</span><span class="p">,</span>
-    <span class="n">credentials</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;apikey&quot;</span><span class="p">:</span> <span class="s2">&quot;***&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://us-south.ml.cloud.ibm.com&quot;</span>
-    <span class="p">},</span>
-    <span class="n">project_id</span><span class="o">=</span><span class="s2">&quot;*****&quot;</span>
-    <span class="p">)</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.Model.generate">
-<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model.generate" title="Permalink to this definition">#</a></dt>
-<dd><p>Given a text prompt as input, and parameters the selected model (model_id)
-will generate a completion text as generated_text.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>params</strong> (<em>dict</em>) – meta props for text generation, use <code class="docutils literal notranslate"><span class="pre">ibm_watson_machine_learning.metanames.GenTextParamsMetaNames().show()</span></code> to view the list of MetaNames</p></li>
-<li><p><strong>prompt</strong> (<em>str</em>) – the prompt string</p></li>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes"><code class="docutils literal notranslate"><span class="pre">ModelTypes</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XXL"><code class="docutils literal notranslate"><span class="pre">ModelTypes.FLAN_T5_XXL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_UL2"><code class="docutils literal notranslate"><span class="pre">ModelTypes.FLAN_UL2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GPT_NEOX"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GPT_NEOX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MPT_7B_INSTRUCT2"><code class="docutils literal notranslate"><span class="pre">ModelTypes.MPT_7B_INSTRUCT2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MT0_XXL"><code class="docutils literal notranslate"><span class="pre">ModelTypes.MT0_XXL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.STARCODER"><code class="docutils literal notranslate"><span class="pre">ModelTypes.STARCODER</span></code></a></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>scoring result containing generated content</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-<p><strong>Example</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;What is 1 + 1?&quot;</span>
-<span class="n">generated_response</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">q</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">generated_response</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;generated_text&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.Model.generate_text">
-<span class="sig-name descname"><span class="pre">generate_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model.generate_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model.generate_text" title="Permalink to this definition">#</a></dt>
-<dd><p>Given a text prompt as input, and parameters the selected model (model_id)
-will generate a completion text as generated_text.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>params</strong> (<em>dict</em>) – meta props for text generation, use <code class="docutils literal notranslate"><span class="pre">ibm_watson_machine_learning.metanames.GenTextParamsMetaNames().show()</span></code> to view the list of MetaNames</p></li>
-<li><p><strong>prompt</strong> (<em>str</em>) – the prompt string</p></li>
+</li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>generated content</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-<p><strong>Example</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;What is 1 + 1?&quot;</span>
-<span class="n">generated_text</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate_text</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">q</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">generated_text</span><span class="p">)</span>
-</pre></div>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fm_extensions.html">Extensions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fm_extensions.html#langchain">LangChain</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fm_extensions.html#ibm_watson_machine_learning.foundation_models.extensions.langchain.llm.WatsonxLLM"><code class="docutils literal notranslate"><span class="pre">WatsonxLLM</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.Model.get_details">
-<span class="sig-name descname"><span class="pre">get_details</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model.get_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model.get_details" title="Permalink to this definition">#</a></dt>
-<dd><p>Get model’s details</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>model’s details</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-<p><strong>Example</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="enums">
-<h2>Enums<a class="headerlink" href="#enums" title="Permalink to this heading">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="metanames.GenTextParamsMetaNames">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metanames.</span></span><span class="sig-name descname"><span class="pre">GenTextParamsMetaNames</span></span><a class="reference internal" href="_modules/metanames.html#GenTextParamsMetaNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metanames.GenTextParamsMetaNames" title="Permalink to this definition">#</a></dt>
-<dd><p>Set of MetaNames for Foundation Model Parameters.</p>
-<p>Available MetaNames:</p>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p>MetaName</p></td>
-<td><p>Type</p></td>
-<td><p>Required</p></td>
-<td><p>Schema</p></td>
-</tr>
-<tr class="row-even"><td><p>DECODING_METHOD</p></td>
-<td><p>str</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">sample</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>LENGTH_PENALTY</p></td>
-<td><p>dict</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'decay_factor':</span> <span class="pre">2.5,</span> <span class="pre">'start_index':</span> <span class="pre">5}</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p>TEMPERATURE</p></td>
-<td><p>float</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">0.5</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>TOP_P</p></td>
-<td><p>float</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">0.2</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p>TOP_K</p></td>
-<td><p>int</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>RANDOM_SEED</p></td>
-<td><p>int</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">33</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p>REPETITION_PENALTY</p></td>
-<td><p>float</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>MIN_NEW_TOKENS</p></td>
-<td><p>int</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">50</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p>MAX_NEW_TOKENS</p></td>
-<td><p>int</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">200</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>STOP_SEQUENCES</p></td>
-<td><p>list</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">['fail']</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p>TIME_LIMIT</p></td>
-<td><p>int</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">600000</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>TRUNCATE_INPUT_TOKENS</p></td>
-<td><p>int</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">200</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p>RETURN_OPTIONS</p></td>
-<td><p>dict</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{'input_text':</span> <span class="pre">True,</span> <span class="pre">'generated_tokens':</span> <span class="pre">True,</span> <span class="pre">'input_tokens':</span> <span class="pre">True,</span> <span class="pre">'token_logprobs':</span> <span class="pre">True,</span> <span class="pre">'token_ranks':</span> <span class="pre">False,</span> <span class="pre">'top_n_tokens':</span> <span class="pre">False}</span></code></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="metanames.GenTextReturnOptMetaNames">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metanames.</span></span><span class="sig-name descname"><span class="pre">GenTextReturnOptMetaNames</span></span><a class="reference internal" href="_modules/metanames.html#GenTextReturnOptMetaNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metanames.GenTextReturnOptMetaNames" title="Permalink to this definition">#</a></dt>
-<dd><p>Set of MetaNames for Foundation Model Parameters.</p>
-<p>Available MetaNames:</p>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p>MetaName</p></td>
-<td><p>Type</p></td>
-<td><p>Required</p></td>
-<td><p>Schema</p></td>
-</tr>
-<tr class="row-even"><td><p>INPUT_TEXT</p></td>
-<td><p>bool</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>GENERATED_TOKENS</p></td>
-<td><p>bool</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p>INPUT_TOKENS</p></td>
-<td><p>bool</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>TOKEN_LOGPROBS</p></td>
-<td><p>bool</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p>TOKEN_RANKS</p></td>
-<td><p>bool</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>TOP_N_TOKENS</p></td>
-<td><p>int</p></td>
-<td><p>N</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</dd></dl>
-
-<span class="target" id="module-ibm_watson_machine_learning.foundation_models.utils.enums"></span><dl class="py class">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ibm_watson_machine_learning.foundation_models.utils.enums.</span></span><span class="sig-name descname"><span class="pre">DecodingMethods</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/utils/enums.html#DecodingMethods"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
-<p>Supported decoding methods for text generation.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods.GREEDY">
-<span class="sig-name descname"><span class="pre">GREEDY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'greedy'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods.GREEDY" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods.SAMPLE">
-<span class="sig-name descname"><span class="pre">SAMPLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'sample'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods.SAMPLE" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ibm_watson_machine_learning.foundation_models.utils.enums.</span></span><span class="sig-name descname"><span class="pre">ModelTypes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/utils/enums.html#ModelTypes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
-<p>Supported foundation models.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XXL">
-<span class="sig-name descname"><span class="pre">FLAN_T5_XXL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'google/flan-t5-xxl'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XXL" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_UL2">
-<span class="sig-name descname"><span class="pre">FLAN_UL2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'google/flan-ul2'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_UL2" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GPT_NEOX">
-<span class="sig-name descname"><span class="pre">GPT_NEOX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'eleutherai/gpt-neox-20b'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GPT_NEOX" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MPT_7B_INSTRUCT2">
-<span class="sig-name descname"><span class="pre">MPT_7B_INSTRUCT2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ibm/mpt-7b-instruct2'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MPT_7B_INSTRUCT2" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MT0_XXL">
-<span class="sig-name descname"><span class="pre">MT0_XXL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'bigscience/mt0-xxl'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MT0_XXL" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 </section>
 </section>
 
@@ -527,12 +271,12 @@ will generate a completion text as generated_text.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="samples.html">
+          <a class="next-page" href="model.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Samples</div>
+                <div class="title">Model</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -578,33 +322,7 @@ will generate a completion text as generated_text.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Foundation Models</a><ul>
-<li><a class="reference internal" href="#model">Model</a><ul>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.Model.generate"><code class="docutils literal notranslate"><span class="pre">Model.generate()</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.Model.generate_text"><code class="docutils literal notranslate"><span class="pre">Model.generate_text()</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.Model.get_details"><code class="docutils literal notranslate"><span class="pre">Model.get_details()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#enums">Enums</a><ul>
-<li><a class="reference internal" href="#metanames.GenTextParamsMetaNames"><code class="docutils literal notranslate"><span class="pre">GenTextParamsMetaNames</span></code></a></li>
-<li><a class="reference internal" href="#metanames.GenTextReturnOptMetaNames"><code class="docutils literal notranslate"><span class="pre">GenTextReturnOptMetaNames</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods"><code class="docutils literal notranslate"><span class="pre">DecodingMethods</span></code></a><ul>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods.GREEDY"><code class="docutils literal notranslate"><span class="pre">DecodingMethods.GREEDY</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods.SAMPLE"><code class="docutils literal notranslate"><span class="pre">DecodingMethods.SAMPLE</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes"><code class="docutils literal notranslate"><span class="pre">ModelTypes</span></code></a><ul>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XXL"><code class="docutils literal notranslate"><span class="pre">ModelTypes.FLAN_T5_XXL</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_UL2"><code class="docutils literal notranslate"><span class="pre">ModelTypes.FLAN_UL2</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GPT_NEOX"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GPT_NEOX</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MPT_7B_INSTRUCT2"><code class="docutils literal notranslate"><span class="pre">ModelTypes.MPT_7B_INSTRUCT2</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MT0_XXL"><code class="docutils literal notranslate"><span class="pre">ModelTypes.MT0_XXL</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li><a class="reference internal" href="#modules">Modules</a></li>
 </ul>
 </li>
 </ul>
