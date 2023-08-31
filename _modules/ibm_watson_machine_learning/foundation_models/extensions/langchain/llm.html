@@ -220,120 +220,65 @@
 <span class="c1">#  https://opensource.org/licenses/BSD-3-Clause</span>
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">langchain.llms.base</span> <span class="kn">import</span> <span class="n">LLM</span>
     <span class="kn">from</span> <span class="nn">langchain.llms.utils</span> <span class="kn">import</span> <span class="n">enforce_stop_tokens</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;Could not import langchain: Please install langchain extension.&quot;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.model</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models</span> <span class="kn">import</span> <span class="n">Model</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="WatsonxLLM"><a class="viewcode-back" href="../../../../../fm_extensions.html#ibm_watson_machine_learning.foundation_models.extensions.langchain.llm.WatsonxLLM">[docs]</a><span class="k">class</span> <span class="nc">WatsonxLLM</span><span class="p">(</span><span class="n">LLM</span><span class="p">):</span>
+<div class="viewcode-block" id="WatsonxLLM"><a class="viewcode-back" href="../../../../../fm_extensions.html#ibm_watson_machine_learning.foundation_models.extensions.langchain.WatsonxLLM">[docs]</a><span class="k">class</span> <span class="nc">WatsonxLLM</span><span class="p">(</span><span class="n">LLM</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Wrapper around IBM watsonx.ai</span>
+<span class="sd">    CustomLLM wrapper for watsonx foundation models and LangChain integration.</span>
 
-<span class="sd">    Model specific parameters can be passed through to the constructor using the ``params``</span>
-<span class="sd">    parameter, which is an instance of ``GenTextParamsMetaNames``.</span>
-
-<span class="sd">    :param model_id: the type of model to use</span>
-<span class="sd">    :type model_id: str</span>
-
-<span class="sd">    :param credentials: credentials to Watson Machine Learning instance</span>
-<span class="sd">    :type credentials: dict</span>
-
-<span class="sd">    :param params: parameters to use during generate requests</span>
-<span class="sd">    :type params: dict, optional</span>
-
-<span class="sd">    :param project_id: ID of the Watson Studio project</span>
-<span class="sd">    :type project_id: str, optional</span>
-
-<span class="sd">    :param space_id: ID of the Watson Studio space</span>
-<span class="sd">    :type space_id: str, optional</span>
-
-<span class="sd">    :param verify: user can pass as verify one of following:</span>
-
-<span class="sd">        - the path to a CA_BUNDLE file</span>
-<span class="sd">        - the path of directory with certificates of trusted CAs</span>
-<span class="sd">        - `True` - default path to truststore will be taken</span>
-<span class="sd">        - `False` - no verification will be made</span>
-<span class="sd">    :type verify: bool or str, optional</span>
-
-<span class="sd">    .. note::</span>
-<span class="sd">        One of these parameters is required: [&#39;project_id &#39;, &#39;space_id&#39;]</span>
-
-<span class="sd">    .. hint::</span>
-<span class="sd">        You can copy the project_id from Project&#39;s Manage tab (Project -&gt; Manage -&gt; General -&gt; Details).</span>
+<span class="sd">    :param model: foundation model inference object instance</span>
+<span class="sd">    :type model: Model</span>
 
 <span class="sd">    **Instantiate the WatsonxLLM interface**</span>
 
 <span class="sd">    .. code-block:: python</span>
 
+<span class="sd">        from ibm_watson_machine_learning.foundation_models import Model</span>
 <span class="sd">        from ibm_watson_machine_learning.metanames import GenTextParamsMetaNames as GenParams</span>
-<span class="sd">        from ibm_watson_machine_learning.foundation_models.extensions.langchain.llm import WatsonxLLM</span>
+<span class="sd">        from ibm_watson_machine_learning.foundation_models.extensions.langchain import WatsonxLLM</span>
 
 <span class="sd">        generate_params = {</span>
 <span class="sd">            GenParams.MAX_NEW_TOKENS: 25</span>
 <span class="sd">        }</span>
 
-<span class="sd">        llm = WatsonxLLM(</span>
-<span class="sd">            model_id = &quot;google/flan-ul2&quot;,</span>
-<span class="sd">            credentials = {</span>
+<span class="sd">        model = Model(</span>
+<span class="sd">            model_id=&quot;google/flan-ul2&quot;,</span>
+<span class="sd">            credentials={</span>
 <span class="sd">                &quot;apikey&quot;: &quot;***&quot;,</span>
 <span class="sd">                &quot;url&quot;: &quot;https://us-south.ml.cloud.ibm.com&quot;</span>
 <span class="sd">            },</span>
 <span class="sd">            params=generate_params,</span>
-<span class="sd">            project_id = &quot;*****&quot;</span>
-<span class="sd">            )</span>
+<span class="sd">            project_id=&quot;*****&quot;</span>
+<span class="sd">        )</span>
+
+<span class="sd">        custom_llm = WatsonxLLM(model=model)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">credentials</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">space_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">verify</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">model</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">Model</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">llm_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;IBM watsonx.ai&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                 <span class="n">credentials</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                 <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">space_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">verify</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">WatsonxLLM</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span> <span class="o">=</span> <span class="n">model_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">params</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">space_id</span> <span class="o">=</span> <span class="n">space_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="n">verify</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span> <span class="o">=</span> <span class="n">credentials</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span>
-            <span class="n">model_id</span><span class="o">=</span><span class="n">model_id</span><span class="p">,</span>
-            <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-            <span class="n">project_id</span><span class="o">=</span><span class="n">project_id</span><span class="p">,</span>
-            <span class="n">space_id</span><span class="o">=</span><span class="n">space_id</span><span class="p">,</span>
-            <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_identifying_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the identifying parameters.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;model_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">},</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;credentials&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">],</span>
-                <span class="s2">&quot;apikey&quot;</span><span class="p">:</span> <span class="s2">&quot;*****&quot;</span><span class="p">}},</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">},</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;project_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span><span class="p">},</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;space_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_id</span><span class="p">},</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;verify&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify</span><span class="p">}</span>
+            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;model_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_id</span><span class="p">},</span>
+            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">params</span><span class="p">},</span>
+            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;project_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">project_id</span><span class="p">},</span>
+            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;space_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">space_id</span><span class="p">},</span>
         <span class="p">}</span>
 
     <span class="nd">@property</span>
@@ -350,7 +295,7 @@
 <span class="sd">            The string generated by the model.</span>
 <span class="sd">        Example:</span>
 <span class="sd">            .. code-block:: python</span>
-<span class="sd">                llm = WatsonxLLM(</span>
+<span class="sd">                model = Model(</span>
 <span class="sd">                    model_id=&quot;google/flan-ul2&quot;,</span>
 <span class="sd">                    credentials={</span>
 <span class="sd">                        &quot;apikey&quot;: &quot;***&quot;,</span>
@@ -358,6 +303,7 @@
 <span class="sd">                        },</span>
 <span class="sd">                    project_id=&quot;*****&quot;</span>
 <span class="sd">                    )</span>
+<span class="sd">                llm = WatsonxLLM(model=model)</span>
 <span class="sd">                response = llm(&quot;What is a molecule&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">generate_text</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">)</span>

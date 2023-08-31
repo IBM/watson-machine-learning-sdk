@@ -4,7 +4,7 @@ Extensions
 LangChain
 ---------
 
-.. autoclass:: ibm_watson_machine_learning.foundation_models.extensions.langchain.llm.WatsonxLLM
+.. autoclass:: ibm_watson_machine_learning.foundation_models.extensions.langchain.WatsonxLLM
     :members:
 
 
@@ -12,9 +12,10 @@ Example od usage **SimpleSequentialChain**
 
 .. code-block:: python
 
-    from ibm_watson_machine_learning.foundation_models.extensions.langchain.llm import WatsonxLLM
+    from ibm_watson_machine_learning.foundation_models.extensions.langchain import WatsonxLLM
     from ibm_watson_machine_learning.foundation_models.utils.enums import ModelTypes, DecodingMethods
     from ibm_watson_machine_learning.metanames import GenTextParamsMetaNames as GenParams
+    from ibm_watson_machine_learning.foundation_models import Model
 
     from langchain import PromptTemplate
     from langchain.chains import LLMChain, SimpleSequentialChain
@@ -40,15 +41,18 @@ Example od usage **SimpleSequentialChain**
         input_variables=["question"],
         template="Answer the following question: {question}")
 
-    flan_ul2_llm = WatsonxLLM(
+    flan_ul2_model = Model(
         model_id='google/flan-ul2',
         credentials=credentials,
         params=params,
         project_id=project_id)
-    flan_t5_llm = WatsonxLLM(
+    flan_ul2_llm = WatsonxLLM(model=flan_ul2_model)
+
+    flan_t5_model = Model(
         model_id="google/flan-t5-xxl",
         credentials=credentials,
         project_id=project_id)
+    flan_t5_llm = WatsonxLLM(model=flan_t5_model)
 
     prompt_to_flan_ul2 = LLMChain(llm=flan_ul2_llm, prompt=pt1)
     flan_ul2_to_flan_t5 = LLMChain(llm=flan_t5_llm, prompt=pt2)

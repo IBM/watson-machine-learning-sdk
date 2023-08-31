@@ -221,63 +221,43 @@
 <section id="langchain">
 <h2>LangChain<a class="headerlink" href="#langchain" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.extensions.langchain.llm.WatsonxLLM">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ibm_watson_machine_learning.foundation_models.extensions.langchain.llm.</span></span><span class="sig-name descname"><span class="pre">WatsonxLLM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credentials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/extensions/langchain/llm.html#WatsonxLLM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.extensions.langchain.llm.WatsonxLLM" title="Permalink to this definition">#</a></dt>
-<dd><p>Wrapper around IBM watsonx.ai</p>
-<p>Model specific parameters can be passed through to the constructor using the <code class="docutils literal notranslate"><span class="pre">params</span></code>
-parameter, which is an instance of <code class="docutils literal notranslate"><span class="pre">GenTextParamsMetaNames</span></code>.</p>
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.extensions.langchain.WatsonxLLM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ibm_watson_machine_learning.foundation_models.extensions.langchain.</span></span><span class="sig-name descname"><span class="pre">WatsonxLLM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/extensions/langchain/llm.html#WatsonxLLM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.extensions.langchain.WatsonxLLM" title="Permalink to this definition">#</a></dt>
+<dd><p>CustomLLM wrapper for watsonx foundation models and LangChain integration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>model_id</strong> (<em>str</em>) – the type of model to use</p></li>
-<li><p><strong>credentials</strong> (<em>dict</em>) – credentials to Watson Machine Learning instance</p></li>
-<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – parameters to use during generate requests</p></li>
-<li><p><strong>project_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio project</p></li>
-<li><p><strong>space_id</strong> (<em>str</em><em>, </em><em>optional</em>) – ID of the Watson Studio space</p></li>
-<li><p><strong>verify</strong> (<em>bool</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – <p>user can pass as verify one of following:</p>
-<ul>
-<li><p>the path to a CA_BUNDLE file</p></li>
-<li><p>the path of directory with certificates of trusted CAs</p></li>
-<li><p><cite>True</cite> - default path to truststore will be taken</p></li>
-<li><p><cite>False</cite> - no verification will be made</p></li>
-</ul>
-</p></li>
-</ul>
+<dd class="field-odd"><p><strong>model</strong> (<a class="reference internal" href="model.html#ibm_watson_machine_learning.foundation_models.Model" title="ibm_watson_machine_learning.foundation_models.Model"><em>Model</em></a>) – foundation model inference object instance</p>
 </dd>
 </dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>One of these parameters is required: [‘project_id ‘, ‘space_id’]</p>
-</div>
-<div class="admonition hint">
-<p class="admonition-title">Hint</p>
-<p>You can copy the project_id from Project’s Manage tab (Project -&gt; Manage -&gt; General -&gt; Details).</p>
-</div>
 <p><strong>Instantiate the WatsonxLLM interface</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">GenTextParamsMetaNames</span> <span class="k">as</span> <span class="n">GenParams</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.extensions.langchain.llm</span> <span class="kn">import</span> <span class="n">WatsonxLLM</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">GenTextParamsMetaNames</span> <span class="k">as</span> <span class="n">GenParams</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.extensions.langchain</span> <span class="kn">import</span> <span class="n">WatsonxLLM</span>
 
 <span class="n">generate_params</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">GenParams</span><span class="o">.</span><span class="n">MAX_NEW_TOKENS</span><span class="p">:</span> <span class="mi">25</span>
 <span class="p">}</span>
 
-<span class="n">llm</span> <span class="o">=</span> <span class="n">WatsonxLLM</span><span class="p">(</span>
-    <span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;google/flan-ul2&quot;</span><span class="p">,</span>
-    <span class="n">credentials</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span>
+    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;google/flan-ul2&quot;</span><span class="p">,</span>
+    <span class="n">credentials</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;apikey&quot;</span><span class="p">:</span> <span class="s2">&quot;***&quot;</span><span class="p">,</span>
         <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://us-south.ml.cloud.ibm.com&quot;</span>
     <span class="p">},</span>
     <span class="n">params</span><span class="o">=</span><span class="n">generate_params</span><span class="p">,</span>
-    <span class="n">project_id</span> <span class="o">=</span> <span class="s2">&quot;*****&quot;</span>
-    <span class="p">)</span>
+    <span class="n">project_id</span><span class="o">=</span><span class="s2">&quot;*****&quot;</span>
+<span class="p">)</span>
+
+<span class="n">custom_llm</span> <span class="o">=</span> <span class="n">WatsonxLLM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <p>Example od usage <strong>SimpleSequentialChain</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.extensions.langchain.llm</span> <span class="kn">import</span> <span class="n">WatsonxLLM</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.extensions.langchain</span> <span class="kn">import</span> <span class="n">WatsonxLLM</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.enums</span> <span class="kn">import</span> <span class="n">ModelTypes</span><span class="p">,</span> <span class="n">DecodingMethods</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">GenTextParamsMetaNames</span> <span class="k">as</span> <span class="n">GenParams</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models</span> <span class="kn">import</span> <span class="n">Model</span>
 
 <span class="kn">from</span> <span class="nn">langchain</span> <span class="kn">import</span> <span class="n">PromptTemplate</span>
 <span class="kn">from</span> <span class="nn">langchain.chains</span> <span class="kn">import</span> <span class="n">LLMChain</span><span class="p">,</span> <span class="n">SimpleSequentialChain</span>
@@ -303,15 +283,18 @@ parameter, which is an instance of <code class="docutils literal notranslate"><s
     <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">],</span>
     <span class="n">template</span><span class="o">=</span><span class="s2">&quot;Answer the following question: </span><span class="si">{question}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">flan_ul2_llm</span> <span class="o">=</span> <span class="n">WatsonxLLM</span><span class="p">(</span>
+<span class="n">flan_ul2_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span>
     <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;google/flan-ul2&#39;</span><span class="p">,</span>
     <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
     <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
     <span class="n">project_id</span><span class="o">=</span><span class="n">project_id</span><span class="p">)</span>
-<span class="n">flan_t5_llm</span> <span class="o">=</span> <span class="n">WatsonxLLM</span><span class="p">(</span>
+<span class="n">flan_ul2_llm</span> <span class="o">=</span> <span class="n">WatsonxLLM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">flan_ul2_model</span><span class="p">)</span>
+
+<span class="n">flan_t5_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span>
     <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;google/flan-t5-xxl&quot;</span><span class="p">,</span>
     <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
     <span class="n">project_id</span><span class="o">=</span><span class="n">project_id</span><span class="p">)</span>
+<span class="n">flan_t5_llm</span> <span class="o">=</span> <span class="n">WatsonxLLM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">flan_t5_model</span><span class="p">)</span>
 
 <span class="n">prompt_to_flan_ul2</span> <span class="o">=</span> <span class="n">LLMChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">flan_ul2_llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">pt1</span><span class="p">)</span>
 <span class="n">flan_ul2_to_flan_t5</span> <span class="o">=</span> <span class="n">LLMChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">flan_t5_llm</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">pt2</span><span class="p">)</span>
@@ -380,7 +363,7 @@ parameter, which is an instance of <code class="docutils literal notranslate"><s
             <ul>
 <li><a class="reference internal" href="#">Extensions</a><ul>
 <li><a class="reference internal" href="#langchain">LangChain</a><ul>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.extensions.langchain.llm.WatsonxLLM"><code class="docutils literal notranslate"><span class="pre">WatsonxLLM</span></code></a></li>
+<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.extensions.langchain.WatsonxLLM"><code class="docutils literal notranslate"><span class="pre">WatsonxLLM</span></code></a></li>
 </ul>
 </li>
 </ul>
