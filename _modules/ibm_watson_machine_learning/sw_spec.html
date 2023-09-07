@@ -176,6 +176,7 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../foundation_models.html">Foundation Models</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Foundation Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../model.html">Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fm_extensions.html">Extensions</a></li>
 </ul>
 </li>
 </ul>
@@ -713,6 +714,8 @@
                           <span class="s1">&#39;entity&#39;</span><span class="p">:</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span>
 
                           <span class="p">}</span>
+            <span class="k">if</span> <span class="s1">&#39;life_cycle&#39;</span> <span class="ow">in</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]:</span>
+                <span class="n">new_el</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;life_cycle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;life_cycle&#39;</span><span class="p">]</span>
             <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;href&#39;</span> <span class="ow">in</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]:</span>
                 <span class="n">href_without_host</span> <span class="o">=</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;href&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.com&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                 <span class="n">new_el</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;href&#39;</span><span class="p">:</span> <span class="n">href_without_host</span><span class="p">})</span>

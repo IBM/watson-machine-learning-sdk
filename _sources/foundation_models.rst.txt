@@ -10,3 +10,4 @@ Modules
 .. toctree::
 
     model
+    fm_extensions

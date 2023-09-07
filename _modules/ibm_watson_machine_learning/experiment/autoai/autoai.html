@@ -176,6 +176,7 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../foundation_models.html">Foundation Models</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Foundation Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../model.html">Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../fm_extensions.html">Extensions</a></li>
 </ul>
 </li>
 </ul>
@@ -714,7 +715,7 @@
                 <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Support for excel sheet as number of the sheet (int) is deprecated! Please set excel sheet with name of the sheet.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">data_join_graph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">wml_client</span><span class="o">.</span><span class="n">ICP_46</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">wml_client</span><span class="o">.</span><span class="n">ICP_47</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">wml_client</span><span class="o">.</span><span class="n">ICP_48</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">wml_client</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&gt;=</span> <span class="mf">4.6</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;obm_removal_message_cpd&quot;</span><span class="p">))</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">wml_client</span><span class="o">.</span><span class="n">ICP</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;obm_deprecation_message_cpd&quot;</span><span class="p">))</span>
@@ -762,7 +763,7 @@
                 <span class="n">include_only_estimators</span> <span class="o">=</span> <span class="n">daub_include_only_estimators</span>
             <span class="n">daub_include_only_estimators</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="n">train_sample_rows_test_size</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">wml_client</span><span class="o">.</span><span class="n">ICP_46</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">wml_client</span><span class="o">.</span><span class="n">ICP_47</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">wml_client</span><span class="o">.</span><span class="n">ICP_48</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">train_sample_rows_test_size</span> <span class="ow">and</span>  <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">wml_client</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&gt;=</span> <span class="mf">4.6</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Note: Using `train_sample_rows_test_size` is deprecated.&#39;</span>
                   <span class="s1">&#39;Use either `sample_rows_limit` or `sample_percentage_limit` instead.&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">sample_rows_limit</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">sample_percentage_limit</span><span class="p">:</span>
