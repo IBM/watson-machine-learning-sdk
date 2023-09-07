@@ -8,7 +8,7 @@ LangChain
     :members:
 
 
-Example od usage **SimpleSequentialChain**
+Example of **SimpleSequentialChain** usage
 
 .. code-block:: python
 
