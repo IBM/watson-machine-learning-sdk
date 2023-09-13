@@ -227,6 +227,7 @@
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.href_definitions</span> <span class="kn">import</span> <span class="n">is_uid</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span>  <span class="n">WMLClientError</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.messages.messages</span> <span class="kn">import</span> <span class="n">Messages</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">SpacesPlatformMetaNames</span><span class="p">,</span> <span class="n">SpacesPlatformMemberMetaNames</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.instance_new_plan</span> <span class="kn">import</span> <span class="n">ServiceInstanceNewPlan</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils.deployment.errors</span> <span class="kn">import</span> <span class="n">PromotionFailed</span>
@@ -246,6 +247,8 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="n">WMLResource</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection_validation</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_get_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">op_name</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s1">&#39;limit&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -281,6 +284,19 @@
             <span class="k">return</span> <span class="p">{</span>
                 <span class="s2">&quot;resources&quot;</span><span class="p">:</span> <span class="n">resources</span>
             <span class="p">}</span>
+        
+    <span class="k">def</span> <span class="nf">_connection_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Trial connection to validate authorization.</span>
+
+<span class="sd">        :raises WMLClientError: raises when connection is unauthorized</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">href</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_platform_spaces_href</span><span class="p">()</span>
+        <span class="n">response_get</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">href</span><span class="p">,</span>
+                                    <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">(),</span>
+                                    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">response_get</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">401</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">response_get</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;errors&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;message&#39;</span><span class="p">],</span>
+                                                         <span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;invalid_authorization&quot;</span><span class="p">))</span>
 
 <div class="viewcode-block" id="PlatformSpaces.store"><a class="viewcode-back" href="../../core_api.html#client.PlatformSpaces.store">[docs]</a>    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">,</span> <span class="n">background_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a space. The instance associated with the space via COMPUTE will be used for billing purposes on</span>
