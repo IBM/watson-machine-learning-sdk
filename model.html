@@ -223,6 +223,10 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ibm_watson_machine_learning.foundation_models.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credentials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">WMLResource</span></code></p>
 <p>Instantiate the model interface.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>To use the Model class with LangChain, use the <a class="reference internal" href="fm_extensions.html#ibm_watson_machine_learning.foundation_models.extensions.langchain.WatsonxLLM" title="ibm_watson_machine_learning.foundation_models.extensions.langchain.WatsonxLLM"><code class="xref py py-func docutils literal notranslate"><span class="pre">WatsonxLLM</span></code></a> wrapper.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -275,14 +279,15 @@
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.Model.generate">
-<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model.generate" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concurrency_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model.generate" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a text prompt as input, and parameters the selected model (model_id)
 will generate a completion text as generated_text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>params</strong> (<em>dict</em>) – meta props for text generation, use <code class="docutils literal notranslate"><span class="pre">ibm_watson_machine_learning.metanames.GenTextParamsMetaNames().show()</span></code> to view the list of MetaNames</p></li>
-<li><p><strong>prompt</strong> (<em>str</em>) – the prompt string</p></li>
+<li><p><strong>concurrency_limit</strong> (<em>int</em>) – number of requests that will be sent in parallel, max is 10</p></li>
+<li><p><strong>prompt</strong> (<em>str</em><em>, </em><em>list</em>) – the prompt string or list of strings. If list of strings is passed requests will be managed in parallel with the rate of concurency_limit</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -302,14 +307,15 @@ will generate a completion text as generated_text.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.Model.generate_text">
-<span class="sig-name descname"><span class="pre">generate_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model.generate_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model.generate_text" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">generate_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concurrency_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model.generate_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model.generate_text" title="Permalink to this definition">#</a></dt>
 <dd><p>Given a text prompt as input, and parameters the selected model (model_id)
 will generate a completion text as generated_text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>params</strong> (<em>dict</em>) – meta props for text generation, use <code class="docutils literal notranslate"><span class="pre">ibm_watson_machine_learning.metanames.GenTextParamsMetaNames().show()</span></code> to view the list of MetaNames</p></li>
-<li><p><strong>prompt</strong> (<em>str</em>) – the prompt string</p></li>
+<li><p><strong>concurrency_limit</strong> (<em>int</em>) – number of requests that will be sent in parallel, max is 10</p></li>
+<li><p><strong>prompt</strong> (<em>str</em><em>, </em><em>list</em>) – the prompt string or list of strings. If list of strings is passed requests will be managed in parallel with the rate of concurency_limit</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -522,6 +528,16 @@ will generate a completion text as generated_text.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_CHAT">
+<span class="sig-name descname"><span class="pre">GRANITE_13B_CHAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ibm/granite-13b-chat-v1'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_CHAT" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_INSTRUCT">
+<span class="sig-name descname"><span class="pre">GRANITE_13B_INSTRUCT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ibm/granite-13b-instruct-v1'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_INSTRUCT" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_70B_CHAT">
 <span class="sig-name descname"><span class="pre">LLAMA_2_70B_CHAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'meta-llama/llama-2-70b-chat'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_70B_CHAT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
@@ -620,6 +636,8 @@ will generate a completion text as generated_text.</p>
 <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XXL"><code class="docutils literal notranslate"><span class="pre">ModelTypes.FLAN_T5_XXL</span></code></a></li>
 <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_UL2"><code class="docutils literal notranslate"><span class="pre">ModelTypes.FLAN_UL2</span></code></a></li>
 <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GPT_NEOX"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GPT_NEOX</span></code></a></li>
+<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_CHAT"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GRANITE_13B_CHAT</span></code></a></li>
+<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_INSTRUCT"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GRANITE_13B_INSTRUCT</span></code></a></li>
 <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_70B_CHAT"><code class="docutils literal notranslate"><span class="pre">ModelTypes.LLAMA_2_70B_CHAT</span></code></a></li>
 <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MPT_7B_INSTRUCT2"><code class="docutils literal notranslate"><span class="pre">ModelTypes.MPT_7B_INSTRUCT2</span></code></a></li>
 <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MT0_XXL"><code class="docutils literal notranslate"><span class="pre">ModelTypes.MT0_XXL</span></code></a></li>
