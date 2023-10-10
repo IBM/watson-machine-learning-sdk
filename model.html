@@ -225,7 +225,7 @@
 <p>Instantiate the model interface.</p>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
-<p>To use the Model class with LangChain, use the <a class="reference internal" href="fm_extensions.html#ibm_watson_machine_learning.foundation_models.extensions.langchain.WatsonxLLM" title="ibm_watson_machine_learning.foundation_models.extensions.langchain.WatsonxLLM"><code class="xref py py-func docutils literal notranslate"><span class="pre">WatsonxLLM</span></code></a> wrapper.</p>
+<p>To use the Model class with LangChain, use the <a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.Model.to_langchain" title="ibm_watson_machine_learning.foundation_models.Model.to_langchain"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_langchain()</span></code></a> function.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -334,6 +334,35 @@ will generate a completion text as generated_text.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.Model.generate_text_stream">
+<span class="sig-name descname"><span class="pre">generate_text_stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model.generate_text_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model.generate_text_stream" title="Permalink to this definition">#</a></dt>
+<dd><p>Given a text prompt as input, and parameters the selected model (model_id)
+will generate a streamed text as generate_text_stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<em>dict</em>) – meta props for text generation, use <code class="docutils literal notranslate"><span class="pre">ibm_watson_machine_learning.metanames.GenTextParamsMetaNames().show()</span></code> to view the list of MetaNames</p></li>
+<li><p><strong>prompt</strong> (<em>str</em><em>,</em>) – the prompt string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>scoring result containing generated content</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>generator</p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;Write an epigram about the sun&quot;</span>
+<span class="n">generated_response</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate_text_stream</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">q</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">generated_response</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.Model.get_details">
 <span class="sig-name descname"><span class="pre">get_details</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model.get_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model.get_details" title="Permalink to this definition">#</a></dt>
 <dd><p>Get model’s details</p>
@@ -347,6 +376,40 @@ will generate a completion text as generated_text.</p>
 </dl>
 <p><strong>Example</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.Model.to_langchain">
+<span class="sig-name descname"><span class="pre">to_langchain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/model.html#Model.to_langchain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.Model.to_langchain" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>WatsonxLLM wrapper for watsonx foundation models</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="fm_extensions.html#ibm_watson_machine_learning.foundation_models.extensions.langchain.WatsonxLLM" title="ibm_watson_machine_learning.foundation_models.extensions.langchain.WatsonxLLM">WatsonxLLM</a></p>
+</dd>
+</dl>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain</span> <span class="kn">import</span> <span class="n">PromptTemplate</span>
+<span class="kn">from</span> <span class="nn">langchain.chains</span> <span class="kn">import</span> <span class="n">LLMChain</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.enums</span> <span class="kn">import</span> <span class="n">ModelTypes</span>
+
+<span class="n">flan_ul2_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span>
+    <span class="n">model_id</span><span class="o">=</span><span class="n">ModelTypes</span><span class="o">.</span><span class="n">FLAN_UL2</span><span class="p">,</span>
+    <span class="n">credentials</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;apikey&quot;</span><span class="p">:</span> <span class="s2">&quot;***&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://us-south.ml.cloud.ibm.com&quot;</span>
+    <span class="p">},</span>
+    <span class="n">project_id</span><span class="o">=</span><span class="s2">&quot;*****&quot;</span>
+    <span class="p">)</span>
+
+<span class="n">prompt_template</span> <span class="o">=</span> <span class="s2">&quot;What color is the </span><span class="si">{flower}</span><span class="s2">?&quot;</span>
+
+<span class="n">llm_chain</span> <span class="o">=</span> <span class="n">LLMChain</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">flan_ul2_model</span><span class="o">.</span><span class="n">to_langchain</span><span class="p">(),</span> <span class="n">prompt</span><span class="o">=</span><span class="n">PromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="n">prompt_template</span><span class="p">))</span>
+<span class="n">llm_chain</span><span class="p">(</span><span class="s1">&#39;sunflower&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -621,7 +684,9 @@ will generate a completion text as generated_text.</p>
 <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul>
 <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.Model.generate"><code class="docutils literal notranslate"><span class="pre">Model.generate()</span></code></a></li>
 <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.Model.generate_text"><code class="docutils literal notranslate"><span class="pre">Model.generate_text()</span></code></a></li>
+<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.Model.generate_text_stream"><code class="docutils literal notranslate"><span class="pre">Model.generate_text_stream()</span></code></a></li>
 <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.Model.get_details"><code class="docutils literal notranslate"><span class="pre">Model.get_details()</span></code></a></li>
+<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.Model.to_langchain"><code class="docutils literal notranslate"><span class="pre">Model.to_langchain()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#enums">Enums</a><ul>

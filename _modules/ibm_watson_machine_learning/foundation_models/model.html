@@ -223,6 +223,7 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">ast</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
@@ -231,7 +232,7 @@
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span><span class="p">,</span> <span class="n">ParamOutOfRange</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.enums</span> <span class="kn">import</span> <span class="n">ModelTypes</span><span class="p">,</span> <span class="n">DecodingMethods</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">GenTextParamsMetaNames</span><span class="p">,</span> <span class="n">GenTextReturnOptMetaNames</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">GenTextParamsMetaNames</span>
 <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
 
 
@@ -242,7 +243,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantiate the model interface.</span>
 
 <span class="sd">    .. hint::</span>
-<span class="sd">        To use the Model class with LangChain, use the :func:`WatsonxLLM &lt;ibm_watson_machine_learning.foundation_models.extensions.langchain.WatsonxLLM&gt;` wrapper.</span>
+<span class="sd">        To use the Model class with LangChain, use the :func:`to_langchain() &lt;ibm_watson_machine_learning.foundation_models.Model.to_langchain&gt;` function.</span>
 
 <span class="sd">    :param model_id: the type of model to use</span>
 <span class="sd">    :type model_id: str</span>
@@ -349,6 +350,39 @@
 
         <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">models</span> <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;model_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Model.to_langchain"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.to_langchain">[docs]</a>    <span class="k">def</span> <span class="nf">to_langchain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :return: WatsonxLLM wrapper for watsonx foundation models</span>
+<span class="sd">        :rtype: WatsonxLLM</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain import PromptTemplate</span>
+<span class="sd">            from langchain.chains import LLMChain</span>
+<span class="sd">            from ibm_watson_machine_learning.foundation_models import Model</span>
+<span class="sd">            from ibm_watson_machine_learning.foundation_models.utils.enums import ModelTypes</span>
+
+<span class="sd">            flan_ul2_model = Model(</span>
+<span class="sd">                model_id=ModelTypes.FLAN_UL2,</span>
+<span class="sd">                credentials={</span>
+<span class="sd">                    &quot;apikey&quot;: &quot;***&quot;,</span>
+<span class="sd">                    &quot;url&quot;: &quot;https://us-south.ml.cloud.ibm.com&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                project_id=&quot;*****&quot;</span>
+<span class="sd">                )</span>
+
+<span class="sd">            prompt_template = &quot;What color is the {flower}?&quot;</span>
+
+<span class="sd">            llm_chain = LLMChain(llm=flan_ul2_model.to_langchain(), prompt=PromptTemplate.from_template(prompt_template))</span>
+<span class="sd">            llm_chain(&#39;sunflower&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.extensions.langchain.llm</span> <span class="kn">import</span> <span class="n">WatsonxLLM</span>
+        <span class="k">return</span> <span class="n">WatsonxLLM</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Model.generate"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">concurrency_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a text prompt as input, and parameters the selected model (model_id)</span>
 <span class="sd">        will generate a completion text as generated_text.</span>
@@ -374,7 +408,7 @@
 <span class="sd">            print(generated_response[&#39;results&#39;][0][&#39;generated_text&#39;])</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">generate_text_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_fm_generation_href</span><span class="p">(</span><span class="s1">&#39;text?version=2022-08-01&#39;</span><span class="p">)</span>
+        <span class="n">generate_text_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_fm_generation_href</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;text?version=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">version_param</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">Model</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;params&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="n">Model</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;prompt&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="n">raise_error_for_list</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">Model</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">concurrency_limit</span><span class="p">,</span> <span class="s1">&#39;concurrency_limit&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">False</span><span class="p">,</span> <span class="n">raise_error_for_list</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -480,7 +514,82 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">)[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;generated_text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="n">prompt</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">)[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;generated_text&#39;</span><span class="p">]</span></div></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">)[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;generated_text&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Model.generate_text_stream"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate_text_stream">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a text prompt as input, and parameters the selected model (model_id)</span>
+<span class="sd">        will generate a streamed text as generate_text_stream.</span>
+
+<span class="sd">        :param params: meta props for text generation, use ``ibm_watson_machine_learning.metanames.GenTextParamsMetaNames().show()`` to view the list of MetaNames</span>
+<span class="sd">        :type params: dict</span>
+
+<span class="sd">        :param prompt: the prompt string</span>
+<span class="sd">        :type prompt: str,</span>
+
+<span class="sd">        :return: scoring result containing generated content</span>
+<span class="sd">        :rtype: generator</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            q = &quot;Write an epigram about the sun&quot;</span>
+<span class="sd">            generated_response = model.generate_text_stream(prompt=q)</span>
+
+<span class="sd">            for chunk in generated_response:</span>
+<span class="sd">                print(chunk, end=&#39;&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">generate_text_stream_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_fm_generation_href</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;text_stream?version=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">version_param</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;model_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span>
+            <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;prompt&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span>
+
+        <span class="k">if</span> <span class="s1">&#39;parameters&#39;</span> <span class="ow">in</span> <span class="n">payload</span> <span class="ow">and</span> <span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span><span class="p">],</span> <span class="n">DecodingMethods</span><span class="p">):</span>
+                <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span><span class="p">]</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span>
+                    <span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span><span class="p">:</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;project_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span><span class="p">:</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;space_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span>
+
+        <span class="k">if</span> <span class="s1">&#39;parameters&#39;</span> <span class="ow">in</span> <span class="n">payload</span> <span class="ow">and</span> <span class="s1">&#39;return_options&#39;</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="s1">&#39;return_options&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input_text&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">or</span>
+                    <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="s1">&#39;return_options&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input_tokens&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;fm_required_parameters_not_provided&quot;</span><span class="p">))</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+        <span class="n">retries</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">retries</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">s</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">generate_text_stream_url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">(),</span>
+                        <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">429</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">,</span> <span class="mi">520</span><span class="p">]:</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">retries</span><span class="p">)</span>
+                    <span class="n">retries</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">iter_lines</span><span class="p">(</span><span class="n">decode_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="s1">&#39;generated_text&#39;</span> <span class="ow">in</span> <span class="n">chunk</span><span class="p">:</span>
+                            <span class="n">response</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;data: &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">parsed_response</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+                                <span class="k">yield</span> <span class="n">parsed_response</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;generated_text&#39;</span><span class="p">]</span>
+                            <span class="k">except</span> <span class="ne">SyntaxError</span><span class="p">:</span>
+                                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not parse </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2"> as literal_eval&quot;</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Request failed with: </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span></div></div>
 </pre></div>
         </article>
       </div>
