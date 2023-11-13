@@ -569,7 +569,9 @@
                 <span class="n">data_connection</span><span class="p">:</span> <span class="s1">&#39;DataConnection&#39;</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
                     <span class="n">connection_asset_id</span><span class="o">=</span><span class="n">_dict</span><span class="p">[</span><span class="s1">&#39;connection&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
                     <span class="n">location</span><span class="o">=</span><span class="n">DatabaseLocation</span><span class="p">(</span><span class="n">schema_name</span><span class="o">=</span><span class="n">_dict</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;schema_name&#39;</span><span class="p">],</span>
-                                              <span class="n">table_name</span><span class="o">=</span><span class="n">_dict</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;table_name&#39;</span><span class="p">])</span>
+                                              <span class="n">table_name</span><span class="o">=</span><span class="n">_dict</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;table_name&#39;</span><span class="p">],</span>
+                                              <span class="n">catalog_name</span><span class="o">=</span><span class="n">_dict</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;catalog_name&#39;</span><span class="p">)</span>
+                                              <span class="p">)</span>
                 <span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
@@ -1236,7 +1238,10 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_if_connection_asset_is_s3</span><span class="p">():</span>
                 <span class="c1"># do not try Flight if we are on the cloud</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_client</span><span class="o">.</span><span class="n">ICP</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">use_flight</span><span class="p">:</span>  <span class="c1"># CLOUD</span>
-                    <span class="n">updated_remote_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_path_with_remote_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">(),</span> <span class="n">remote_name</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">remote_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">):</span>
+                        <span class="n">updated_remote_name</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">updated_remote_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_path_with_remote_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">(),</span> <span class="n">remote_name</span><span class="p">)</span>
                     <span class="n">cos_resource_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_cos_client</span><span class="p">()</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_data</span><span class="p">:</span>
@@ -2047,11 +2052,14 @@
 <span class="sd">    :type schema_name: str</span>
 <span class="sd">    :param table_name: database table name</span>
 <span class="sd">    :type table_name: str</span>
+<span class="sd">    catalog_name: database catalog name, required only for Presto data source.</span>
+<span class="sd">    :type catalog_name: str, optional</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">catalog_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schema_name</span> <span class="o">=</span> <span class="n">schema_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table_name</span> <span class="o">=</span> <span class="n">table_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">catalog_name</span> <span class="o">=</span> <span class="n">catalog_name</span>
 
     <span class="k">def</span> <span class="nf">_get_file_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>

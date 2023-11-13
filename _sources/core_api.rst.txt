@@ -23,6 +23,9 @@ Deployments
     :members:
 .. autoclass:: metanames.DeploymentNewMetaNames
     :members:
+.. autoclass:: ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues
+    :members:
+    :undoc-members:
 .. autoclass:: metanames.ScoringMetaNames
     :members:
 .. autoclass:: metanames.DecisionOptimizationMetaNames

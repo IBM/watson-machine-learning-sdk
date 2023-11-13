@@ -1515,6 +1515,27 @@ and it starts a deployment with the provided asset id/rev. Deployment id remains
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ibm_watson_machine_learning.utils.enums.</span></span><span class="sig-name descname"><span class="pre">RShinyAuthenticationValues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/utils/enums.html#RShinyAuthenticationValues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues" title="Permalink to this definition">#</a></dt>
+<dd><p>Allowable values of R_Shiny authentication.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues.ANYONE_WITH_URL">
+<span class="sig-name descname"><span class="pre">ANYONE_WITH_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'anyone_with_url'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues.ANYONE_WITH_URL" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues.ANY_VALID_USER">
+<span class="sig-name descname"><span class="pre">ANY_VALID_USER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'any_valid_user'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues.ANY_VALID_USER" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues.MEMBERS_OF_DEPLOYMENT_SPACE">
+<span class="sig-name descname"><span class="pre">MEMBERS_OF_DEPLOYMENT_SPACE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'members_of_deployment_space'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues.MEMBERS_OF_DEPLOYMENT_SPACE" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="metanames.ScoringMetaNames">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metanames.</span></span><span class="sig-name descname"><span class="pre">ScoringMetaNames</span></span><a class="reference internal" href="_modules/metanames.html#ScoringMetaNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metanames.ScoringMetaNames" title="Permalink to this definition">#</a></dt>
 <dd><p>Set of MetaNames for Scoring.</p>
@@ -8773,7 +8794,7 @@ on IBM Cloud Pak® for Data version 4.0.2 and above.</p>
 <dt class="sig sig-object py" id="ibm_watson_machine_learning.utils.autoai.enums.SamplingTypes">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ibm_watson_machine_learning.utils.autoai.enums.</span></span><span class="sig-name descname"><span class="pre">SamplingTypes</span></span><a class="reference internal" href="_modules/ibm_watson_machine_learning/utils/autoai/enums.html#SamplingTypes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.utils.autoai.enums.SamplingTypes" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Types of training data sampling</p>
+<p>Types of training data sampling.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ibm_watson_machine_learning.utils.autoai.enums.SamplingTypes.FIRST_VALUES">
 <span class="sig-name descname"><span class="pre">FIRST_VALUES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'first_n_records'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.utils.autoai.enums.SamplingTypes.FIRST_VALUES" title="Permalink to this definition">#</a></dt>
@@ -9144,6 +9165,12 @@ Depends on the POD size, AutoAI could support different data sets sizes.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#metanames.DeploymentNewMetaNames"><code class="docutils literal notranslate"><span class="pre">DeploymentNewMetaNames</span></code></a></li>
+<li><a class="reference internal" href="#ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues"><code class="docutils literal notranslate"><span class="pre">RShinyAuthenticationValues</span></code></a><ul>
+<li><a class="reference internal" href="#ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues.ANYONE_WITH_URL"><code class="docutils literal notranslate"><span class="pre">RShinyAuthenticationValues.ANYONE_WITH_URL</span></code></a></li>
+<li><a class="reference internal" href="#ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues.ANY_VALID_USER"><code class="docutils literal notranslate"><span class="pre">RShinyAuthenticationValues.ANY_VALID_USER</span></code></a></li>
+<li><a class="reference internal" href="#ibm_watson_machine_learning.utils.enums.RShinyAuthenticationValues.MEMBERS_OF_DEPLOYMENT_SPACE"><code class="docutils literal notranslate"><span class="pre">RShinyAuthenticationValues.MEMBERS_OF_DEPLOYMENT_SPACE</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#metanames.ScoringMetaNames"><code class="docutils literal notranslate"><span class="pre">ScoringMetaNames</span></code></a></li>
 <li><a class="reference internal" href="#metanames.DecisionOptimizationMetaNames"><code class="docutils literal notranslate"><span class="pre">DecisionOptimizationMetaNames</span></code></a></li>
 </ul>
