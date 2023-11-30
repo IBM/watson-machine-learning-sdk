@@ -995,31 +995,6 @@ details of the completed or canceled jobs when hard_delete parameter is set to T
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="client.Deployments.download">
-<span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">virtual_deployment_uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployments.html#Deployments.download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#client.Deployments.download" title="Permalink to this definition">#</a></dt>
-<dd><p>Downloads file deployment of specified deployment Id. Currently supported format is Core ML.
-Supported only for IBM Cloud Pak® for Data 3.0 and below.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>virtual_deployment_uid</strong> (<em>str</em>) – Unique Id of virtual deployment</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em>) – filename of downloaded archive</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>path to downloaded file</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-<p><strong>Example</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">deployments</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">virtual_deployment_uid</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="client.Deployments.get_details">
 <span class="sig-name descname"><span class="pre">get_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deployment_uid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serving_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asynchronous</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_silent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/deployments.html#Deployments.get_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#client.Deployments.get_details" title="Permalink to this definition">#</a></dt>
 <dd><p>Get information about deployment(s).
@@ -1467,47 +1442,65 @@ and it starts a deployment with the provided asset id/rev. Deployment id remains
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'4cedab6d-e8e4-4214-b81a-2ddb122db2ab',</span> <span class="pre">'rev':</span> <span class="pre">'1'}</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>HARDWARE_SPEC</p></td>
+<tr class="row-odd"><td><p>PROMPT_TEMPLATE</p></td>
+<td><p>dict</p></td>
+<td><p>N</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'4cedab6d-e8e4-4214-b81a-2ddb122db2ab'}</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>HARDWARE_SPEC</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'id':</span> <span class="pre">'3342-1ce536-20dc-4444-aac7-7284cf3befc'}</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>HYBRID_PIPELINE_HARDWARE_SPECS</p></td>
+<tr class="row-odd"><td><p>HYBRID_PIPELINE_HARDWARE_SPECS</p></td>
 <td><p>list</p></td>
 <td><p>N</p></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[{'node_runtime_id':</span> <span class="pre">'auto_ai.kb',</span> <span class="pre">'hardware_spec':</span> <span class="pre">{'id':</span> <span class="pre">'3342-1ce536-20dc-4444-aac7-7284cf3befc',</span> <span class="pre">'num_nodes':</span> <span class="pre">'2'}}]</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>ONLINE</p></td>
+<tr class="row-even"><td><p>ONLINE</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>BATCH</p></td>
+<tr class="row-odd"><td><p>BATCH</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>R_SHINY</p></td>
+<tr class="row-even"><td><p>R_SHINY</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{'authentication':</span> <span class="pre">'anyone_with_url'}</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>VIRTUAL</p></td>
+<tr class="row-odd"><td><p>VIRTUAL</p></td>
 <td><p>dict</p></td>
 <td><p>N</p></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>OWNER</p></td>
+<tr class="row-even"><td><p>OWNER</p></td>
 <td><p>str</p></td>
 <td><p>N</p></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&lt;owner_id&gt;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>BASE_MODEL_ID</p></td>
+<td><p>str</p></td>
+<td><p>N</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">google/flan-ul2</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>PROMPT_VARIABLES</p></td>
+<td><p>dict</p></td>
+<td><p>N</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'key':</span> <span class="pre">'value'}</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -3909,11 +3902,28 @@ returning less records than stated by set <cite>limit</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="client.Repository.list">
-<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/repository.html#Repository.list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#client.Repository.list" title="Permalink to this definition">#</a></dt>
-<dd><p>Print stored models, pipelines, runtimes, libraries, functions, spaces and experiments in a table format.
-If limit is set to None there will be only first 50 records shown.</p>
+<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">framework_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_as_df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/repository.html#Repository.list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#client.Repository.list" title="Permalink to this definition">#</a></dt>
+<dd><p>Print/get stored models, pipelines, runtimes, libraries, functions, spaces and experiments in a table/DataFrame format.
+If limit is set to None there will be only first 50 records śshown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>framework_filter</strong> (<em>str</em><em>, </em><em>optional</em>) – Get only frameworks with desired names</p></li>
+<li><p><strong>return_as_df</strong> (<em>bool</em><em>, </em><em>optional</em>) – Determinate if table should be returned as pandas.DataFrame object, default: True</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame with listed names and ids of stored models or None if return_as_df is False</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame or None</p>
+</dd>
+</dl>
 <p><strong>Example</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">repository</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<span class="n">client</span><span class="o">.</span><span class="n">repository</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">return_as_df</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">repository</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">framework_filter</span><span class="o">=</span><span class="s1">&#39;prompt_tune&#39;</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">repository</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">framework_filter</span><span class="o">=</span><span class="s1">&#39;prompt_tune&#39;</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -4195,7 +4205,7 @@ If limit is set to None there will be only first 50 records shown.</p>
 <dt class="sig sig-object py" id="client.Repository.promote_model">
 <span class="sig-name descname"><span class="pre">promote_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_project_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_space_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/repository.html#Repository.promote_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#client.Repository.promote_model" title="Permalink to this definition">#</a></dt>
 <dd><p>Promote model from project to space. Supported only for IBM Cloud Pak® for Data.</p>
-<p><em>Deprecated:</em> Use <cite>client.spaces.promote(model_id, source_project_id, target_space_id)</cite> instead.</p>
+<p><em>Deprecated:</em> Use <cite>client.spaces.promote(asset_id, source_project_id, target_space_id)</cite> instead.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -4291,7 +4301,7 @@ In this situation it is possible to pass some variables:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="client.Repository.store_model">
-<span class="sig-name descname"><span class="pre">store_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_props</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_column_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtrainingId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/repository.html#Repository.store_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#client.Repository.store_model" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">store_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_props</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_column_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtrainingId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/repository.html#Repository.store_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#client.Repository.store_model" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -4346,7 +4356,7 @@ this is applicable only in the case where the training data is not of type - pan
 <li><p><strong>round_number</strong> (<em>int</em><em>, </em><em>optional</em>) – round number of a Federated Learning experiment that has been configured to save
 intermediate models, this applies when model is a training id</p></li>
 <li><p><strong>experiment_metadata</strong> (<em>dict</em><em>, </em><em>optional</em>) – metadata retrieved from the experiment that created the model</p></li>
-<li><p><strong>training_id</strong> (<em>str</em><em>, </em><em>optional</em>) – Run id of AutoAI experiment.</p></li>
+<li><p><strong>training_id</strong> (<em>str</em><em>, </em><em>optional</em>) – Run id of AutoAI or TuneExperiment experiment.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -4432,6 +4442,11 @@ multiple schemas as dictionaries inside a list.</p></li>
 <span class="n">stored_model_details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">repository</span><span class="o">.</span><span class="n">store_model</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;Pipeline_1&quot;</span><span class="p">,</span> <span class="n">meta_props</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="n">training_id</span> <span class="o">=</span> <span class="n">training_id</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Example of storing a prompt tuned model:
+.. code-block:: python</p>
+<blockquote>
+<div><p>stored_model_details = client.repository.store_model(training_id = prompt_tuning_run_id)</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
@@ -7074,14 +7089,15 @@ cloud. Note that STORAGE and COMPUTE are applicable only for cloud.</p>
 </dl>
 <p><strong>Example</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">NAME</span><span class="p">:</span> <span class="s1">&#39;my_space&#39;</span><span class="p">,</span>
-    <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="s1">&#39;spaces&#39;</span><span class="p">,</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">NAME</span><span class="p">:</span> <span class="s2">&quot;my_space&quot;</span><span class="p">,</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="s2">&quot;spaces&quot;</span><span class="p">,</span>
     <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">STORAGE</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;resource_crn&quot;</span><span class="p">:</span> <span class="s2">&quot;provide crn of the COS storage&quot;</span><span class="p">},</span>
     <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">COMPUTE</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;test_instance&quot;</span><span class="p">,</span>
                                                    <span class="s2">&quot;crn&quot;</span><span class="p">:</span> <span class="s2">&quot;provide crn of the instance&quot;</span><span class="p">},</span>
     <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">STAGE</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;production&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
                                                  <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stage_name&quot;</span><span class="p">},</span>
-    <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TAGS</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sample_tag_1&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_tag_2&quot;</span><span class="p">]</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TAGS</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sample_tag_1&quot;</span><span class="p">,</span> <span class="s2">&quot;sample_tag_2&quot;</span><span class="p">],</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">TYPE</span><span class="p">:</span> <span class="s2">&quot;cpd&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 <span class="n">spaces_details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">meta_props</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
 </pre></div>
@@ -7191,6 +7207,11 @@ STORAGE and COMPUTE are applicable only for cloud.</p>
 <td><p>list</p></td>
 <td><p>N</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">['sample_tag']</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>TYPE</p></td>
+<td><p>str</p></td>
+<td><p>N</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cpd</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -9145,7 +9166,6 @@ Depends on the POD size, AutoAI could support different data sets sizes.</p>
 <li><a class="reference internal" href="#client.Deployments.create_job"><code class="docutils literal notranslate"><span class="pre">Deployments.create_job()</span></code></a></li>
 <li><a class="reference internal" href="#client.Deployments.delete"><code class="docutils literal notranslate"><span class="pre">Deployments.delete()</span></code></a></li>
 <li><a class="reference internal" href="#client.Deployments.delete_job"><code class="docutils literal notranslate"><span class="pre">Deployments.delete_job()</span></code></a></li>
-<li><a class="reference internal" href="#client.Deployments.download"><code class="docutils literal notranslate"><span class="pre">Deployments.download()</span></code></a></li>
 <li><a class="reference internal" href="#client.Deployments.get_details"><code class="docutils literal notranslate"><span class="pre">Deployments.get_details()</span></code></a></li>
 <li><a class="reference internal" href="#client.Deployments.get_download_url"><code class="docutils literal notranslate"><span class="pre">Deployments.get_download_url()</span></code></a></li>
 <li><a class="reference internal" href="#client.Deployments.get_href"><code class="docutils literal notranslate"><span class="pre">Deployments.get_href()</span></code></a></li>

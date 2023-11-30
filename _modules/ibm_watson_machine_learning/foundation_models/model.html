@@ -221,25 +221,14 @@
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">ast</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-
-<span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.messages.messages</span> <span class="kn">import</span> <span class="n">Messages</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning</span> <span class="kn">import</span> <span class="n">APIClient</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span><span class="p">,</span> <span class="n">ParamOutOfRange</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.enums</span> <span class="kn">import</span> <span class="n">ModelTypes</span><span class="p">,</span> <span class="n">DecodingMethods</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">GenTextParamsMetaNames</span>
-<span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
-
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.inference</span> <span class="kn">import</span> <span class="n">ModelInference</span>
 
 <span class="n">_DEFAULT_LIST_LENGTH</span> <span class="o">=</span> <span class="mi">50</span>
 
 
-<div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model">[docs]</a><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+<div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model">[docs]</a><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">ModelInference</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantiate the model interface.</span>
 
 <span class="sd">    .. hint::</span>
@@ -306,27 +295,15 @@
                  <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">space_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">verify</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span> <span class="o">=</span> <span class="n">model_id</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span> <span class="n">ModelTypes</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="o">.</span><span class="n">value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">params</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">space_id</span> <span class="o">=</span> <span class="n">space_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">)</span>
-
-        <span class="n">Model</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;params&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&lt;</span> <span class="mf">4.8</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">error_msg</span><span class="o">=</span><span class="s2">&quot;Operation is unsupported for this release.&quot;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">space_id</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">set</span><span class="o">.</span><span class="n">default_space</span><span class="p">(</span><span class="n">space_id</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">set</span><span class="o">.</span><span class="n">default_project</span><span class="p">(</span><span class="n">project_id</span><span class="p">)</span>
-
-        <span class="n">WMLResource</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+                 <span class="n">verify</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ModelInference</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                <span class="n">model_id</span><span class="o">=</span><span class="n">model_id</span><span class="p">,</span>
+                                <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+                                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                                <span class="n">project_id</span><span class="o">=</span><span class="n">project_id</span><span class="p">,</span>
+                                <span class="n">space_id</span><span class="o">=</span><span class="n">space_id</span><span class="p">,</span>
+                                <span class="n">verify</span><span class="o">=</span><span class="n">verify</span>
+                                <span class="p">)</span>
 
 <div class="viewcode-block" id="Model.get_details"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.get_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get model&#39;s details</span>
@@ -341,14 +318,7 @@
 <span class="sd">            model.get_details()</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">limit</span> <span class="o">=</span> <span class="mi">200</span>
-        <span class="n">asynchronous</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">get_all</span> <span class="o">=</span> <span class="kc">False</span>
-
-        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_fm_specifications_href</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
-        <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_artifact_details</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">resource_name</span><span class="o">=</span><span class="s1">&#39;foundation_models&#39;</span><span class="p">,</span> <span class="n">_async</span><span class="o">=</span><span class="n">asynchronous</span><span class="p">,</span> <span class="n">_all</span><span class="o">=</span><span class="n">get_all</span><span class="p">)[</span><span class="s1">&#39;resources&#39;</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">models</span> <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;model_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Model.to_langchain"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.to_langchain">[docs]</a>    <span class="k">def</span> <span class="nf">to_langchain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -383,7 +353,10 @@
         <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.extensions.langchain.llm</span> <span class="kn">import</span> <span class="n">WatsonxLLM</span>
         <span class="k">return</span> <span class="n">WatsonxLLM</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Model.generate"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">concurrency_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<div class="viewcode-block" id="Model.generate"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">prompt</span><span class="p">,</span>
+                 <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">concurrency_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a text prompt as input, and parameters the selected model (model_id)</span>
 <span class="sd">        will generate a completion text as generated_text.</span>
 
@@ -408,78 +381,15 @@
 <span class="sd">            print(generated_response[&#39;results&#39;][0][&#39;generated_text&#39;])</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">generate_text_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_fm_generation_href</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;text?version=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">version_param</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">Model</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;params&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-        <span class="n">Model</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;prompt&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="n">raise_error_for_list</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">Model</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">concurrency_limit</span><span class="p">,</span> <span class="s1">&#39;concurrency_limit&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">False</span><span class="p">,</span> <span class="n">raise_error_for_list</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+                                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                                <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">)</span></div>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">concurrency_limit</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>          <span class="c1"># convert float (ex. 10.0) to int</span>
-            <span class="n">concurrency_limit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">concurrency_limit</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">concurrency_limit</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">or</span> <span class="n">concurrency_limit</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ParamOutOfRange</span><span class="p">(</span><span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;concurrency_limit&#39;</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">concurrency_limit</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="n">generated_responses</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">concurrency_limit</span><span class="p">:</span>
-                <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
-                    <span class="n">response_batch</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-                        <span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="p">[</span><span class="n">params</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">))</span>
-                    <span class="p">)</span>
-                <span class="n">generated_responses</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">response_batch</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span> <span class="n">concurrency_limit</span><span class="p">):</span>
-                    <span class="n">prompt_batch</span> <span class="o">=</span> <span class="n">prompt</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">concurrency_limit</span><span class="p">]</span>
-                    <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
-                        <span class="n">response_batch</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-                            <span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">,</span> <span class="n">prompt_batch</span><span class="p">,</span> <span class="p">[</span><span class="n">params</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">))</span>
-                        <span class="p">)</span>
-                    <span class="n">generated_responses</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">response_batch</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">generated_responses</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;model_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span>
-                <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">,</span>
-            <span class="p">}</span>
-
-            <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
-                <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
-                <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span>
-
-            <span class="k">if</span> <span class="s1">&#39;parameters&#39;</span> <span class="ow">in</span> <span class="n">payload</span> <span class="ow">and</span> <span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span><span class="p">],</span> <span class="n">DecodingMethods</span><span class="p">):</span>
-                    <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span><span class="p">]</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span><span class="p">:</span>
-                <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;project_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span><span class="p">:</span>
-                <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;space_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span>
-
-            <span class="k">if</span> <span class="s1">&#39;parameters&#39;</span> <span class="ow">in</span> <span class="n">payload</span> <span class="ow">and</span> <span class="s1">&#39;return_options&#39;</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="s1">&#39;return_options&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input_text&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">or</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="s1">&#39;return_options&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input_tokens&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)):</span>
-                    <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;fm_required_parameters_not_provided&quot;</span><span class="p">))</span>
-
-            <span class="n">retries</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">while</span> <span class="n">retries</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="n">response_scoring</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-                        <span class="n">url</span><span class="o">=</span><span class="n">generate_text_url</span><span class="p">,</span>
-                        <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
-                        <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">()</span>
-                    <span class="p">)</span>
-                <span class="k">if</span> <span class="n">response_scoring</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">429</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">,</span> <span class="mi">520</span><span class="p">]:</span>
-                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">retries</span><span class="p">)</span>
-                    <span class="n">retries</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">break</span>
-
-            <span class="k">if</span> <span class="mi">400</span> <span class="o">&lt;=</span> <span class="n">response_scoring</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&lt;=</span> <span class="mi">599</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Request failed with: </span><span class="si">{</span><span class="n">response_scoring</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">response_scoring</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
-
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;generate&#39;</span><span class="p">,</span> <span class="n">response_scoring</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Model.generate_text"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate_text">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">concurrency_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<div class="viewcode-block" id="Model.generate_text"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate_text">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                      <span class="n">prompt</span><span class="p">,</span>
+                      <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">raw_response</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">concurrency_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a text prompt as input, and parameters the selected model (model_id)</span>
 <span class="sd">        will generate a completion text as generated_text.</span>
 
@@ -491,6 +401,9 @@
 
 <span class="sd">        :param prompt: the prompt string or list of strings. If list of strings is passed requests will be managed in parallel with the rate of concurency_limit</span>
 <span class="sd">        :type prompt: str, list</span>
+
+<span class="sd">        :param raw_response: return the whole response object</span>
+<span class="sd">        :type raw_response: bool, optional</span>
 
 <span class="sd">        :return: generated content</span>
 <span class="sd">        :rtype: str</span>
@@ -504,12 +417,15 @@
 <span class="sd">            print(generated_text)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">)[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;generated_text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="n">prompt</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">)[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;generated_text&#39;</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate_text</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+                                     <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                                     <span class="n">raw_response</span><span class="o">=</span><span class="n">raw_response</span><span class="p">,</span>
+                                     <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Model.generate_text_stream"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate_text_stream">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Model.generate_text_stream"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate_text_stream">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">prompt</span><span class="p">,</span>
+                             <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">raw_response</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a text prompt as input, and parameters the selected model (model_id)</span>
 <span class="sd">        will generate a streamed text as generate_text_stream.</span>
 
@@ -518,6 +434,9 @@
 
 <span class="sd">        :param prompt: the prompt string</span>
 <span class="sd">        :type prompt: str,</span>
+
+<span class="sd">        :param raw_response: yields the whole response object</span>
+<span class="sd">        :type raw_response: bool, optional</span>
 
 <span class="sd">        :return: scoring result containing generated content</span>
 <span class="sd">        :rtype: generator</span>
@@ -533,56 +452,9 @@
 <span class="sd">                print(chunk, end=&#39;&#39;)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">generate_text_stream_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_fm_generation_href</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;text_stream?version=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">version_param</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-        <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;model_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span>
-            <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;prompt&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
-            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
-            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span>
-
-        <span class="k">if</span> <span class="s1">&#39;parameters&#39;</span> <span class="ow">in</span> <span class="n">payload</span> <span class="ow">and</span> <span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span><span class="p">],</span> <span class="n">DecodingMethods</span><span class="p">):</span>
-                <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span><span class="p">]</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span>
-                    <span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span><span class="p">:</span>
-            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;project_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span><span class="p">:</span>
-            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;space_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span>
-
-        <span class="k">if</span> <span class="s1">&#39;parameters&#39;</span> <span class="ow">in</span> <span class="n">payload</span> <span class="ow">and</span> <span class="s1">&#39;return_options&#39;</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="s1">&#39;return_options&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input_text&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">or</span>
-                    <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="s1">&#39;return_options&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input_tokens&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)):</span>
-                <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;fm_required_parameters_not_provided&quot;</span><span class="p">))</span>
-
-        <span class="n">s</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
-        <span class="n">retries</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">while</span> <span class="n">retries</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">s</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">generate_text_stream_url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">(),</span>
-                        <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">429</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">,</span> <span class="mi">520</span><span class="p">]:</span>
-                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">retries</span><span class="p">)</span>
-                    <span class="n">retries</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">elif</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">iter_lines</span><span class="p">(</span><span class="n">decode_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-                        <span class="k">if</span> <span class="s1">&#39;generated_text&#39;</span> <span class="ow">in</span> <span class="n">chunk</span><span class="p">:</span>
-                            <span class="n">response</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;data: &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                            <span class="k">try</span><span class="p">:</span>
-                                <span class="n">parsed_response</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-                                <span class="k">yield</span> <span class="n">parsed_response</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;generated_text&#39;</span><span class="p">]</span>
-                            <span class="k">except</span> <span class="ne">SyntaxError</span><span class="p">:</span>
-                                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not parse </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2"> as literal_eval&quot;</span><span class="p">)</span>
-                    <span class="k">break</span>
-
-        <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Request failed with: </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate_text_stream</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+                                            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                                            <span class="n">raw_response</span><span class="o">=</span><span class="n">raw_response</span><span class="p">)</span></div></div>
 </pre></div>
         </article>
       </div>

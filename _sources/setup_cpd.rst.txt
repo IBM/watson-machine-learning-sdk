@@ -9,6 +9,7 @@ Starting work with IBM Cloud Pak for Data refer to `Getting started` section in 
  - `Version 4.5 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.5.x?topic=getting-started>`__
  - `Version 4.6 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.6.x?topic=getting-started>`__
  - `Version 4.7 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.7.x?topic=getting-started>`__
+ - `Version 4.8 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.8.x?topic=getting-started>`__
 
 Supported machine learning frameworks
 -------------------------------------
@@ -18,6 +19,7 @@ For the list of supported machine learning frameworks (models) of IBM Cloud PakÂ
  - `Version 4.5 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.5.x?topic=specifications-supported-frameworks-software>`__
  - `Version 4.6 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.6.x?topic=specifications-supported-frameworks-software>`__
  - `Version 4.7 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.7.x?topic=specifications-supported-frameworks-software>`__
+ - `Version 4.8 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.8.x?topic=specifications-supported-frameworks-software>`__
 
 Authentication
 --------------

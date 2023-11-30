@@ -227,7 +227,7 @@
     <span class="kn">from</span> <span class="nn">langchain.llms.utils</span> <span class="kn">import</span> <span class="n">enforce_stop_tokens</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;Could not import langchain: Please install langchain extension.&quot;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">ModelInference</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -272,22 +272,17 @@
 <span class="sd">        custom_llm = WatsonxLLM(model=model)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">model</span><span class="p">:</span> <span class="n">Model</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">Model</span> <span class="o">|</span> <span class="n">ModelInference</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">llm_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;IBM watsonx.ai&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Model</span> <span class="o">|</span> <span class="n">ModelInference</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">WatsonxLLM</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_identifying_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the identifying parameters.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;model_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_id</span><span class="p">},</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">params</span><span class="p">},</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;project_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">project_id</span><span class="p">},</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;space_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">space_id</span><span class="p">},</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_identifying_params</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_llm_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>

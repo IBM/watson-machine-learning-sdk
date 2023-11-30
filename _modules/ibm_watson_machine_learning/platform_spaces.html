@@ -321,14 +321,15 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            metadata = {</span>
-<span class="sd">                client.spaces.ConfigurationMetaNames.NAME: &#39;my_space&#39;,</span>
-<span class="sd">                client.spaces.ConfigurationMetaNames.DESCRIPTION: &#39;spaces&#39;,</span>
+<span class="sd">                client.spaces.ConfigurationMetaNames.NAME: &quot;my_space&quot;,</span>
+<span class="sd">                client.spaces.ConfigurationMetaNames.DESCRIPTION: &quot;spaces&quot;,</span>
 <span class="sd">                client.spaces.ConfigurationMetaNames.STORAGE: {&quot;resource_crn&quot;: &quot;provide crn of the COS storage&quot;},</span>
 <span class="sd">                client.spaces.ConfigurationMetaNames.COMPUTE: {&quot;name&quot;: &quot;test_instance&quot;,</span>
 <span class="sd">                                                               &quot;crn&quot;: &quot;provide crn of the instance&quot;},</span>
 <span class="sd">                client.spaces.ConfigurationMetaNames.STAGE: {&quot;production&quot;: True,</span>
 <span class="sd">                                                             &quot;name&quot;: &quot;stage_name&quot;},</span>
-<span class="sd">                client.spaces.ConfigurationMetaNames.TAGS: [&quot;sample_tag_1&quot;, &quot;sample_tag_2&quot;]</span>
+<span class="sd">                client.spaces.ConfigurationMetaNames.TAGS: [&quot;sample_tag_1&quot;, &quot;sample_tag_2&quot;],</span>
+<span class="sd">                client.spaces.ConfigurationMetaNames.TYPE: &quot;cpd&quot;,</span>
 <span class="sd">            }</span>
 <span class="sd">            spaces_details = client.spaces.store(meta_props=metadata)</span>
 <span class="sd">        &quot;&quot;&quot;</span>

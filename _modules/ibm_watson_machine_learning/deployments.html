@@ -221,16 +221,21 @@
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils</span> <span class="kn">import</span> <span class="n">DEPLOYMENT_DETAILS_TYPE</span><span class="p">,</span> <span class="n">INSTANCE_DETAILS_TYPE</span><span class="p">,</span> <span class="n">print_text_header_h1</span><span class="p">,</span> <span class="n">print_text_header_h2</span><span class="p">,</span> \
     <span class="n">StatusLogger</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span><span class="p">,</span> <span class="n">MissingValue</span><span class="p">,</span> <span class="n">NoVirtualDeploymentSupportedForICP</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="p">(</span><span class="n">WMLClientError</span><span class="p">,</span> <span class="n">MissingValue</span><span class="p">,</span> 
+                                                          <span class="n">NoVirtualDeploymentSupportedForICP</span><span class="p">,</span>  
+                                                          <span class="n">InvalidValue</span><span class="p">,</span> <span class="n">MissingArgument</span><span class="p">,</span> <span class="n">PromptVariablesError</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.href_definitions</span> <span class="kn">import</span> <span class="n">is_uid</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">DeploymentMetaNames</span><span class="p">,</span> <span class="n">ScoringMetaNames</span><span class="p">,</span> <span class="n">DecisionOptimizationMetaNames</span><span class="p">,</span> <span class="n">DeploymentNewMetaNames</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.libs.repo.util.library_imports</span> <span class="kn">import</span> <span class="n">LibraryChecker</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils.autoai.utils</span> <span class="kn">import</span> <span class="n">all_logging_disabled</span>
 <span class="c1">#from ibm_watson_machine_learning.metanames import DeploymentMetaNames, ScoreMetaNames, EnvironmentMetaNames</span>
 
 <span class="n">lib_checker</span> <span class="o">=</span> <span class="n">LibraryChecker</span><span class="p">()</span>
@@ -321,7 +326,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">##To be removed once deployments adds support for projects</span>
         <span class="n">WMLResource</span><span class="o">.</span><span class="n">_chk_and_block_create_update_for_python36</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_space_is_set</span><span class="p">()</span>
 
         <span class="n">Deployments</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">artifact_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;artifact_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
@@ -392,7 +396,10 @@
                 <span class="n">metaProps</span><span class="p">[</span><span class="s1">&#39;asset&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;rev&#39;</span><span class="p">:</span> <span class="n">rev_id</span><span class="p">})</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
-                <span class="n">metaProps</span><span class="p">[</span><span class="s1">&#39;space_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span><span class="p">:</span>
+                    <span class="n">metaProps</span><span class="p">[</span><span class="s1">&#39;project_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_project_id</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">metaProps</span><span class="p">[</span><span class="s1">&#39;space_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="s1">&#39;space&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metaProps</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -400,6 +407,19 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span>
                             <span class="s2">&quot;It is mandatory is set the space. Use client.set.default_space(&lt;SPACE_GUID&gt;) to set the space.&quot;</span><span class="p">)</span>
+            <span class="c1"># note: checking if artifact_uid points to prompt_template</span>
+            <span class="k">with</span> <span class="n">all_logging_disabled</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.prompts</span> <span class="kn">import</span> <span class="n">PromptTemplateManager</span>
+            
+                    <span class="n">PromptTemplateManager</span><span class="p">(</span><span class="n">api_client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span><span class="o">.</span><span class="n">load_prompt</span><span class="p">(</span><span class="n">artifact_uid</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">WMLClientError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">metaProps</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;asset&quot;</span><span class="p">)</span>
+                    <span class="n">metaProps</span><span class="p">[</span><span class="s1">&#39;prompt_template&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">artifact_uid</span><span class="p">}</span>
+            
+            <span class="c1"># --- end note</span>
 
         <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_deployments_href</span><span class="p">()</span>
 
@@ -653,8 +673,8 @@
 <span class="sd">                deployments_details.extend(entry)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">##To be removed once projects adds support for deployments</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_space_is_set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&lt;</span> <span class="mf">4.8</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_space_is_set</span><span class="p">()</span>
 
         <span class="n">Deployments</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">deployment_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;deployment_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
@@ -776,8 +796,8 @@
 <span class="sd">            client.deployments.delete(deployment_uid)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">##To be removed once deployments adds support for deployments</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_space_is_set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&lt;</span> <span class="mf">4.8</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_space_is_set</span><span class="p">()</span>
 
         <span class="n">Deployments</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">deployment_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;deployment_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
@@ -837,8 +857,8 @@
 <span class="sd">            predictions = client.deployments.score(deployment_id, scoring_payload,async=True)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">##To be removed once deployments adds support for deployments</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_space_is_set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&lt;</span> <span class="mf">4.8</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_space_is_set</span><span class="p">()</span>
 
         <span class="n">Deployments</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;deployment_id&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="n">Deployments</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">meta_props</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;meta_props&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
@@ -959,57 +979,6 @@
 
         <span class="k">return</span> <span class="n">url</span></div>
 
-<div class="viewcode-block" id="Deployments.download"><a class="viewcode-back" href="../../core_api.html#client.Deployments.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">virtual_deployment_uid</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Downloads file deployment of specified deployment Id. Currently supported format is Core ML.</span>
-<span class="sd">        Supported only for IBM Cloud Pak® for Data 3.0 and below.</span>
-
-<span class="sd">        :param virtual_deployment_uid:  Unique Id of virtual deployment</span>
-<span class="sd">        :type virtual_deployment_uid: str</span>
-
-<span class="sd">        :param filename: filename of downloaded archive</span>
-<span class="sd">        :type filename: str, optional</span>
-
-<span class="sd">        :return: path to downloaded file</span>
-<span class="sd">        :rtype: str</span>
-
-<span class="sd">        **Example**</span>
-
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            client.deployments.download(virtual_deployment_uid)</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_space_is_set</span><span class="p">()</span>
-        <span class="n">Deployments</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">virtual_deployment_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;deployment_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">virtual_deployment_uid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_uid</span><span class="p">(</span><span class="n">virtual_deployment_uid</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">deployment_uid</span><span class="se">\&#39;</span><span class="s1"> is not an uid: </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">virtual_deployment_uid</span><span class="p">))</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">()</span>
-        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">virtual_deployment_uid</span><span class="p">)</span>
-        <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_download_url</span><span class="p">(</span><span class="n">details</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
-            <span class="n">download_url</span> <span class="o">=</span> <span class="n">download_url</span> <span class="o">+</span> <span class="s2">&quot;&amp;version=&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">version_param</span>
-            <span class="n">params</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="n">download_url</span><span class="p">,</span>
-            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-            <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">()</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;mlartifact.tar.gz&#39;</span>
-
-        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_file</span><span class="p">:</span>
-                <span class="n">new_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-                <span class="n">new_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-                <span class="n">print_text_header_h2</span><span class="p">(</span>
-                    <span class="sa">u</span><span class="s1">&#39;Successfully downloaded deployment file: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
-
-                <span class="k">return</span> <span class="n">filename</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Unable to download deployment content: &#39;</span> <span class="o">+</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="Deployments.list"><a class="viewcode-back" href="../../core_api.html#client.Deployments.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print deployments in a table format. If limit is set to None there will be only first 50 records shown.</span>
 
@@ -1029,8 +998,8 @@
 <span class="sd">            client.deployments.list()</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">##To be removed once deployments adds support for deployments</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_space_is_set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&lt;</span> <span class="mf">4.8</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_space_is_set</span><span class="p">()</span>
 
         <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
         <span class="n">resources</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;resources&#39;</span><span class="p">]</span>
@@ -1075,7 +1044,7 @@
                     <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;status&#39;</span><span class="p">][</span><span class="s1">&#39;state&#39;</span><span class="p">],</span>
                                   <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;created_at&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_deployable_asset_type</span><span class="p">(</span><span class="n">m</span><span class="p">)))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">spec_id</span> <span class="o">=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;asset&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="p">{})</span>\
+                <span class="n">spec_id</span> <span class="o">=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;asset&#39;</span><span class="p">,</span> <span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;prompt_template&#39;</span><span class="p">))[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="p">{})</span>\
                     <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;entity&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;software_spec&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
 
                 <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -1083,7 +1052,7 @@
                      <span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
                      <span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">][</span><span class="s1">&#39;state&#39;</span><span class="p">],</span>
                      <span class="n">m</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;created_at&#39;</span><span class="p">],</span>
-                     <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;asset&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;asset_type&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">),</span>
+                     <span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;deployed_asset_type&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">),</span>
                      <span class="n">get_spec_info</span><span class="p">(</span><span class="n">spec_id</span><span class="p">,</span> <span class="s1">&#39;state&#39;</span><span class="p">),</span>
                      <span class="n">get_spec_info</span><span class="p">(</span><span class="n">spec_id</span><span class="p">,</span> <span class="s1">&#39;replacement&#39;</span><span class="p">)))</span>
 
@@ -1188,8 +1157,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">WMLResource</span><span class="o">.</span><span class="n">_chk_and_block_create_update_for_python36</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="c1">##To be removed once deployments adds support for deployments</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_space_is_set</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&lt;</span> <span class="mf">4.8</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_space_is_set</span><span class="p">()</span>
 
         <span class="n">ret202</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -1197,18 +1167,23 @@
 
         <span class="n">Deployments</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">deployment_uid</span><span class="p">,</span> <span class="s1">&#39;deployment_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="s1">&#39;asset&#39;</span> <span class="ow">in</span> <span class="n">changes</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">changes</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;asset&#39;</span><span class="p">]:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;ASSETS cannot be empty. &#39;id&#39; and &#39;rev&#39; fields are supported. &#39;id&#39; is mandatory&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;asset&#39;</span> <span class="ow">in</span> <span class="n">changes</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">changes</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;asset&#39;</span><span class="p">])</span> <span class="ow">and</span> \
+            <span class="p">(</span><span class="s1">&#39;prompt_template&#39;</span> <span class="ow">in</span> <span class="n">changes</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">changes</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;prompt_template&#39;</span><span class="p">]):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;ASSET/PROMPT_TEMPLATE cannot be empty. &#39;id&#39; and &#39;rev&#39; (only ASSET) fields are supported. &#39;id&#39; is mandatory&quot;</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        
 
         <span class="c1"># if changes.get(&#39;asset&#39;) is not None and (changes.get(&#39;name&#39;) is not None or changes.get(&#39;description&#39;) is not None):</span>
-        <span class="n">patch_job</span> <span class="o">=</span> <span class="n">changes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;asset&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">SERVING_NAME</span> <span class="ow">in</span> <span class="n">changes</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">OWNER</span> <span class="ow">in</span> <span class="n">changes</span>
+        <span class="n">patch_job</span> <span class="o">=</span> <span class="n">changes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;asset&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PROMPT_TEMPLATE</span> <span class="ow">in</span> <span class="n">changes</span> <span class="ow">or</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">SERVING_NAME</span> <span class="ow">in</span> <span class="n">changes</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">OWNER</span> <span class="ow">in</span> <span class="n">changes</span>
 
         <span class="n">patch_job_field</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">patch_job</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">changes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;asset&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">patch_job_field</span> <span class="o">=</span> <span class="s2">&quot;ASSET&quot;</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">PROMPT_TEMPLATE</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
+                <span class="n">patch_job_field</span> <span class="o">=</span> <span class="s2">&quot;PROMPT_TEMPLATE&quot;</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">SERVING_NAME</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
                 <span class="n">patch_job_field</span> <span class="o">=</span> <span class="s2">&quot;SERVING_NAME&quot;</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">OWNER</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
@@ -1658,187 +1633,6 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;deployment async job deletion&#39;</span><span class="p">,</span> <span class="n">response_delete</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
 
-
-    <span class="c1"># def create_environment(self, meta_props):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#             Cancels a job.</span>
-    <span class="c1">#</span>
-    <span class="c1">#             **Parameters**</span>
-    <span class="c1">#</span>
-    <span class="c1">#             .. important::</span>
-    <span class="c1">#</span>
-    <span class="c1">#                 #. **job_uid**:  UID of job which  should be canceled\n</span>
-    <span class="c1">#                    **type**: str\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#             **Output**</span>
-    <span class="c1">#</span>
-    <span class="c1">#             .. important::</span>
-    <span class="c1">#</span>
-    <span class="c1">#                 **returns**: status (&quot;SUCCESS&quot; or &quot;FAILED&quot;)\n</span>
-    <span class="c1">#                 **return type**: str\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#             **Example**</span>
-    <span class="c1">#</span>
-    <span class="c1">#              &gt;&gt;&gt; client.deployments.delete_job(job_uid)</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#</span>
-    <span class="c1">#     Deployments._validate_type(meta_props, u&#39;metaprops&#39;, dict, True)</span>
-    <span class="c1">#</span>
-    <span class="c1">#</span>
-    <span class="c1">#     url = self._client.service_instance._href_definitions.get_envs_href()</span>
-    <span class="c1">#     metadata = self.EnvironmentMetanames._generate_resource_metadata(meta_props)</span>
-    <span class="c1">#</span>
-    <span class="c1">#     response_post = requests.post(url, json=metadata,</span>
-    <span class="c1">#                                     headers=self._client._get_headers())</span>
-    <span class="c1">#</span>
-    <span class="c1">#     return self._handle_response(201, u&#39;deployment job deletion&#39;, response_post, False)</span>
-    <span class="c1">#</span>
-    <span class="c1"># def delete_environment(self, env_id):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#             Cancels a job.</span>
-    <span class="c1">#</span>
-    <span class="c1">#             **Parameters**</span>
-    <span class="c1">#</span>
-    <span class="c1">#             .. important::</span>
-    <span class="c1">#</span>
-    <span class="c1">#                 #. **job_uid**:  UID of job which  should be canceled\n</span>
-    <span class="c1">#                    **type**: str\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#             **Output**</span>
-    <span class="c1">#</span>
-    <span class="c1">#             .. important::</span>
-    <span class="c1">#</span>
-    <span class="c1">#                 **returns**: status (&quot;SUCCESS&quot; or &quot;FAILED&quot;)\n</span>
-    <span class="c1">#                 **return type**: str\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#             **Example**</span>
-    <span class="c1">#</span>
-    <span class="c1">#              &gt;&gt;&gt; client.deployments.delete_job(job_uid)</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     Deployments._validate_type(env_id, u&#39;env_uid&#39;, str, True)</span>
-    <span class="c1">#</span>
-    <span class="c1">#</span>
-    <span class="c1">#     if env_id is not None and not is_uid(env_id):</span>
-    <span class="c1">#         raise WMLClientError(u&#39;\&#39;env_id\&#39; is not an uid: \&#39;{}\&#39;&#39;.format(env_id))</span>
-    <span class="c1">#</span>
-    <span class="c1">#</span>
-    <span class="c1">#     url = self._client.service_instance._href_definitions.get_env_href(env_id)</span>
-    <span class="c1">#</span>
-    <span class="c1">#     response_delete = requests.delete(</span>
-    <span class="c1">#           url,</span>
-    <span class="c1">#           headers=self._client._get_headers())</span>
-    <span class="c1">#</span>
-    <span class="c1">#     return self._handle_response(204, u&#39;environment deletion&#39;, response_delete, False)</span>
-    <span class="c1">#</span>
-    <span class="c1"># def get_environment_uid(self, env_details):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#        Get the UID of the environment.</span>
-    <span class="c1">#</span>
-    <span class="c1">#        **Parameters**</span>
-    <span class="c1">#</span>
-    <span class="c1">#        .. important::</span>
-    <span class="c1">#             #. **job_details**: metadata of the job\n</span>
-    <span class="c1">#                **type**: dict\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#        **Output**</span>
-    <span class="c1">#</span>
-    <span class="c1">#        .. important::</span>
-    <span class="c1">#             **returns**: UID of the job\n</span>
-    <span class="c1">#             **return type**: str\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#        **Example**</span>
-    <span class="c1">#</span>
-    <span class="c1">#         &gt;&gt;&gt; job_details = client.deployments.get_job_details(deployment_uid=deployment_uid,job_uid=job_uid)</span>
-    <span class="c1">#         &gt;&gt;&gt; job_status = client.deployments.get_job_uid(job_details)</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#</span>
-    <span class="c1">#     return env_details[&#39;metadata&#39;][&#39;guid&#39;]</span>
-    <span class="c1">#</span>
-    <span class="c1"># def get_environment_href(self, env_details):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#        Get the href of the job.</span>
-    <span class="c1">#</span>
-    <span class="c1">#        **Parameters**</span>
-    <span class="c1">#</span>
-    <span class="c1">#        .. important::</span>
-    <span class="c1">#             #. **job_details**: metadata of the job\n</span>
-    <span class="c1">#                **type**: dict\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#        **Output**</span>
-    <span class="c1">#</span>
-    <span class="c1">#        .. important::</span>
-    <span class="c1">#             **returns**: href of the job\n</span>
-    <span class="c1">#             **return type**: str\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#        **Example**</span>
-    <span class="c1">#</span>
-    <span class="c1">#         &gt;&gt;&gt; job_details = client.deployments.get_job_details(deployment_uid=deployment_uid,job_uid=job_uid)</span>
-    <span class="c1">#         &gt;&gt;&gt; job_status = client.deployments.get_job_href(job_details)</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#</span>
-    <span class="c1">#     return env_details[&#39;metadata&#39;][&#39;href&#39;]</span>
-    <span class="c1">#</span>
-    <span class="c1"># def get_environment_details(self,env_id=None,limit=None):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#        Get information about your job(s). If job_uid is not passed, all jobs details are fetched.</span>
-    <span class="c1">#</span>
-    <span class="c1">#        **Parameters**</span>
-    <span class="c1">#</span>
-    <span class="c1">#        .. important::</span>
-    <span class="c1">#</span>
-    <span class="c1">#             #. **job_uid**: Job UID (optional)\n</span>
-    <span class="c1">#                **type**: str\n</span>
-    <span class="c1">#             #. **limit**:  limit number of fetched records (optional)\n</span>
-    <span class="c1">#                **type**: int\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#        **Output**</span>
-    <span class="c1">#</span>
-    <span class="c1">#        .. important::</span>
-    <span class="c1">#             **returns**: metadata of job(s)\n</span>
-    <span class="c1">#             **return type**: dict\n</span>
-    <span class="c1">#             dict (if job UID is not None) or {&quot;resources&quot;: [dict]} (if job UID is None)\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#        .. note::</span>
-    <span class="c1">#             If job UID is not specified, all jobs metadata associated with the deployment UID is fetched\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#</span>
-    <span class="c1">#        **Example**</span>
-    <span class="c1">#</span>
-    <span class="c1">#         &gt;&gt;&gt; deployment_details = client.deployments.get_job_details()</span>
-    <span class="c1">#         &gt;&gt;&gt; deployments_details = client.deployments.get_job_details(job_uid=job_uid)</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     #Deployments._validate_type(job_uid, u&#39;deployment_uid&#39;, str, True)</span>
-    <span class="c1">#     #Deployments._validate_type(job_uid, u&#39;job_uid&#39;, str, True)</span>
-    <span class="c1">#     url = self._client.service_instance._href_definitions.get_envs_href()</span>
-    <span class="c1">#     return self._get_artifact_details(url, env_id, limit, &#39;get environments details&#39;)</span>
-    <span class="c1">#</span>
-    <span class="c1"># def list_environments(self,limit=None):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#        List the async jobs. If limit is set to None there will be only first 50 records shown.</span>
-    <span class="c1">#</span>
-    <span class="c1">#        **Parameters**</span>
-    <span class="c1">#</span>
-    <span class="c1">#        .. important::</span>
-    <span class="c1">#             #. **limit**:  limit number of fetched records\n</span>
-    <span class="c1">#                **type**: int\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#        **Output**</span>
-    <span class="c1">#</span>
-    <span class="c1">#        .. important::</span>
-    <span class="c1">#             This method only prints the list of all async jobs in a table format.\n</span>
-    <span class="c1">#             **return type**: None\n</span>
-    <span class="c1">#</span>
-    <span class="c1">#        **Example**</span>
-    <span class="c1">#</span>
-    <span class="c1">#         &gt;&gt;&gt; client.deployments.list_jobs()</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     details = self.get_environment_details()</span>
-    <span class="c1">#     resources = details[u&#39;resources&#39;]</span>
-    <span class="c1">#     values = [(m[u&#39;metadata&#39;][u&#39;guid&#39;], m[u&#39;entity&#39;][u&#39;name&#39;],</span>
-    <span class="c1">#                m[u&#39;metadata&#39;][u&#39;created_at&#39;]) for m in resources]</span>
-    <span class="c1">#</span>
-    <span class="c1">#     self._list(values, [u&#39;GUID&#39;, u&#39;NAME&#39;, u&#39;CREATED&#39;], None, 50)</span>
-
     <span class="k">def</span> <span class="nf">_get_filter_func_by_spec_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec_state</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">filter_func</span><span class="p">(</span><span class="n">resources</span><span class="p">):</span>
             <span class="n">asset_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
@@ -1851,7 +1645,6 @@
             <span class="k">return</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">resources</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;asset&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">asset_ids</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">filter_func</span></div>
-
 </pre></div>
         </article>
       </div>

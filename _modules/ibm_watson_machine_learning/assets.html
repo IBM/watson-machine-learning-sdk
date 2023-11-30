@@ -228,6 +228,7 @@
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">AssetsMetaNames</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span><span class="p">,</span> <span class="n">ApiRequestFailure</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="n">_DEFAULT_LIST_LENGTH</span> <span class="o">=</span> <span class="mi">50</span>
@@ -346,10 +347,12 @@
 
         <span class="n">name</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">NAME</span><span class="p">]</span>
         <span class="n">file_path</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DATA_CONTENT_NAME</span><span class="p">]</span>
-        <span class="n">connection_id</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">CONNECTION_ID</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
-            <span class="n">connection_id</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">CONNECTION_ID</span><span class="p">]</span>
+
+        <span class="n">connection_id</span> <span class="o">=</span> <span class="n">meta_props</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">CONNECTION_ID</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">connection_id</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+            <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No connection_id specified and file: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DESCRIPTION</span> <span class="ow">in</span> <span class="n">meta_props</span><span class="p">:</span>
             <span class="n">description</span> <span class="o">=</span> <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">]</span>
