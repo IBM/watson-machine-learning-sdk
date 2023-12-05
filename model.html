@@ -576,56 +576,71 @@ will generate a streamed text as generate_text_stream.</p>
 <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ibm_watson_machine_learning.foundation_models.utils.enums.</span></span><span class="sig-name descname"><span class="pre">ModelTypes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ibm_watson_machine_learning/foundation_models/utils/enums.html#ModelTypes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
-<p>Supported foundation models.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XXL">
-<span class="sig-name descname"><span class="pre">FLAN_T5_XXL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'google/flan-t5-xxl'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XXL" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_UL2">
-<span class="sig-name descname"><span class="pre">FLAN_UL2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'google/flan-ul2'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_UL2" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GPT_NEOX">
-<span class="sig-name descname"><span class="pre">GPT_NEOX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'eleutherai/gpt-neox-20b'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GPT_NEOX" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_CHAT">
-<span class="sig-name descname"><span class="pre">GRANITE_13B_CHAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ibm/granite-13b-chat-v1'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_CHAT" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_INSTRUCT">
-<span class="sig-name descname"><span class="pre">GRANITE_13B_INSTRUCT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ibm/granite-13b-instruct-v1'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_INSTRUCT" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_13B_CHAT">
-<span class="sig-name descname"><span class="pre">LLAMA_2_13B_CHAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'meta-llama/llama-2-13b-chat'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_13B_CHAT" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_70B_CHAT">
-<span class="sig-name descname"><span class="pre">LLAMA_2_70B_CHAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'meta-llama/llama-2-70b-chat'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_70B_CHAT" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MPT_7B_INSTRUCT2">
-<span class="sig-name descname"><span class="pre">MPT_7B_INSTRUCT2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ibm/mpt-7b-instruct2'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MPT_7B_INSTRUCT2" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MT0_XXL">
-<span class="sig-name descname"><span class="pre">MT0_XXL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'bigscience/mt0-xxl'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MT0_XXL" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.STARCODER">
-<span class="sig-name descname"><span class="pre">STARCODER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'bigcode/starcoder'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.STARCODER" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+  <p>Supported foundation models.</p>
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XL">
+  <span class="sig-name descname"><span class="pre">FLAN_T5_XL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'google/flan-t5-xl'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XL" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
+  
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XXL">
+  <span class="sig-name descname"><span class="pre">FLAN_T5_XXL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'google/flan-t5-xxl'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XXL" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
+  
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_UL2">
+  <span class="sig-name descname"><span class="pre">FLAN_UL2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'google/flan-ul2'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_UL2" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
+  
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GPT_NEOX">
+  <span class="sig-name descname"><span class="pre">GPT_NEOX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'eleutherai/gpt-neox-20b'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GPT_NEOX" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
+  
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_CHAT">
+  <span class="sig-name descname"><span class="pre">GRANITE_13B_CHAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ibm/granite-13b-chat-v1'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_CHAT" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
+  
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_CHAT_V2">
+  <span class="sig-name descname"><span class="pre">GRANITE_13B_CHAT_V2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ibm/granite-13b-chat-v2'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_CHAT_V2" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
+  
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_INSTRUCT">
+  <span class="sig-name descname"><span class="pre">GRANITE_13B_INSTRUCT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ibm/granite-13b-instruct-v1'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_INSTRUCT" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
+  
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_INSTRUCT_V2">
+  <span class="sig-name descname"><span class="pre">GRANITE_13B_INSTRUCT_V2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ibm/granite-13b-instruct-v2'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_INSTRUCT_V2" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
+  
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_13B_CHAT">
+  <span class="sig-name descname"><span class="pre">LLAMA_2_13B_CHAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'meta-llama/llama-2-13b-chat'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_13B_CHAT" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
+  
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_70B_CHAT">
+  <span class="sig-name descname"><span class="pre">LLAMA_2_70B_CHAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'meta-llama/llama-2-70b-chat'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_70B_CHAT" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
+  
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MPT_7B_INSTRUCT2">
+  <span class="sig-name descname"><span class="pre">MPT_7B_INSTRUCT2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ibm/mpt-7b-instruct2'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MPT_7B_INSTRUCT2" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
+  
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MT0_XXL">
+  <span class="sig-name descname"><span class="pre">MT0_XXL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'bigscience/mt0-xxl'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MT0_XXL" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
+  
+  <dl class="py attribute">
+  <dt class="sig sig-object py" id="ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.STARCODER">
+  <span class="sig-name descname"><span class="pre">STARCODER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'bigcode/starcoder'</span></em><a class="headerlink" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.STARCODER" title="Permalink to this definition">#</a></dt>
+  <dd></dd></dl>
 
 </dd></dl>
 
@@ -705,16 +720,19 @@ will generate a streamed text as generate_text_stream.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes"><code class="docutils literal notranslate"><span class="pre">ModelTypes</span></code></a><ul>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XXL"><code class="docutils literal notranslate"><span class="pre">ModelTypes.FLAN_T5_XXL</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_UL2"><code class="docutils literal notranslate"><span class="pre">ModelTypes.FLAN_UL2</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GPT_NEOX"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GPT_NEOX</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_CHAT"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GRANITE_13B_CHAT</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_INSTRUCT"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GRANITE_13B_INSTRUCT</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_13B_CHAT"><code class="docutils literal notranslate"><span class="pre">ModelTypes.LLAMA_2_13B_CHAT</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_70B_CHAT"><code class="docutils literal notranslate"><span class="pre">ModelTypes.LLAMA_2_70B_CHAT</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MPT_7B_INSTRUCT2"><code class="docutils literal notranslate"><span class="pre">ModelTypes.MPT_7B_INSTRUCT2</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MT0_XXL"><code class="docutils literal notranslate"><span class="pre">ModelTypes.MT0_XXL</span></code></a></li>
-<li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.STARCODER"><code class="docutils literal notranslate"><span class="pre">ModelTypes.STARCODER</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XL"><code class="docutils literal notranslate"><span class="pre">ModelTypes.FLAN_T5_XL</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_T5_XXL"><code class="docutils literal notranslate"><span class="pre">ModelTypes.FLAN_T5_XXL</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.FLAN_UL2"><code class="docutils literal notranslate"><span class="pre">ModelTypes.FLAN_UL2</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GPT_NEOX"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GPT_NEOX</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_CHAT"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GRANITE_13B_CHAT</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_CHAT_V2"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GRANITE_13B_CHAT_V2</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_INSTRUCT"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GRANITE_13B_INSTRUCT</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.GRANITE_13B_INSTRUCT_V2"><code class="docutils literal notranslate"><span class="pre">ModelTypes.GRANITE_13B_INSTRUCT_V2</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_13B_CHAT"><code class="docutils literal notranslate"><span class="pre">ModelTypes.LLAMA_2_13B_CHAT</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.LLAMA_2_70B_CHAT"><code class="docutils literal notranslate"><span class="pre">ModelTypes.LLAMA_2_70B_CHAT</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MPT_7B_INSTRUCT2"><code class="docutils literal notranslate"><span class="pre">ModelTypes.MPT_7B_INSTRUCT2</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MT0_XXL"><code class="docutils literal notranslate"><span class="pre">ModelTypes.MT0_XXL</span></code></a></li>
+  <li><a class="reference internal" href="#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.STARCODER"><code class="docutils literal notranslate"><span class="pre">ModelTypes.STARCODER</span></code></a></li>
 </ul>
 </li>
 </ul>
