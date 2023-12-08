@@ -181,8 +181,11 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../../pt_working_with_class_and_prompt_tuner.html">Working with TuneExperiment and PromptTuner</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../pt_model_inference.html">Foundation Models Inference on watsonx.ai</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../pt_working_with_class_and_prompt_tuner.html">Working with TuneExperiment and PromptTuner</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Working with TuneExperiment and PromptTuner</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../pt_tune_experiment_run.html">Tune Experiment run</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../pt_model_inference.html">Tuned Model Inference</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../tune_experiment.html">Tune Experiment</a></li>
 </ul>
 </li>
@@ -422,7 +425,7 @@
 
 <span class="sd">        :param guardrails_hap_params: meta props for HAP moderations, use ``ibm_watson_machine_learning.metanames.GenTextModerationsMetaNames().show()``</span>
 <span class="sd">                                      to view the list of MetaNames</span>
-<span class="sd">        :type params: dict</span>
+<span class="sd">        :type guardrails_hap_params: dict</span>
 
 <span class="sd">        :return: scoring result containing generated content</span>
 <span class="sd">        :rtype: dict</span>
@@ -473,19 +476,30 @@
 <span class="sd">        :param prompt: the prompt string or list of strings. If list of strings is passed requests will be managed in parallel with the rate of concurency_limit, defaults to None</span>
 <span class="sd">        :type prompt: (str | list | None), optional</span>
 
-<span class="sd">        :param guardrails: If True then potentially hateful, abusive, and/or profane language (HAP) detection </span>
-<span class="sd">                           filter is toggle on for both prompt and generated text, defaults to False</span>
+<span class="sd">        :param guardrails: If True then potentially hateful, abusive, and/or profane language (HAP) detection filter is toggle on for both prompt and generated text, defaults to False</span>
+<span class="sd">                           If HAP is detected the `HAPDetectionWarning` is issued</span>
 <span class="sd">        :type guardrails: bool</span>
 
 <span class="sd">        :param guardrails_hap_params: meta props for HAP moderations, use ``ibm_watson_machine_learning.metanames.GenTextModerationsMetaNames().show()``</span>
 <span class="sd">                                      to view the list of MetaNames</span>
-<span class="sd">        :type params: dict</span>
+<span class="sd">        :type guardrails_hap_params: dict</span>
 
 <span class="sd">        :param raw_response: return the whole response object</span>
 <span class="sd">        :type raw_response: bool, optional</span>
 
 <span class="sd">        :return: generated content</span>
 <span class="sd">        :rtype: str</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            By default only the first occurance of `HAPDetectionWarning` is displayed. To enable printing all warnings of this category, use:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                import warnings</span>
+<span class="sd">                from ibm_watson_machine_learning.foundation_models.utils import HAPDetectionWarning</span>
+
+<span class="sd">                warnings.filterwarnings(&quot;always&quot;, category=HAPDetectionWarning)</span>
+<span class="sd">            </span>
 
 <span class="sd">        **Example**</span>
 
@@ -528,16 +542,26 @@
 <span class="sd">        :param raw_response: yields the whole response object</span>
 <span class="sd">        :type raw_response: bool, optional</span>
 
-<span class="sd">        :param guardrails: If True then potentially hateful, abusive, and/or profane language (HAP) detection </span>
-<span class="sd">                           filter is toggle on for both prompt and generated text, defaults to False</span>
+<span class="sd">        :param guardrails: If True then potentially hateful, abusive, and/or profane language (HAP) detection filter is toggle on for both prompt and generated text, defaults to False</span>
+<span class="sd">                           If HAP is detected the `HAPDetectionWarning` is issued</span>
 <span class="sd">        :type guardrails: bool</span>
 
 <span class="sd">        :param guardrails_hap_params: meta props for HAP moderations, use ``ibm_watson_machine_learning.metanames.GenTextModerationsMetaNames().show()``</span>
 <span class="sd">                                      to view the list of MetaNames</span>
-<span class="sd">        :type params: dict</span>
+<span class="sd">        :type guardrails_hap_params: dict</span>
 
 <span class="sd">        :return: scoring result containing generated content</span>
 <span class="sd">        :rtype: generator</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            By default only the first occurance of `HAPDetectionWarning` is displayed. To enable printing all warnings of this category, use:</span>
+
+<span class="sd">            .. code-block:: python</span>
+<span class="sd">            </span>
+<span class="sd">                import warnings</span>
+<span class="sd">                from ibm_watson_machine_learning.foundation_models.utils import HAPDetectionWarning</span>
+
+<span class="sd">                warnings.filterwarnings(&quot;always&quot;, category=HAPDetectionWarning)</span>
 
 <span class="sd">        **Example**</span>
 

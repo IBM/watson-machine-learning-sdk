@@ -181,8 +181,11 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../pt_working_with_class_and_prompt_tuner.html">Working with TuneExperiment and PromptTuner</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../pt_model_inference.html">Foundation Models Inference on watsonx.ai</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../pt_working_with_class_and_prompt_tuner.html">Working with TuneExperiment and PromptTuner</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Working with TuneExperiment and PromptTuner</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../pt_tune_experiment_run.html">Tune Experiment run</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../pt_model_inference.html">Tuned Model Inference</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="../../tune_experiment.html">Tune Experiment</a></li>
 </ul>
 </li>
@@ -1697,7 +1700,7 @@
 
 <span class="sd">        :param guardrails_hap_params: meta props for HAP moderations, use ``ibm_watson_machine_learning.metanames.GenTextModerationsMetaNames().show()``</span>
 <span class="sd">                                      to view the list of MetaNames</span>
-<span class="sd">        :type params: dict</span>
+<span class="sd">        :type guardrails_hap_params: dict</span>
 
 <span class="sd">        :param concurrency_limit: number of requests that will be sent in parallel, max is 10</span>
 <span class="sd">        :type concurrency_limit: int, optional</span>
@@ -1743,13 +1746,24 @@
 
 <span class="sd">        :param guardrails_hap_params: meta props for HAP moderations, use ``ibm_watson_machine_learning.metanames.GenTextModerationsMetaNames().show()``</span>
 <span class="sd">                                      to view the list of MetaNames</span>
-<span class="sd">        :type params: dict</span>
+<span class="sd">        :type guardrails_hap_params: dict</span>
 
 <span class="sd">        :param concurrency_limit: number of requests that will be sent in parallel, max is 10</span>
 <span class="sd">        :type concurrency_limit: int</span>
 
 <span class="sd">        :return: generated content</span>
 <span class="sd">        :rtype: str</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            By default only the first occurance of `HAPDetectionWarning` is displayed. To enable printing all warnings of this category, use:</span>
+
+<span class="sd">            .. code-block:: python</span>
+<span class="sd">            </span>
+<span class="sd">                import warnings</span>
+<span class="sd">                from ibm_watson_machine_learning.foundation_models.utils import HAPDetectionWarning</span>
+
+<span class="sd">                warnings.filterwarnings(&quot;always&quot;, category=HAPDetectionWarning)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">d_inference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_inference</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">d_inference</span><span class="o">.</span><span class="n">generate_text</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
@@ -1789,10 +1803,21 @@
 
 <span class="sd">        :param guardrails_hap_params: meta props for HAP moderations, use ``ibm_watson_machine_learning.metanames.GenTextModerationsMetaNames().show()``</span>
 <span class="sd">                                      to view the list of MetaNames</span>
-<span class="sd">        :type params: dict</span>
+<span class="sd">        :type guardrails_hap_params: dict</span>
 
 <span class="sd">        :return: generated content</span>
 <span class="sd">        :rtype: str</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            By default only the first occurance of `HAPDetectionWarning` is displayed. To enable printing all warnings of this category, use:</span>
+
+<span class="sd">            .. code-block:: python</span>
+<span class="sd">            </span>
+<span class="sd">                import warnings</span>
+<span class="sd">                from ibm_watson_machine_learning.foundation_models.utils import HAPDetectionWarning</span>
+
+<span class="sd">                warnings.filterwarnings(&quot;always&quot;, category=HAPDetectionWarning)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">d_inference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_inference</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="s1">&#39;text_stream&#39;</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">d_inference</span><span class="o">.</span><span class="n">generate_text_stream</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
