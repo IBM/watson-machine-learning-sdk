@@ -25,5 +25,6 @@ The python package supports the following product offerings:
     - `Version 4.5 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.5.x>`_
     - `Version 4.6 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.6.x>`_
     - `Version 4.7 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.7.x>`_
+    - `Version 4.8 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.8.x>`_
 
 Differences in above product offerings are further described in section :doc:`setup`.

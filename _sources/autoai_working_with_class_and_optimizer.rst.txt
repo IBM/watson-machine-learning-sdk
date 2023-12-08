@@ -18,7 +18,7 @@ For an AutoAI object initialization WML credentials (with apikey and url) and on
     from ibm_watson_machine_learning.experiment import AutoAI
 
     experiment = AutoAI(wml_credentials,
-        space_id='76g53e0-0b32-4a0e-9152-3d50324855ddb')
+        space_id='76g53e0-0b32-4a0e-9152-3d50324855ddb'
     )
 
     pipeline_optimizer = experiment.optimizer(

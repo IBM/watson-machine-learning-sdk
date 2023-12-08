@@ -175,7 +175,18 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../foundation_models.html">Foundation Models</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Foundation Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../../model.html">Model</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../model.html">Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../fm_model_inference.html">ModelInference</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../pt_working_with_class_and_prompt_tuner.html">Working with TuneExperiment and PromptTuner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../pt_model_inference.html">Foundation Models Inference on watsonx.ai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../tune_experiment.html">Tune Experiment</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../fm_extensions.html">Extensions</a></li>
 </ul>
 </li>
@@ -226,6 +237,10 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;ModelTypes&quot;</span><span class="p">,</span>
     <span class="s2">&quot;DecodingMethods&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PromptTuningTypes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PromptTuningInitMethods&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TuneExperimentTasks&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PromptTemplateFormats&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -240,7 +255,10 @@
     <span class="n">LLAMA_2_70B_CHAT</span> <span class="o">=</span> <span class="s1">&#39;meta-llama/llama-2-70b-chat&#39;</span>
     <span class="n">LLAMA_2_13B_CHAT</span> <span class="o">=</span> <span class="s1">&#39;meta-llama/llama-2-13b-chat&#39;</span>
     <span class="n">GRANITE_13B_INSTRUCT</span> <span class="o">=</span> <span class="s1">&#39;ibm/granite-13b-instruct-v1&#39;</span>
-    <span class="n">GRANITE_13B_CHAT</span> <span class="o">=</span> <span class="s1">&#39;ibm/granite-13b-chat-v1&#39;</span></div>
+    <span class="n">GRANITE_13B_CHAT</span> <span class="o">=</span> <span class="s1">&#39;ibm/granite-13b-chat-v1&#39;</span>
+    <span class="n">FLAN_T5_XL</span> <span class="o">=</span> <span class="s1">&#39;google/flan-t5-xl&#39;</span>
+    <span class="n">GRANITE_13B_CHAT_V2</span> <span class="o">=</span> <span class="s1">&#39;ibm/granite-13b-chat-v2&#39;</span>
+    <span class="n">GRANITE_13B_INSTRUCT_V2</span> <span class="o">=</span> <span class="s1">&#39;ibm/granite-13b-instruct-v2&#39;</span></div>
 
 
 <div class="viewcode-block" id="DecodingMethods"><a class="viewcode-back" href="../../../../model.html#ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods">[docs]</a><span class="k">class</span> <span class="nc">DecodingMethods</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
@@ -249,24 +267,26 @@
     <span class="n">GREEDY</span> <span class="o">=</span> <span class="s2">&quot;greedy&quot;</span></div>
 
 
-<span class="k">class</span> <span class="nc">PromptTuningTypes</span><span class="p">:</span>
-    <span class="n">PT</span> <span class="o">=</span> <span class="s2">&quot;prompt_tuning&quot;</span>
+<div class="viewcode-block" id="PromptTuningTypes"><a class="viewcode-back" href="../../../../tune_experiment.html#ibm_watson_machine_learning.foundation_models.utils.enums.PromptTuningTypes">[docs]</a><span class="k">class</span> <span class="nc">PromptTuningTypes</span><span class="p">:</span>
+    <span class="n">PT</span> <span class="o">=</span> <span class="s2">&quot;prompt_tuning&quot;</span></div>
 
 
-<span class="k">class</span> <span class="nc">PromptTuningInitMethods</span><span class="p">:</span>
+<div class="viewcode-block" id="PromptTuningInitMethods"><a class="viewcode-back" href="../../../../tune_experiment.html#ibm_watson_machine_learning.foundation_models.utils.enums.PromptTuningInitMethods">[docs]</a><span class="k">class</span> <span class="nc">PromptTuningInitMethods</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Supported methods for prompt initialization in prompt tuning.&quot;&quot;&quot;</span>
     <span class="n">RANDOM</span> <span class="o">=</span> <span class="s2">&quot;random&quot;</span>
-    <span class="n">TEXT</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span>
+    <span class="n">TEXT</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span></div>
     <span class="c1"># PRESET ?</span>
 
 
 <span class="n">TuneExperimentTasks</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;TuneExperimentTasks&#39;</span><span class="p">,</span>
                            <span class="n">names</span><span class="o">=</span><span class="n">get_all_supported_tasks_dict</span><span class="p">())</span>
-<span class="k">class</span> <span class="nc">PromptTemplateFormats</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+
+
+<div class="viewcode-block" id="PromptTemplateFormats"><a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.utils.enums.PromptTemplateFormats">[docs]</a><span class="k">class</span> <span class="nc">PromptTemplateFormats</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Supported formats of loaded prompt template.&quot;&quot;&quot;</span>
     <span class="n">PROMPTTEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;prompt&quot;</span>
     <span class="n">STRING</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>
-    <span class="n">LANGCHAIN</span> <span class="o">=</span> <span class="s2">&quot;langchain&quot;</span>
+    <span class="n">LANGCHAIN</span> <span class="o">=</span> <span class="s2">&quot;langchain&quot;</span></div>
 </pre></div>
         </article>
       </div>

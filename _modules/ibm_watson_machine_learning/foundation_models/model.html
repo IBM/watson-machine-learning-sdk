@@ -175,7 +175,18 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../foundation_models.html">Foundation Models</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Foundation Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../model.html">Model</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../model.html">Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fm_model_inference.html">ModelInference</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../pt_working_with_class_and_prompt_tuner.html">Working with TuneExperiment and PromptTuner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../pt_model_inference.html">Foundation Models Inference on watsonx.ai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../tune_experiment.html">Tune Experiment</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../fm_extensions.html">Extensions</a></li>
 </ul>
 </li>
@@ -356,6 +367,9 @@
 <div class="viewcode-block" id="Model.generate"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">prompt</span><span class="p">,</span>
                  <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">guardrails</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">guardrails_hap_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">guardrails_pii_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">concurrency_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a text prompt as input, and parameters the selected model (model_id)</span>
 <span class="sd">        will generate a completion text as generated_text.</span>
@@ -368,6 +382,14 @@
 
 <span class="sd">        :param prompt: the prompt string or list of strings. If list of strings is passed requests will be managed in parallel with the rate of concurency_limit</span>
 <span class="sd">        :type prompt: str, list</span>
+
+<span class="sd">        :param guardrails: If True then potentially hateful, abusive, and/or profane language (HAP) detection </span>
+<span class="sd">                           filter is toggle on for both prompt and generated text, defaults to False</span>
+<span class="sd">        :type guardrails: bool</span>
+
+<span class="sd">        :param guardrails_hap_params: meta props for HAP moderations, use ``ibm_watson_machine_learning.metanames.GenTextModerationsMetaNames().show()``</span>
+<span class="sd">                                      to view the list of MetaNames</span>
+<span class="sd">        :type params: dict</span>
 
 <span class="sd">        :return: scoring result containing generated content</span>
 <span class="sd">        :rtype: dict</span>
@@ -383,12 +405,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
                                 <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                                <span class="n">guardrails</span><span class="o">=</span><span class="n">guardrails</span><span class="p">,</span>
+                                <span class="n">guardrails_hap_params</span><span class="o">=</span><span class="n">guardrails_hap_params</span><span class="p">,</span>
+                                <span class="n">guardrails_pii_params</span><span class="o">=</span><span class="n">guardrails_pii_params</span><span class="p">,</span>
                                 <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Model.generate_text"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate_text">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                       <span class="n">prompt</span><span class="p">,</span>
                       <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">raw_response</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">guardrails</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">guardrails_hap_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">guardrails_pii_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">concurrency_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a text prompt as input, and parameters the selected model (model_id)</span>
 <span class="sd">        will generate a completion text as generated_text.</span>
@@ -405,6 +433,14 @@
 <span class="sd">        :param raw_response: return the whole response object</span>
 <span class="sd">        :type raw_response: bool, optional</span>
 
+<span class="sd">        :param guardrails: If True then potentially hateful, abusive, and/or profane language (HAP) detection </span>
+<span class="sd">                           filter is toggle on for both prompt and generated text, defaults to False</span>
+<span class="sd">        :type guardrails: bool</span>
+
+<span class="sd">        :param guardrails_hap_params: meta props for HAP moderations, use ``ibm_watson_machine_learning.metanames.GenTextModerationsMetaNames().show()``</span>
+<span class="sd">                                      to view the list of MetaNames</span>
+<span class="sd">        :type params: dict</span>
+
 <span class="sd">        :return: generated content</span>
 <span class="sd">        :rtype: str</span>
 
@@ -420,12 +456,18 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate_text</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
                                      <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
                                      <span class="n">raw_response</span><span class="o">=</span><span class="n">raw_response</span><span class="p">,</span>
+                                     <span class="n">guardrails</span><span class="o">=</span><span class="n">guardrails</span><span class="p">,</span>
+                                     <span class="n">guardrails_hap_params</span><span class="o">=</span><span class="n">guardrails_hap_params</span><span class="p">,</span>
+                                     <span class="n">guardrails_pii_params</span><span class="o">=</span><span class="n">guardrails_pii_params</span><span class="p">,</span>
                                      <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Model.generate_text_stream"><a class="viewcode-back" href="../../../model.html#ibm_watson_machine_learning.foundation_models.Model.generate_text_stream">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                              <span class="n">prompt</span><span class="p">,</span>
                              <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">raw_response</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                             <span class="n">raw_response</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                             <span class="n">guardrails</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                             <span class="n">guardrails_hap_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">guardrails_pii_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a text prompt as input, and parameters the selected model (model_id)</span>
 <span class="sd">        will generate a streamed text as generate_text_stream.</span>
 
@@ -437,6 +479,14 @@
 
 <span class="sd">        :param raw_response: yields the whole response object</span>
 <span class="sd">        :type raw_response: bool, optional</span>
+
+<span class="sd">        :param guardrails: If True then potentially hateful, abusive, and/or profane language (HAP) detection </span>
+<span class="sd">                           filter is toggle on for both prompt and generated text, defaults to False</span>
+<span class="sd">        :type guardrails: bool</span>
+
+<span class="sd">        :param guardrails_hap_params: meta props for HAP moderations, use ``ibm_watson_machine_learning.metanames.GenTextModerationsMetaNames().show()``</span>
+<span class="sd">                                      to view the list of MetaNames</span>
+<span class="sd">        :type params: dict</span>
 
 <span class="sd">        :return: scoring result containing generated content</span>
 <span class="sd">        :rtype: generator</span>
@@ -454,7 +504,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate_text_stream</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
                                             <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-                                            <span class="n">raw_response</span><span class="o">=</span><span class="n">raw_response</span><span class="p">)</span></div></div>
+                                            <span class="n">raw_response</span><span class="o">=</span><span class="n">raw_response</span><span class="p">,</span>
+                                            <span class="n">guardrails</span><span class="o">=</span><span class="n">guardrails</span><span class="p">,</span>
+                                            <span class="n">guardrails_hap_params</span><span class="o">=</span><span class="n">guardrails_hap_params</span><span class="p">,</span>
+                                            <span class="n">guardrails_pii_params</span><span class="o">=</span><span class="n">guardrails_pii_params</span><span class="p">)</span></div></div>
 </pre></div>
         </article>
       </div>

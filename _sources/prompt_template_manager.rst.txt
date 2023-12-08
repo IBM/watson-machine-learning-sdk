@@ -1,0 +1,16 @@
+Prompt Template Manager
+=======================
+
+.. autoclass:: ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager
+   :members:
+   :exclude-members:
+   :undoc-members:
+   :show-inheritance:
+
+Enums
+-----
+
+.. autoclass:: ibm_watson_machine_learning.foundation_models.utils.enums.PromptTemplateFormats
+    :members:
+    :undoc-members:
+    :show-inheritance:

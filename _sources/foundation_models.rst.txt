@@ -9,5 +9,7 @@ Modules
 
 .. toctree::
 
-    model
+    fm_models
+    prompt_tuner
+    prompt_template_manager
     fm_extensions
