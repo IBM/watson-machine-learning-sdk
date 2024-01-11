@@ -257,7 +257,6 @@
 </div>
 <p><strong>Example</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.prompts</span> <span class="kn">import</span> <span class="n">PromptTemplate</span><span class="p">,</span> <span class="n">PromptTemplateManager</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models</span> <span class="kn">import</span> <span class="n">Model</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.enums</span> <span class="kn">import</span> <span class="n">ModelTypes</span>
 
 <span class="n">prompt_mgr</span> <span class="o">=</span> <span class="n">PromptTemplateManager</span><span class="p">(</span>
@@ -269,10 +268,13 @@
                 <span class="p">)</span>
 
 <span class="n">prompt_template</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;My prompt&quot;</span><span class="p">,</span>
-                                 <span class="n">model_id</span><span class="o">=</span><span class="n">ModelTypes</span><span class="o">.</span><span class="n">FLAN_UL2</span><span class="p">,</span>
-                                 <span class="n">input_prefix</span><span class="o">=</span><span class="s2">&quot;Human&quot;</span><span class="p">,</span>
-                                 <span class="n">output_prefix</span><span class="o">=</span><span class="s2">&quot;Assistant&quot;</span><span class="p">,</span>
-                                 <span class="n">input_text</span><span class="o">=</span><span class="s2">&quot;What is a mortgage and how does it work?&quot;</span><span class="p">)</span>
+                                 <span class="n">model_id</span><span class="o">=</span><span class="n">ModelTypes</span><span class="o">.</span><span class="n">GRANITE_13B_CHAT_V2</span><span class="p">,</span>
+                                 <span class="n">input_prefix</span><span class="o">=</span><span class="s2">&quot;Human:&quot;</span><span class="p">,</span>
+                                 <span class="n">output_prefix</span><span class="o">=</span><span class="s2">&quot;Assistant:&quot;</span><span class="p">,</span>
+                                 <span class="n">input_text</span><span class="o">=</span><span class="s2">&quot;What is </span><span class="si">{object}</span><span class="s2"> and how does it work?&quot;</span><span class="p">,</span>
+                                 <span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">],</span>
+                                 <span class="n">examples</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;What is the Stock Market?&#39;</span><span class="p">,</span>
+                                            <span class="s1">&#39;A stock market is a place where investors buy and sell shares of publicly traded companies.&#39;</span><span class="p">]])</span>
 
 <span class="n">stored_prompt_template</span> <span class="o">=</span> <span class="n">prompt_mgr</span><span class="o">.</span><span class="n">store_prompt</span><span class="p">(</span><span class="n">prompt_template</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">stored_prompt_template</span><span class="o">.</span><span class="n">prompt_id</span><span class="p">)</span>   <span class="c1"># id of prompt template asset</span>
@@ -524,7 +526,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2018-2023, IBM
+                Copyright &#169; 2018-2024, IBM
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

@@ -230,7 +230,7 @@
         <article role="main">
           <h1>Source code for ibm_watson_machine_learning.experiment.autoai.autoai</h1><div class="highlight"><pre>
 <span></span><span class="c1">#  -----------------------------------------------------------------------------------------</span>
-<span class="c1">#  (C) Copyright IBM Corp. 2020- 2023.</span>
+<span class="c1">#  (C) Copyright IBM Corp. 2020-2024.</span>
 <span class="c1">#  https://opensource.org/licenses/BSD-3-Clause</span>
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
@@ -438,6 +438,9 @@
                   <span class="n">incremental_learning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                   <span class="n">early_stop_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                   <span class="n">early_stop_window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                  <span class="n">time_ordered_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                  <span class="n">feature_selector_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                  <span class="n">feature_selector_auto_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                   <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;RemoteAutoPipelines&#39;</span><span class="p">,</span> <span class="s1">&#39;LocalAutoPipelines&#39;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize an AutoAi optimizer.</span>
@@ -672,6 +675,23 @@
 
 <span class="sd">        :param early_stop_window_size: the number of iterations without score improvements before training stop</span>
 <span class="sd">        :type early_stop_window_size: int, optional</span>
+
+<span class="sd">        :param time_ordered_data: defines user preference about time-based analise. If True, the analysis will</span>
+<span class="sd">            consider the data as time-ordered and time-based. Supported only for regression.</span>
+<span class="sd">        :type time_ordered_data: bool, optional</span>
+
+<span class="sd">        :param feature_selector_mode: defines if feature selector should be triggered [&quot;on&quot;, &quot;off&quot;, &quot;auto&quot;].</span>
+<span class="sd">                The &quot;auto&quot; mode analyses the impact of removal of insignificant features. If there is drop in accuracy,</span>
+<span class="sd">                the PCA is applied to insignificant features. Principal components describing variance in 30% or higher</span>
+<span class="sd">                are selected in place of insignificant features. The model is evaluated again. If there is still drop</span>
+<span class="sd">                in accuracy all features are used.</span>
+<span class="sd">                The &quot;on&quot; mode removes all insignificant features (0.0. importance). Feature selector is applied during</span>
+<span class="sd">                cognito phase (applicable to pipelines with feature engineering stage).</span>
+<span class="sd">        :type feature_selector_mode: str, optional</span>
+
+<span class="sd">        :param feature_selector_auto_delta: maximum accepted delta between score before and after dropping</span>
+<span class="sd">                insignificant features</span>
+<span class="sd">        :type feature_selector_auto_delta: float, optional</span>
 
 <span class="sd">        :return: RemoteAutoPipelines or LocalAutoPipelines, depends on how you initialize the AutoAI object</span>
 <span class="sd">        :rtype: RemoteAutoPipelines or LocalAutoPipelines</span>
@@ -967,6 +987,9 @@
                 <span class="n">incremental_learning</span><span class="o">=</span><span class="n">incremental_learning</span><span class="p">,</span>
                 <span class="n">early_stop_enabled</span><span class="o">=</span><span class="n">early_stop_enabled</span><span class="p">,</span>
                 <span class="n">early_stop_window_size</span><span class="o">=</span><span class="n">early_stop_window_size</span><span class="p">,</span>
+                <span class="n">time_ordered_data</span><span class="o">=</span><span class="n">time_ordered_data</span><span class="p">,</span>
+                <span class="n">feature_selector_mode</span><span class="o">=</span><span class="n">feature_selector_mode</span><span class="p">,</span>
+                <span class="n">feature_selector_auto_delta</span><span class="o">=</span><span class="n">feature_selector_auto_delta</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">reduced_kwargs</span>
             <span class="p">)</span>
             <span class="n">optimizer</span><span class="o">.</span><span class="n">_workspace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span>
@@ -1006,7 +1029,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2018-2023, IBM
+                Copyright &#169; 2018-2024, IBM
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

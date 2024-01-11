@@ -230,7 +230,7 @@
         <article role="main">
           <h1>Source code for ibm_watson_machine_learning.repository</h1><div class="highlight"><pre>
 <span></span><span class="c1">#  -----------------------------------------------------------------------------------------</span>
-<span class="c1">#  (C) Copyright IBM Corp. 2017- 2023.</span>
+<span class="c1">#  (C) Copyright IBM Corp. 2017-2024.</span>
 <span class="c1">#  https://opensource.org/licenses/BSD-3-Clause</span>
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
@@ -238,6 +238,7 @@
 <span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils</span> <span class="kn">import</span> <span class="n">get_url</span><span class="p">,</span> <span class="n">INSTANCE_DETAILS_TYPE</span><span class="p">,</span> <span class="n">is_python_2</span><span class="p">,</span> <span class="n">inherited_docstring</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">ModelMetaNames</span><span class="p">,</span> <span class="n">ExperimentMetaNames</span><span class="p">,</span> <span class="n">FunctionMetaNames</span><span class="p">,</span> <span class="n">PipelineMetanames</span><span class="p">,</span> <span class="n">SpacesMetaNames</span><span class="p">,</span> <span class="n">MemberMetaNames</span><span class="p">,</span> <span class="n">FunctionNewMetaNames</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.messages.messages</span> <span class="kn">import</span> <span class="n">Messages</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.models</span> <span class="kn">import</span> <span class="n">Models</span>
@@ -410,92 +411,7 @@
                                           <span class="n">experiment_metadata</span><span class="o">=</span><span class="n">experiment_metadata</span><span class="p">,</span> <span class="n">training_id</span><span class="o">=</span><span class="n">training_id</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifact_id</span><span class="p">,</span> <span class="n">space_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;copy&quot;</span><span class="p">,</span> <span class="n">rev_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="c1"># &quot;&quot;&quot; it is not supported in v4ga</span>
-        <span class="c1">#     Create a new resource(models, runtimes, libraries, experiments, functions, pipelines) identical with the model either in the same space or in a new space. All dependent assets will be cloned too.</span>
-        <span class="c1">#</span>
-        <span class="c1">#     **Parameters**</span>
-        <span class="c1">#</span>
-        <span class="c1">#     .. important::</span>
-        <span class="c1">#         #. **model_id**:  Guid of the artifact to be cloned:\n</span>
-        <span class="c1">#</span>
-        <span class="c1">#            **type**: str\n</span>
-        <span class="c1">#</span>
-        <span class="c1">#         #. **space_id**: Guid of the space to which the model needs to be cloned. (optional)</span>
-        <span class="c1">#</span>
-        <span class="c1">#            **type**: str\n</span>
-        <span class="c1">#</span>
-        <span class="c1">#         #. **action**: Action specifying &quot;copy&quot; or &quot;move&quot;. (optional)</span>
-        <span class="c1">#</span>
-        <span class="c1">#            **type**: str\n</span>
-        <span class="c1">#</span>
-        <span class="c1">#         #. **rev_id**: Revision ID of the artifact. (optional)</span>
-        <span class="c1">#</span>
-        <span class="c1">#            **type**: str\n</span>
-        <span class="c1">#</span>
-        <span class="c1">#     **Output**</span>
-        <span class="c1">#</span>
-        <span class="c1">#     .. important::</span>
-        <span class="c1">#</span>
-        <span class="c1">#             **returns**: Metadata of the model cloned.\n</span>
-        <span class="c1">#             **return type**: dict\n</span>
-        <span class="c1">#</span>
-        <span class="c1">#     **Example**</span>
-        <span class="c1">#</span>
-        <span class="c1">#      &gt;&gt;&gt; client.repository.clone(artifact_id=artifact_id,space_id=space_uid,action=&quot;copy&quot;)</span>
-        <span class="c1">#</span>
-        <span class="c1">#     .. note::</span>
-        <span class="c1">#         * If revision id is not specified, all revisions of the artifact are cloned\n</span>
-        <span class="c1">#</span>
-        <span class="c1">#         * Default value of the parameter action is copy\n</span>
-        <span class="c1">#</span>
-        <span class="c1">#         * Space guid is mandatory for move action\n</span>
-        <span class="c1">#</span>
-        <span class="c1">#     &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">WSD</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Cloning is not supported.&#39;</span><span class="p">)</span>
-
-        <span class="n">Models</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">artifact_id</span><span class="p">,</span> <span class="s1">&#39;artifact_id&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="n">clone_meta</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="n">space_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">clone_meta</span><span class="p">[</span><span class="s2">&quot;space&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;href&quot;</span><span class="p">:</span> <span class="n">API_VERSION</span> <span class="o">+</span> <span class="n">SPACES</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">space_id</span><span class="p">}</span>
-        <span class="k">if</span> <span class="n">action</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">clone_meta</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span>
-        <span class="k">if</span> <span class="n">rev_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">clone_meta</span><span class="p">[</span><span class="s2">&quot;rev&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rev_id</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_artifact_type</span><span class="p">(</span><span class="n">artifact_id</span><span class="p">)</span>
-
-        <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_published_model_href</span><span class="p">(</span><span class="n">artifact_id</span><span class="p">)</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;model&quot;</span>
-        <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;library&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_custom_library_href</span><span class="p">(</span><span class="n">artifact_id</span><span class="p">)</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;library&quot;</span>
-        <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;runtime&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_runtime_href</span><span class="p">(</span><span class="n">artifact_id</span><span class="p">)</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;runtime&quot;</span>
-        <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;function&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_function_href</span><span class="p">(</span><span class="n">artifact_id</span><span class="p">)</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;function&quot;</span>
-        <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;pipeline&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_pipeline_href</span><span class="p">(</span><span class="n">artifact_id</span><span class="p">)</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;pipeline&quot;</span>
-        <span class="k">elif</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_experiment_href</span><span class="p">(</span><span class="n">artifact_id</span><span class="p">)</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;experiment&quot;</span>
-
-
-        <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Unsupported artifact type. Supported artifact types are models, libraries, runtimes, experiments, pipelines and functions&#39;</span><span class="p">)</span>
-
-        <span class="n">response_post</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">clone_meta</span><span class="p">,</span>
-                                      <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
-
-        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="n">expected_status_code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">operationName</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;cloning &#39;</span><span class="o">+</span> <span class="nb">type</span><span class="p">,</span>
-                                        <span class="n">response</span><span class="o">=</span><span class="n">response_post</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">details</span>
+        <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;cloning_not_supported&quot;</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Repository.store_function"><a class="viewcode-back" href="../../core_api.html#client.Repository.store_function">[docs]</a>    <span class="nd">@inherited_docstring</span><span class="p">(</span><span class="n">Functions</span><span class="o">.</span><span class="n">store</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">store_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
@@ -1264,7 +1180,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2018-2023, IBM
+                Copyright &#169; 2018-2024, IBM
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

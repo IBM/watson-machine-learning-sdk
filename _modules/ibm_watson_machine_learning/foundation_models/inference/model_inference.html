@@ -230,7 +230,7 @@
         <article role="main">
           <h1>Source code for ibm_watson_machine_learning.foundation_models.inference.model_inference</h1><div class="highlight"><pre>
 <span></span><span class="c1">#  -----------------------------------------------------------------------------------------</span>
-<span class="c1">#  (C) Copyright IBM Corp. 2023.</span>
+<span class="c1">#  (C) Copyright IBM Corp. 2023-2024.</span>
 <span class="c1">#  https://opensource.org/licenses/BSD-3-Clause</span>
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
@@ -350,7 +350,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">deployment_id</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InvalidMultipleArguments</span><span class="p">(</span><span class="n">params_names_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;model_id&quot;</span><span class="p">,</span> <span class="s2">&quot;deployment_id&quot;</span><span class="p">],</span>
                                            <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Both arguments were provided.&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">deployment_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">deployment_id</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InvalidMultipleArguments</span><span class="p">(</span><span class="n">params_names_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;model_id&quot;</span><span class="p">,</span> <span class="s2">&quot;deployment_id&quot;</span><span class="p">],</span>
                                            <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;None of the arguments were provided.&quot;</span><span class="p">)</span>
 
@@ -358,7 +358,7 @@
         <span class="n">ModelInference</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;params&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">credentials</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">)</span>  <span class="c1"># TODO: Is the self_client needed here?</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">)</span> 
         <span class="k">elif</span> <span class="n">api_client</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">api_client</span>
         <span class="k">else</span><span class="p">:</span>
@@ -583,6 +583,38 @@
                                                     <span class="n">guardrails_hap_params</span><span class="o">=</span><span class="n">guardrails_hap_params</span><span class="p">,</span>
                                                     <span class="n">guardrails_pii_params</span><span class="o">=</span><span class="n">guardrails_pii_params</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="ModelInference.tokenize"><a class="viewcode-back" href="../../../../fm_model_inference.html#ibm_watson_machine_learning.foundation_models.inference.ModelInference.tokenize">[docs]</a>    <span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">prompt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">return_tokens</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The text tokenize operation allows you to check the conversion of provided input to tokens for a given model.</span>
+<span class="sd">        It splits text into words or sub-words, which then are converted to ids through a look-up table (vocabulary).</span>
+<span class="sd">        Tokenization allows the model to have a reasonable vocabulary size.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            Method is not supported for deployments, available only for base models.</span>
+
+<span class="sd">        :param prompt: the prompt string, defaults to None</span>
+<span class="sd">        :type prompt: str, optional</span>
+
+<span class="sd">        :param return_tokens: the parameter for text tokenization, defaults to False</span>
+<span class="sd">        :type return_tokens: bool</span>
+
+<span class="sd">        :return: the result of tokenizing the input string.</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        **Example**</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            q = &quot;Write an epigram about the moon&quot;</span>
+<span class="sd">            tokenized_response = model_inference.tokenize(prompt=q, return_tokens=True)</span>
+<span class="sd">            print(tokenized_response[&quot;result&quot;])</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inference</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+                                        <span class="n">return_tokens</span><span class="o">=</span><span class="n">return_tokens</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="ModelInference.to_langchain"><a class="viewcode-back" href="../../../../fm_model_inference.html#ibm_watson_machine_learning.foundation_models.inference.ModelInference.to_langchain">[docs]</a>    <span class="k">def</span> <span class="nf">to_langchain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
@@ -595,7 +627,7 @@
 
 <span class="sd">            from langchain import PromptTemplate</span>
 <span class="sd">            from langchain.chains import LLMChain</span>
-<span class="sd">            from ibm_watson_machine_learning.foundation_models import Model</span>
+<span class="sd">            from ibm_watson_machine_learning.foundation_models import ModelInference</span>
 <span class="sd">            from ibm_watson_machine_learning.foundation_models.utils.enums import ModelTypes</span>
 
 <span class="sd">            flan_ul2_model = ModelInference(</span>
@@ -616,7 +648,7 @@
 
 <span class="sd">            from langchain import PromptTemplate</span>
 <span class="sd">            from langchain.chains import LLMChain</span>
-<span class="sd">            from ibm_watson_machine_learning.foundation_models import Model</span>
+<span class="sd">            from ibm_watson_machine_learning.foundation_models import ModelInference</span>
 <span class="sd">            from ibm_watson_machine_learning.foundation_models.utils.enums import ModelTypes</span>
 
 <span class="sd">            deployed_model = ModelInference(</span>
@@ -652,7 +684,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2018-2023, IBM
+                Copyright &#169; 2018-2024, IBM
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

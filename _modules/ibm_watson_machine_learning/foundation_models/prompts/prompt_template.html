@@ -230,7 +230,7 @@
         <article role="main">
           <h1>Source code for ibm_watson_machine_learning.foundation_models.prompts.prompt_template</h1><div class="highlight"><pre>
 <span></span><span class="c1">#  -----------------------------------------------------------------------------------------</span>
-<span class="c1">#  (C) Copyright IBM Corp. 2023.</span>
+<span class="c1">#  (C) Copyright IBM Corp. 2023-2024.</span>
 <span class="c1">#  https://opensource.org/licenses/BSD-3-Clause</span>
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
@@ -286,8 +286,8 @@
 <span class="sd">    :param model_params: Model parameters, defaults to None.</span>
 <span class="sd">    :type model_params: Optional[Dict], optional</span>
 
-<span class="sd">    :param model_version: Semvar version for tracking in IBM AI Factsheets, defaults to None.</span>
-<span class="sd">    :type model_version: Optional[str], optional</span>
+<span class="sd">    :param template_version: Semvar version for tracking in IBM AI Factsheets, defaults to None.</span>
+<span class="sd">    :type template_version: Optional[str], optional</span>
 
 <span class="sd">    :param task_ids: List of task ids, defaults to None.</span>
 <span class="sd">    :type task_ids: Optional[List[str]], optional</span>
@@ -314,13 +314,35 @@
 
 <span class="sd">    :param exmaples: Examples may help the model to adjust the response; [[input1, output1], ...], defaults to None.</span>
 <span class="sd">    :type exmaples: Optional[List[List[str]]], optional</span>
+
+
+<span class="sd">    **Examples**</span>
+
+<span class="sd">    Example of invalid Prompt Template:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        prompt_template = PromptTemplate(input_text=&#39;What are the most famous monuments in ?&#39;,</span>
+<span class="sd">                                         input_variables=[&#39;country&#39;])</span>
+
+<span class="sd">        Traceback (most recent call last):</span>
+<span class="sd">            ...</span>
+<span class="sd">        ValidationError: Invalid prompt template; check for mismatched or missing input variables. Missing input variable: {&#39;country&#39;}</span>
+
+<span class="sd">    Example of valid Prompt Template:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        prompt_template = PromptTemplate(input_text=&#39;What are the most famous monuments in {country}?&#39;,</span>
+<span class="sd">                                         input_variables=[&#39;country&#39;])</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">model_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ModelTypes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">model_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">model_version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">template_version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">task_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">input_text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -339,7 +361,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="o">.</span><span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model_params</span> <span class="o">=</span> <span class="n">model_params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">model_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">model_params</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">task_ids</span> <span class="o">=</span> <span class="n">task_ids</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">task_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">task_ids</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model_version</span> <span class="o">=</span> <span class="n">model_version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template_version</span> <span class="o">=</span> <span class="n">template_version</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input_text</span> <span class="o">=</span> <span class="n">input_text</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input_variables</span> <span class="o">=</span> <span class="n">input_variables</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">input_variables</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">input_variables</span>
@@ -420,7 +442,6 @@
 <span class="sd">    .. code-block:: python</span>
 
 <span class="sd">        from ibm_watson_machine_learning.foundation_models.prompts import PromptTemplate, PromptTemplateManager</span>
-<span class="sd">        from ibm_watson_machine_learning.foundation_models import Model</span>
 <span class="sd">        from ibm_watson_machine_learning.foundation_models.utils.enums import ModelTypes</span>
 
 <span class="sd">        prompt_mgr = PromptTemplateManager(</span>
@@ -432,10 +453,13 @@
 <span class="sd">                        )</span>
 
 <span class="sd">        prompt_template = PromptTemplate(name=&quot;My prompt&quot;,</span>
-<span class="sd">                                         model_id=ModelTypes.FLAN_UL2,</span>
-<span class="sd">                                         input_prefix=&quot;Human&quot;,</span>
-<span class="sd">                                         output_prefix=&quot;Assistant&quot;,</span>
-<span class="sd">                                         input_text=&quot;What is a mortgage and how does it work?&quot;)</span>
+<span class="sd">                                         model_id=ModelTypes.GRANITE_13B_CHAT_V2,</span>
+<span class="sd">                                         input_prefix=&quot;Human:&quot;,</span>
+<span class="sd">                                         output_prefix=&quot;Assistant:&quot;,</span>
+<span class="sd">                                         input_text=&quot;What is {object} and how does it work?&quot;,</span>
+<span class="sd">                                         input_variables=[&#39;object&#39;],</span>
+<span class="sd">                                         examples=[[&#39;What is the Stock Market?&#39;,</span>
+<span class="sd">                                                    &#39;A stock market is a place where investors buy and sell shares of publicly traded companies.&#39;]])</span>
 
 <span class="sd">        stored_prompt_template = prompt_mgr.store_prompt(prompt_template)</span>
 <span class="sd">        print(stored_prompt_template.prompt_id)   # id of prompt template asset</span>
@@ -462,6 +486,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InvalidMultipleArguments</span><span class="p">(</span><span class="n">params_names_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;project_id&quot;</span><span class="p">,</span> <span class="s2">&quot;space_id&quot;</span><span class="p">],</span>
                                            <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Both arguments were provided.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_id</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">set</span><span class="o">.</span><span class="n">default_space</span><span class="p">(</span><span class="n">space_id</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;space_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_id</span><span class="p">}</span>
@@ -507,8 +532,8 @@
         <span class="k">if</span> <span class="n">prompt_template</span><span class="o">.</span><span class="n">task_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">PromptTemplateManager</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">prompt_template</span><span class="o">.</span><span class="n">task_ids</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;task_ids&#39;</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
             <span class="n">json_data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;task_ids&#39;</span><span class="p">:</span> <span class="n">prompt_template</span><span class="o">.</span><span class="n">task_ids</span><span class="p">})</span>
-        <span class="k">if</span> <span class="n">prompt_template</span><span class="o">.</span><span class="n">model_version</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">json_data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;model_version&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="n">prompt_template</span><span class="o">.</span><span class="n">model_version</span><span class="p">}})</span>
+        <span class="k">if</span> <span class="n">prompt_template</span><span class="o">.</span><span class="n">template_version</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">json_data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;model_version&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="n">prompt_template</span><span class="o">.</span><span class="n">template_version</span><span class="p">}})</span>
 
         <span class="k">if</span> <span class="n">prompt_template</span><span class="o">.</span><span class="n">input_text</span><span class="p">:</span>
             <span class="n">PromptTemplateManager</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">prompt_template</span><span class="o">.</span><span class="n">input_text</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;input_text&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
@@ -552,16 +577,15 @@
         <span class="n">data_field</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">prompt_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">())</span>
         <span class="n">prompt_template</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span>
                                          <span class="n">description</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">),</span>
-                                         <span class="n">model_id</span><span class="o">=</span><span class="nb">next</span><span class="p">((</span><span class="n">model</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">ModelTypes</span>
-                                                        <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">prompt_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;model_id&#39;</span><span class="p">)),</span> <span class="kc">None</span><span class="p">),</span>
+                                         <span class="n">model_id</span><span class="o">=</span><span class="n">prompt_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;model_id&#39;</span><span class="p">),</span>
                                          <span class="n">model_params</span><span class="o">=</span><span class="n">prompt_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;model_parameters&#39;</span><span class="p">),</span>
                                          <span class="n">task_ids</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;task_ids&quot;</span><span class="p">),</span>
-                                         <span class="n">model_version</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_version&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">))</span>
+                                         <span class="n">template_version</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_version&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">))</span>
 
         <span class="c1"># To bypass validation step</span>
         <span class="n">prompt_template</span><span class="o">.</span><span class="n">input_variables</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;prompt_variables&#39;</span><span class="p">)</span>
         <span class="n">prompt_template</span><span class="o">.</span><span class="n">input_text</span> <span class="o">=</span> <span class="n">prompt_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="p">[[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">prompt_template</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">prompt_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;instruction&#39;</span><span class="p">)</span>
+        <span class="n">prompt_template</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">data_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;instruction&#39;</span><span class="p">)</span>
         <span class="n">prompt_template</span><span class="o">.</span><span class="n">input_prefix</span> <span class="o">=</span> <span class="n">data_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;input_prefix&#39;</span><span class="p">)</span>
         <span class="n">prompt_template</span><span class="o">.</span><span class="n">output_prefix</span> <span class="o">=</span> <span class="n">data_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;output_prefix&#39;</span><span class="p">)</span>
         <span class="n">prompt_template</span><span class="o">.</span><span class="n">examples</span> <span class="o">=</span> <span class="n">data_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;examples&#39;</span><span class="p">)</span>
@@ -569,7 +593,8 @@
         <span class="n">prompt_template</span><span class="o">.</span><span class="n">_created_at</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">&quot;lock_type&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lock&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">()):</span>
             <span class="k">del</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;lock&#39;</span><span class="p">][</span><span class="s2">&quot;lock_type&quot;</span><span class="p">]</span>
-        <span class="n">prompt_template</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">PromptTemplateLock</span><span class="p">(</span><span class="o">**</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lock&#39;</span><span class="p">,</span> <span class="p">{}))</span>
+        <span class="n">prompt_template</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">PromptTemplateLock</span><span class="p">(</span><span class="o">**</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lock&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;locked&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                                                                           <span class="s2">&quot;locked_by&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}))</span>
         <span class="n">prompt_template</span><span class="o">.</span><span class="n">_is_template</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_template&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">prompt_template</span>
@@ -748,9 +773,9 @@
             <span class="kn">from</span> <span class="nn">langchain.prompts</span> <span class="kn">import</span> <span class="n">PromptTemplate</span> <span class="k">as</span> <span class="n">LcPromptTemplate</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt_template</span><span class="p">,</span> <span class="n">LcPromptTemplate</span><span class="p">):</span>
                 <span class="n">prompt_template</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;My prompt&quot;</span><span class="p">,</span>
-                                                <span class="n">model_id</span><span class="o">=</span><span class="n">ModelTypes</span><span class="o">.</span><span class="n">FLAN_UL2</span><span class="p">,</span>
-                                                <span class="n">input_text</span><span class="o">=</span><span class="n">prompt_template</span><span class="o">.</span><span class="n">template</span><span class="p">,</span>
-                                                <span class="n">input_variables</span><span class="o">=</span><span class="n">prompt_template</span><span class="o">.</span><span class="n">input_variables</span><span class="p">)</span>
+                                                 <span class="n">model_id</span><span class="o">=</span><span class="n">ModelTypes</span><span class="o">.</span><span class="n">FLAN_UL2</span><span class="p">,</span>
+                                                 <span class="n">input_text</span><span class="o">=</span><span class="n">prompt_template</span><span class="o">.</span><span class="n">template</span><span class="p">,</span>
+                                                 <span class="n">input_variables</span><span class="o">=</span><span class="n">prompt_template</span><span class="o">.</span><span class="n">input_variables</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">error_msg</span><span class="o">=</span><span class="s2">&quot;Unsupported type for `prompt_template`&quot;</span><span class="p">)</span>
             
@@ -932,7 +957,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2018-2023, IBM
+                Copyright &#169; 2018-2024, IBM
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

@@ -249,7 +249,7 @@
 <span class="p">]</span>
 
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
-<span class="c1">#  (C) Copyright IBM Corp. 2020- 2023.</span>
+<span class="c1">#  (C) Copyright IBM Corp. 2020-2024.</span>
 <span class="c1">#  https://opensource.org/licenses/BSD-3-Clause</span>
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
@@ -346,6 +346,12 @@
 
         <span class="k">elif</span> <span class="n">connection_asset_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="p">(</span><span class="n">S3Location</span><span class="p">,</span> <span class="n">DatabaseLocation</span><span class="p">,</span> <span class="n">NFSLocation</span><span class="p">)):</span>
             <span class="n">connection</span> <span class="o">=</span> <span class="n">ConnectionAsset</span><span class="p">(</span><span class="n">connection_id</span><span class="o">=</span><span class="n">connection_asset_id</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">connection_asset_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">connection</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="p">(</span><span class="n">S3Location</span><span class="p">,</span>
+                                                                                          <span class="n">DatabaseLocation</span><span class="p">,</span>
+                                                                                          <span class="n">NFSLocation</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;connection_asset_id&#39; and &#39;connection&#39; cannot be empty together when &#39;location&#39; is &quot;</span>
+                             <span class="s2">&quot;[S3Location, DatabaseLocation, NFSLocation].&quot;</span><span class="p">)</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -873,12 +879,12 @@
 <span class="sd">            data = train_connections[0].read() # only train data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># enables flight automatically for CP4D 4.0.x, 4.5.x, for 3.0 and 3.5 we do not have a flight service there</span>
+        <span class="c1"># enables flight automatically for CP4D 4.0.x, 4.5.x</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">use_flight</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                 <span class="s1">&#39;use_flight&#39;</span><span class="p">,</span>
                 <span class="nb">bool</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_wml_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="s1">&#39;USER_ACCESS_TOKEN&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">or</span> <span class="s1">&#39;RUNTIME_ENV_ACCESS_TOKEN_FILE&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span> <span class="ow">and</span> 
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_wml_client</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&gt;=</span> <span class="mf">4.0</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_wml_client</span><span class="o">.</span><span class="n">CPD_version</span><span class="p">))</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">use_flight</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -1218,11 +1224,11 @@
 <span class="sd">        :param remote_name: name that dataset should be stored with in remote data storage</span>
 <span class="sd">        :type remote_name: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># enables flight automatically for CP4D 4.0.x, for 3.0 and 3.5 we do not have a flight service there</span>
+        <span class="c1"># enables flight automatically for CP4D 4.0.x</span>
         <span class="n">use_flight</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
             <span class="s1">&#39;use_flight&#39;</span><span class="p">,</span>
             <span class="nb">bool</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_wml_client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="s1">&#39;USER_ACCESS_TOKEN&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">or</span> <span class="s1">&#39;RUNTIME_ENV_ACCESS_TOKEN_FILE&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span> <span class="ow">and</span> 
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_wml_client</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&gt;=</span> <span class="mf">4.0</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_wml_client</span><span class="o">.</span><span class="n">CPD_version</span><span class="p">))</span>
 
         <span class="n">flight_parameters</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;flight_parameters&#39;</span><span class="p">,</span> <span class="p">{})</span>
 
@@ -2093,7 +2099,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2018-2023, IBM
+                Copyright &#169; 2018-2024, IBM
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

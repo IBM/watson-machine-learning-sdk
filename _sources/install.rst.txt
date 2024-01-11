@@ -20,7 +20,6 @@ The python package supports the following product offerings:
 
 - `IBM Cloud Pak for Data as a Service <https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/welcome-main.html?audience=wdp>`_
 - IBM Cloud Pak for Data:
-    - `Version 3.5 <https://www.ibm.com/docs/en/cloud-paks/cp-data/3.5.0>`_
     - `Version 4.0 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0>`_
     - `Version 4.5 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.5.x>`_
     - `Version 4.6 <https://www.ibm.com/docs/en/cloud-paks/cp-data/4.6.x>`_

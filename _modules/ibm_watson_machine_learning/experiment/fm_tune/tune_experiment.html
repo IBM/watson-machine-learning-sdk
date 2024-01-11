@@ -230,15 +230,16 @@
         <article role="main">
           <h1>Source code for ibm_watson_machine_learning.experiment.fm_tune.tune_experiment</h1><div class="highlight"><pre>
 <span></span><span class="c1">#  -----------------------------------------------------------------------------------------</span>
-<span class="c1">#  (C) Copyright IBM Corp. 2023.</span>
+<span class="c1">#  (C) Copyright IBM Corp. 2023-2024.</span>
 <span class="c1">#  https://opensource.org/licenses/BSD-3-Clause</span>
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
 
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.prompt_tuner</span> <span class="kn">import</span> <span class="n">PromptTuner</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.enums</span> <span class="kn">import</span> <span class="n">PromptTuningTypes</span><span class="p">,</span> <span class="n">PromptTuningInitMethods</span><span class="p">,</span> <span class="n">TuneExperimentTasks</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.utils</span> <span class="kn">import</span> <span class="n">get_model_specs_with_prompt_tuning_support</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.enums</span> <span class="kn">import</span> <span class="n">PromptTuningTypes</span><span class="p">,</span> <span class="n">PromptTuningInitMethods</span><span class="p">,</span> \
+    <span class="n">TuneExperimentTasks</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.utils</span> <span class="kn">import</span> <span class="n">get_model_specs_with_prompt_tuning_support</span><span class="p">,</span> <span class="n">_check_if_constricted</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.experiment.base_experiment</span> <span class="kn">import</span> <span class="n">BaseExperiment</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning</span> <span class="kn">import</span> <span class="n">APIClient</span>
@@ -285,6 +286,7 @@
 <span class="sd">            project_id=&quot;...&quot;,</span>
 <span class="sd">            space_id=&quot;...&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">credentials</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                  <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -303,9 +305,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">PromptTuningTypes</span> <span class="o">=</span> <span class="n">PromptTuningTypes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">PromptTuningInitMethods</span> <span class="o">=</span> <span class="n">PromptTuningInitMethods</span>
 
-        <span class="c1"># Note: Dynamically create enum with supported ENUM Tasks</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Tasks</span> <span class="o">=</span> <span class="n">TuneExperimentTasks</span>
-        <span class="c1"># --- end note</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tasks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_tasks_enum</span><span class="p">()</span>  <span class="c1"># Note: Dynamically create enum with supported ENUM Tasks</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">runs</span> <span class="o">=</span> <span class="n">TuneRuns</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
 
@@ -441,16 +441,18 @@
 <span class="sd">                auto_update_model=True)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">TuneExperimentTasks</span><span class="p">):</span>
-            <span class="n">task_id</span> <span class="o">=</span> <span class="n">task_id</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">task_id</span><span class="p">,</span> <span class="n">base_model</span> <span class="o">=</span> <span class="p">[</span><span class="n">enum_possible_field</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">enum_possible_field</span><span class="p">,</span> <span class="n">Enum</span><span class="p">)</span> <span class="k">else</span> <span class="n">enum_possible_field</span> <span class="k">for</span> <span class="n">enum_possible_field</span> <span class="ow">in</span> <span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">base_model</span><span class="p">)]</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_model</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-            <span class="n">base_model</span> <span class="o">=</span> <span class="n">base_model</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">prompt_tuning_supported_models</span> <span class="o">=</span> <span class="p">[</span><span class="n">model_spec</span><span class="p">[</span><span class="s1">&#39;model_id&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">model_spec</span> <span class="ow">in</span>
+                                          <span class="n">get_model_specs_with_prompt_tuning_support</span><span class="p">(</span>
+                                              <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">wml_credentials</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resources&#39;</span><span class="p">,</span> <span class="p">[])]</span>
 
-        <span class="n">prompt_tuning_supported_models</span> <span class="o">=</span> <span class="p">[</span><span class="n">model_spec</span><span class="p">[</span><span class="s1">&#39;model_id&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">model_spec</span> <span class="ow">in</span> <span class="n">get_model_specs_with_prompt_tuning_support</span><span class="p">(</span>
-            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">wml_credentials</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resources&#39;</span><span class="p">,</span> <span class="p">[])]</span>
         <span class="k">if</span> <span class="n">base_model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prompt_tuning_supported_models</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Base model &#39;</span><span class="si">{</span><span class="n">base_model</span><span class="si">}</span><span class="s2">&#39; is not supported. Supported models: </span><span class="si">{</span><span class="n">prompt_tuning_supported_models</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Base model &#39;</span><span class="si">{</span><span class="n">base_model</span><span class="si">}</span><span class="s2">&#39; is not supported. Supported models: </span><span class="si">{</span><span class="n">prompt_tuning_supported_models</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># check if model is in constricted mode</span>
+        <span class="n">_check_if_constricted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">wml_credentials</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">),</span> <span class="n">base_model</span><span class="p">)</span>
 
         <span class="n">prompt_tuner</span> <span class="o">=</span> <span class="n">PromptTuner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                                    <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span>
@@ -471,7 +473,15 @@
 
         <span class="n">prompt_tuner</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span>
 
-        <span class="k">return</span> <span class="n">prompt_tuner</span></div></div>
+        <span class="k">return</span> <span class="n">prompt_tuner</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_tasks_enum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.utils</span> <span class="kn">import</span> <span class="n">get_all_supported_tasks_dict</span>
+            <span class="k">return</span> <span class="n">Enum</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;TuneExperimentTasks&#39;</span><span class="p">,</span>
+                        <span class="n">names</span><span class="o">=</span><span class="n">get_all_supported_tasks_dict</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">wml_credentials</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">)))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TuneExperimentTasks</span></div>
 </pre></div>
         </article>
       </div>
@@ -484,7 +494,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2018-2023, IBM
+                Copyright &#169; 2018-2024, IBM
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
