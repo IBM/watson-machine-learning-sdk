@@ -239,7 +239,7 @@
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.prompt_tuner</span> <span class="kn">import</span> <span class="n">PromptTuner</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.enums</span> <span class="kn">import</span> <span class="n">PromptTuningTypes</span><span class="p">,</span> <span class="n">PromptTuningInitMethods</span><span class="p">,</span> \
     <span class="n">TuneExperimentTasks</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.utils</span> <span class="kn">import</span> <span class="n">get_model_specs_with_prompt_tuning_support</span><span class="p">,</span> <span class="n">_check_if_constricted</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.utils</span> <span class="kn">import</span> <span class="n">get_model_specs_with_prompt_tuning_support</span><span class="p">,</span> <span class="n">_check_model_state</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.experiment.base_experiment</span> <span class="kn">import</span> <span class="n">BaseExperiment</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning</span> <span class="kn">import</span> <span class="n">APIClient</span>
@@ -452,7 +452,7 @@
                 <span class="sa">f</span><span class="s2">&quot;Base model &#39;</span><span class="si">{</span><span class="n">base_model</span><span class="si">}</span><span class="s2">&#39; is not supported. Supported models: </span><span class="si">{</span><span class="n">prompt_tuning_supported_models</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         
         <span class="c1"># check if model is in constricted mode</span>
-        <span class="n">_check_if_constricted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">wml_credentials</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">),</span> <span class="n">base_model</span><span class="p">)</span>
+        <span class="n">_check_model_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">wml_credentials</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">),</span> <span class="n">base_model</span><span class="p">)</span>
 
         <span class="n">prompt_tuner</span> <span class="o">=</span> <span class="n">PromptTuner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                                    <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span>

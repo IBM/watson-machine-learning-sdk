@@ -406,7 +406,8 @@
                  <span class="n">guardrails</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">guardrails_hap_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">guardrails_pii_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">concurrency_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+                 <span class="n">concurrency_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                 <span class="n">async_mode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a text prompt as input, and parameters the selected model (model_id) or deployment (deployment_id)</span>
 <span class="sd">        will generate a completion text as generated_text. For prompt template deployment `prompt` should be None.</span>
 
@@ -426,6 +427,11 @@
 <span class="sd">        :param guardrails_hap_params: meta props for HAP moderations, use ``ibm_watson_machine_learning.metanames.GenTextModerationsMetaNames().show()``</span>
 <span class="sd">                                      to view the list of MetaNames</span>
 <span class="sd">        :type guardrails_hap_params: dict</span>
+
+<span class="sd">        :param async_mode: If True then yield results asynchronously (using generator). In this case both prompt and</span>
+<span class="sd">                           generated text will be concatenated in the final response - under `generated_text`, defaults</span>
+<span class="sd">                           to False</span>
+<span class="sd">        :type async_mode: bool</span>
 
 <span class="sd">        :return: scoring result containing generated content</span>
 <span class="sd">        :rtype: dict</span>
@@ -454,7 +460,8 @@
                                         <span class="n">guardrails</span><span class="o">=</span><span class="n">guardrails</span><span class="p">,</span>
                                         <span class="n">guardrails_hap_params</span><span class="o">=</span><span class="n">guardrails_hap_params</span><span class="p">,</span>
                                         <span class="n">guardrails_pii_params</span><span class="o">=</span><span class="n">guardrails_pii_params</span><span class="p">,</span>
-                                        <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">)</span></div>
+                                        <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">,</span>
+                                        <span class="n">async_mode</span><span class="o">=</span><span class="n">async_mode</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ModelInference.generate_text"><a class="viewcode-back" href="../../../../fm_model_inference.html#ibm_watson_machine_learning.foundation_models.inference.ModelInference.generate_text">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                       <span class="n">prompt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>

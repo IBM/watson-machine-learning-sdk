@@ -315,6 +315,9 @@
 <span class="sd">    :param exmaples: Examples may help the model to adjust the response; [[input1, output1], ...], defaults to None.</span>
 <span class="sd">    :type exmaples: Optional[List[List[str]]], optional</span>
 
+<span class="sd">    :param validate_template: If True, the Prompt Template is validated for the presence of input variables, defaults to True.</span>
+<span class="sd">    :type validate_template: bool, optional</span>
+
 
 <span class="sd">    **Examples**</span>
 
@@ -350,7 +353,8 @@
                  <span class="n">instruction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">input_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">output_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">examples</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                 <span class="n">examples</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">validate_template</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_prompt_id</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_created_at</span> <span class="o">=</span> <span class="kc">None</span>
@@ -371,7 +375,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">examples</span> <span class="o">=</span> <span class="n">examples</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">examples</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">examples</span>
 
         <span class="c1"># template validation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validation</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">validate_template</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_validation</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">prompt_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -580,15 +585,16 @@
                                          <span class="n">model_id</span><span class="o">=</span><span class="n">prompt_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;model_id&#39;</span><span class="p">),</span>
                                          <span class="n">model_params</span><span class="o">=</span><span class="n">prompt_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;model_parameters&#39;</span><span class="p">),</span>
                                          <span class="n">task_ids</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;task_ids&quot;</span><span class="p">),</span>
-                                         <span class="n">template_version</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_version&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">))</span>
+                                         <span class="n">template_version</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_version&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">),</span>
+                                         <span class="n">input_variables</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;prompt_variables&#39;</span><span class="p">),</span>
+                                         <span class="n">input_text</span> <span class="o">=</span> <span class="n">prompt_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="p">[[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                                         <span class="n">instruction</span> <span class="o">=</span> <span class="n">data_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;instruction&#39;</span><span class="p">),</span>
+                                         <span class="n">input_prefix</span> <span class="o">=</span> <span class="n">data_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;input_prefix&#39;</span><span class="p">),</span>
+                                         <span class="n">output_prefix</span> <span class="o">=</span> <span class="n">data_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;output_prefix&#39;</span><span class="p">),</span>
+                                         <span class="n">examples</span> <span class="o">=</span> <span class="n">data_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;examples&#39;</span><span class="p">),</span>
+                                         <span class="n">validate_template</span><span class="o">=</span><span class="kc">False</span>
+                                         <span class="p">)</span>
 
-        <span class="c1"># To bypass validation step</span>
-        <span class="n">prompt_template</span><span class="o">.</span><span class="n">input_variables</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;prompt_variables&#39;</span><span class="p">)</span>
-        <span class="n">prompt_template</span><span class="o">.</span><span class="n">input_text</span> <span class="o">=</span> <span class="n">prompt_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="p">[[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">prompt_template</span><span class="o">.</span><span class="n">instruction</span> <span class="o">=</span> <span class="n">data_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;instruction&#39;</span><span class="p">)</span>
-        <span class="n">prompt_template</span><span class="o">.</span><span class="n">input_prefix</span> <span class="o">=</span> <span class="n">data_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;input_prefix&#39;</span><span class="p">)</span>
-        <span class="n">prompt_template</span><span class="o">.</span><span class="n">output_prefix</span> <span class="o">=</span> <span class="n">data_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;output_prefix&#39;</span><span class="p">)</span>
-        <span class="n">prompt_template</span><span class="o">.</span><span class="n">examples</span> <span class="o">=</span> <span class="n">data_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;examples&#39;</span><span class="p">)</span>
         <span class="n">prompt_template</span><span class="o">.</span><span class="n">_prompt_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
         <span class="n">prompt_template</span><span class="o">.</span><span class="n">_created_at</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;created_at&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">&quot;lock_type&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lock&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">()):</span>

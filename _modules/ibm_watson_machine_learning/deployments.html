@@ -1698,7 +1698,8 @@
                  <span class="n">guardrails</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">guardrails_hap_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">guardrails_pii_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">concurrency_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+                 <span class="n">concurrency_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                 <span class="n">async_mode</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a raw response with `prompt` for given `deployment_id`.</span>
 
 <span class="sd">        :param deployment_id: Id of deployment</span>
@@ -1721,6 +1722,11 @@
 <span class="sd">        :param concurrency_limit: number of requests that will be sent in parallel, max is 10</span>
 <span class="sd">        :type concurrency_limit: int, optional</span>
 
+<span class="sd">        :param async_mode: If True then yield results asynchronously (using generator). In this case both prompt and</span>
+<span class="sd">                           generated text will be concatenated in the final response - under `generated_text`, defaults</span>
+<span class="sd">                           to False</span>
+<span class="sd">        :type async_mode: bool</span>
+
 <span class="sd">        :return: scoring result containing generated content.</span>
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>        
@@ -1730,7 +1736,8 @@
                                     <span class="n">guardrails_hap_params</span><span class="o">=</span><span class="n">guardrails_hap_params</span><span class="p">,</span>
                                     <span class="n">guardrails_pii_params</span><span class="o">=</span><span class="n">guardrails_pii_params</span><span class="p">,</span>
                                     <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">,</span>
-                                    <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span></div>
+                                    <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                                    <span class="n">async_mode</span><span class="o">=</span><span class="n">async_mode</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Deployments.generate_text"><a class="viewcode-back" href="../../core_api.html#client.Deployments.generate_text">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                       <span class="n">deployment_id</span><span class="p">,</span>

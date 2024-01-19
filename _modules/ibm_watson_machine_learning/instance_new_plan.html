@@ -269,7 +269,7 @@
                                                  <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CAMS_URL</span><span class="p">,</span>
                                                  <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">wml_token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_token</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">wml_token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_token</span><span class="p">()</span>
 
         <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_expiration_datetime</span><span class="p">()</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">proceed</span><span class="p">:</span>  <span class="c1"># there is no &#39;token&#39; in wml_credentials</span>
@@ -415,9 +415,9 @@
 
     <span class="k">def</span> <span class="nf">_get_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">wml_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_create_token</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">repository</span><span class="o">.</span><span class="n">_refresh_repo_client</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_token_refresh_possible</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_token</span><span class="p">()</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_token_refresh_possible</span><span class="p">():</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">ICP</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_expiration_datetime</span><span class="p">():</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_expiration_datetime</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">():</span>
