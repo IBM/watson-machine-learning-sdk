@@ -238,10 +238,12 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
 
 <span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils</span> <span class="kn">import</span> <span class="n">DEPLOYMENT_DETAILS_TYPE</span><span class="p">,</span> <span class="n">INSTANCE_DETAILS_TYPE</span><span class="p">,</span> <span class="n">print_text_header_h1</span><span class="p">,</span> <span class="n">print_text_header_h2</span><span class="p">,</span> \
     <span class="n">StatusLogger</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils.utils</span> <span class="kn">import</span> <span class="n">_check_if_import_from_watsonx_ai</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="p">(</span><span class="n">WMLClientError</span><span class="p">,</span> <span class="n">MissingValue</span><span class="p">,</span> 
                                                           <span class="n">NoVirtualDeploymentSupportedForICP</span><span class="p">,</span>  
                                                           <span class="n">InvalidValue</span><span class="p">,</span> <span class="n">MissingArgument</span><span class="p">,</span> <span class="n">PromptVariablesError</span><span class="p">)</span>
@@ -355,10 +357,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&gt;=</span> <span class="mf">4.8</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span><span class="p">:</span>
             <span class="n">base_model_id</span> <span class="o">=</span> <span class="n">meta_props</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">BASE_MODEL_ID</span><span class="p">)</span>
 
-            <span class="k">try</span><span class="p">:</span>
-                <span class="kn">from</span> <span class="nn">ibm_watsonx_ai.foundation_models.utils.enums</span> <span class="kn">import</span> <span class="n">ModelTypes</span>
-            <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
-                <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.utils.enums</span> <span class="kn">import</span> <span class="n">ModelTypes</span>
+            <span class="n">ModelTypes</span> <span class="o">=</span> <span class="n">_check_if_import_from_watsonx_ai</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="p">,</span>
+                                                          <span class="s1">&#39;ibm_watson_machine_learning.foundation_models.utils.enums&#39;</span><span class="p">,</span>
+                                                          <span class="s1">&#39;ModelTypes&#39;</span><span class="p">)</span>
+
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_model_id</span><span class="p">,</span> <span class="n">ModelTypes</span><span class="p">):</span>
                 <span class="n">meta_props</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ConfigurationMetaNames</span><span class="o">.</span><span class="n">BASE_MODEL_ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">base_model_id</span><span class="o">.</span><span class="n">value</span>
 
@@ -435,10 +437,9 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CPD_version</span> <span class="o">&gt;=</span> <span class="mf">4.8</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">CLOUD_PLATFORM_SPACES</span><span class="p">:</span>
                 <span class="k">with</span> <span class="n">all_logging_disabled</span><span class="p">():</span>
                     <span class="k">try</span><span class="p">:</span>
-                        <span class="k">try</span><span class="p">:</span>
-                            <span class="kn">from</span> <span class="nn">ibm_watsonx_ai.foundation_models.prompts</span> <span class="kn">import</span> <span class="n">PromptTemplateManager</span>
-                        <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
-                            <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.prompts</span> <span class="kn">import</span> <span class="n">PromptTemplateManager</span>
+                        <span class="n">PromptTemplateManager</span> <span class="o">=</span> <span class="n">_check_if_import_from_watsonx_ai</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="p">,</span>
+                                                                                 <span class="s1">&#39;ibm_watson_machine_learning.foundation_models.prompts&#39;</span><span class="p">,</span>
+                                                                                 <span class="s1">&#39;PromptTemplateManager&#39;</span><span class="p">)</span>
                         <span class="n">model_id</span> <span class="o">=</span> <span class="n">PromptTemplateManager</span><span class="p">(</span><span class="n">api_client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span><span class="o">.</span><span class="n">load_prompt</span><span class="p">(</span><span class="n">artifact_uid</span><span class="p">)</span><span class="o">.</span><span class="n">model_id</span>
                     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                         <span class="k">pass</span>  <span class="c1"># Foundation models scenario should not impact other ML models&#39; deployment scenario.</span>
@@ -1678,10 +1679,10 @@
 <span class="sd">        Verify that the deployment with the given deployment_id has generating methods.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Import ModelInference here to avoid circular import error</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">ibm_watsonx_ai.foundation_models.inference.model_inference</span> <span class="kn">import</span> <span class="n">ModelInference</span>
-        <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.foundation_models.inference.model_inference</span> <span class="kn">import</span> <span class="n">ModelInference</span>
+        <span class="c1"># Check from which package, wx or wml, is call</span>
+        <span class="n">ModelInference</span> <span class="o">=</span> <span class="n">_check_if_import_from_watsonx_ai</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="p">,</span>
+                                                          <span class="s1">&#39;ibm_watson_machine_learning.foundation_models.inference.model_inference&#39;</span><span class="p">,</span>
+                                                          <span class="s1">&#39;ModelInference&#39;</span><span class="p">)</span>
 
         <span class="n">generated_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_fm_deployment_generation_href</span><span class="p">(</span>
             <span class="n">deployment_id</span><span class="o">=</span><span class="n">deployment_id</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>

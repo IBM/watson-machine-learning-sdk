@@ -236,21 +236,30 @@
 <span class="c1">#  https://opensource.org/licenses/BSD-3-Clause</span>
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
-<span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="nn">req</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">ssl</span>
 <span class="kn">import</span> <span class="nn">importlib.util</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span> <span class="nn">platform</span>
-<span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="nn">req</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils.utils</span> <span class="kn">import</span> <span class="n">get_module_version</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">CRYPTO_LIBRARY</span> <span class="o">=</span> <span class="s2">&quot;pyhelayers&quot;</span>
+
+<span class="k">def</span> <span class="nf">is_crypto_supported</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="c1"># pyhelayers is used for client side encryption</span>
+    <span class="c1"># Test is pyhelayers is installed, and if so we assume crypto is supported</span>
+
+    <span class="n">pyhelayers_spec</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">CRYPTO_LIBRARY</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pyhelayers_spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
 
 <span class="k">def</span> <span class="nf">process_heartbeat</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -316,12 +325,12 @@
 <span class="k">def</span> <span class="nf">check_python_framework_version</span><span class="p">(</span><span class="n">client_reqs</span><span class="p">):</span>
     <span class="n">client_system</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span>
     <span class="n">client_processor</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">processor</span><span class="p">()</span>
-    
+
     <span class="k">if</span> <span class="s1">&#39;fl_extras&#39;</span> <span class="ow">in</span> <span class="n">client_reqs</span><span class="p">:</span>
         <span class="n">install_msg</span> <span class="o">=</span> <span class="s2">&quot;  You can install this and other required packages by running pip install --upgrade &#39;ibm-watson-machine-learning[&quot;</span> <span class="o">+</span> <span class="n">client_reqs</span><span class="p">[</span><span class="s1">&#39;fl_extras&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;]&#39;&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">install_msg</span> <span class="o">=</span> <span class="s2">&quot;  See documentation for more information.&quot;</span>
-        
+
     <span class="n">py_version</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">()</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Detected Client Python Version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">py_version</span><span class="p">))</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">py_version</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">client_reqs</span><span class="p">[</span><span class="s1">&#39;py_version&#39;</span><span class="p">]):</span>
@@ -354,7 +363,7 @@
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, this may cause unexpected errors.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;The selected software spec requires torch==</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">client_reqs</span><span class="p">[</span><span class="s1">&#39;torch_version&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="n">install_msg</span><span class="p">)</span>
-    
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">scikitlearn_version</span> <span class="o">=</span> <span class="n">get_module_version</span><span class="p">(</span><span class="n">lib_name</span><span class="o">=</span><span class="s1">&#39;scikit-learn&#39;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Detected scikit-learn Version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scikitlearn_version</span><span class="p">))</span>
@@ -367,7 +376,7 @@
 
 <span class="k">def</span> <span class="nf">choose_software_version</span><span class="p">(</span><span class="n">software_spec</span><span class="p">):</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Aggregator Software Spec: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">software_spec</span><span class="p">))</span>
-    
+
     <span class="k">if</span> <span class="n">software_spec</span> <span class="o">==</span> <span class="s2">&quot;runtime-22.1-py3.9&quot;</span> <span class="ow">or</span> <span class="n">software_spec</span> <span class="o">==</span> <span class="s2">&quot;12b83a17-24d8-5082-900f-0ab31fbfd3cb&quot;</span><span class="p">:</span>
         <span class="n">client_reqs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;py_version&#39;</span><span class="p">:</span> <span class="s1">&#39;3.9&#39;</span><span class="p">,</span> <span class="s1">&#39;tensorflow_version&#39;</span><span class="p">:</span> <span class="s1">&#39;2.7&#39;</span><span class="p">,</span> <span class="s1">&#39;torch_version&#39;</span><span class="p">:</span> <span class="s1">&#39;1.10&#39;</span><span class="p">,</span> <span class="s1">&#39;scikitlearn_version&#39;</span><span class="p">:</span> <span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="s1">&#39;fl_extras&#39;</span><span class="p">:</span> <span class="s1">&#39;fl-rt22.1&#39;</span><span class="p">}</span>
         <span class="n">check_python_framework_version</span><span class="p">(</span><span class="n">client_reqs</span><span class="p">)</span>
@@ -394,7 +403,7 @@
 <div class="viewcode-block" id="Party"><a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party">[docs]</a><span class="k">class</span> <span class="nc">Party</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The Party class embodies a Federated Learning party, with methods to run, cancel, and query local training.</span>
 <span class="sd">    Refer to the ``client.remote_training_system.create_party()`` API for more information about creating an</span>
-<span class="sd">    instance of the Party class. </span>
+<span class="sd">    instance of the Party class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">SUPPORTED_PLATFORMS_MAP</span> <span class="o">=</span> <span class="p">{</span>
@@ -505,37 +514,45 @@
 <span class="sd">            party.run( experiment_id = &quot;2466fa06-1110-4169-a166-01959adec995&quot;, asynchronous = False )</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">ibmfl.exceptions</span> <span class="kn">import</span> <span class="n">FLException</span>
-        <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
         <span class="kn">import</span> <span class="nn">time</span>
+        <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+        <span class="kn">from</span> <span class="nn">ibmfl.exceptions</span> <span class="kn">import</span> <span class="n">FLException</span>
 
         <span class="n">timeout_time</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">timeout</span> <span class="o">+</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="k">if</span> <span class="p">(</span> <span class="n">experiment_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">aggregator_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="p">)</span> <span class="ow">or</span> <span class="p">(</span> <span class="n">experiment_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">aggregator_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="p">)</span> <span class="p">:</span>
             <span class="k">raise</span> <span class="n">FLException</span><span class="p">(</span><span class="s2">&quot;Exactly one of aggregator_id and experiment_id must be supplied&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="p">(</span> <span class="n">experiment_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="p">):</span>
-            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span> 
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">get_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">training_definition_id</span><span class="o">=</span><span class="n">experiment_id</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s1">&#39;resources&#39;</span><span class="p">]</span>
                     <span class="n">details</span> <span class="o">=</span> <span class="p">[</span> <span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">details</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">][</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;accepting_parties&#39;</span><span class="p">,</span><span class="s1">&#39;pending&#39;</span><span class="p">,</span><span class="s1">&#39;running&#39;</span><span class="p">]</span> <span class="p">]</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">details</span> <span class="p">:</span>
-                        <span class="k">if</span> <span class="n">timeout_time</span> <span class="ow">and</span> <span class="n">timeout_time</span> <span class="o">&lt;</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="p">:</span>
-                            <span class="k">raise</span> <span class="n">FLException</span><span class="p">(</span><span class="s2">&quot;Cannot find an aggregator for experiment </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">experiment_id</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">details</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">timeout_time</span> <span class="ow">and</span> <span class="n">timeout_time</span> <span class="o">&lt;</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">():</span>
+                            <span class="k">raise</span> <span class="n">FLException</span><span class="p">(</span><span class="s2">&quot;Cannot find an aggregator for experiment </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">experiment_id</span><span class="p">)</span>
                         <span class="k">else</span> <span class="p">:</span>
-                            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Cannot find an aggregator for experiment </span><span class="si">%s</span><span class="s2"> . Retrying.&quot;</span> <span class="o">%</span> <span class="n">experiment_id</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Cannot find an aggregator for experiment </span><span class="si">%s</span><span class="s2">. Retrying.&quot;</span><span class="p">,</span> <span class="n">experiment_id</span><span class="p">)</span>
                             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
                             <span class="k">continue</span>
                     <span class="k">else</span> <span class="p">:</span>
                         <span class="n">aggregator_id</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span> <span class="p">[(</span><span class="n">t</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;created_at&#39;</span><span class="p">],</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S.</span><span class="si">%f</span><span class="s1">Z&#39;</span><span class="p">))</span>
                                           <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">details</span><span class="p">],</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using aggregator id </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">aggregator_id</span><span class="p">)</span> 
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using aggregator id </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">aggregator_id</span><span class="p">)</span>
                         <span class="k">break</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
                     <span class="k">raise</span> <span class="n">FLException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
 
+        <span class="c1"># If crypto is enabled, test if this client supports it</span>
+        <span class="c1"># WML training service uses the fusion_type field to determine if encryption is required.</span>
+        <span class="k">if</span> <span class="n">details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;federated_learning&quot;</span><span class="p">][</span><span class="s2">&quot;fusion_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;crypto_iter_avg&quot;</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Encryption is set as required&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_crypto_supported</span><span class="p">():</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Encryption is required, but the &#39;</span><span class="si">%s</span><span class="s2">&#39; module required for encryption was not found&quot;</span><span class="p">,</span> <span class="n">CRYPTO_LIBRARY</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">FLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">CRYPTO_LIBRARY</span><span class="si">}</span><span class="s2">&#39; module not found&quot;</span><span class="p">)</span>
 
-        <span class="c1">#import the changed files in the desired lib version</span>
+        <span class="c1"># Import the changed files in the desired lib version</span>
 
         <span class="n">config_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;config_dict&#39;</span><span class="p">)</span>
         <span class="n">metrics_config</span> <span class="o">=</span> <span class="p">{</span>
@@ -553,7 +570,7 @@
         <span class="n">config_dict</span><span class="p">[</span><span class="s1">&#39;aggregator&#39;</span><span class="p">][</span><span class="s1">&#39;ip&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">agg_info</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;config_dict&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_dict</span>
 
-        <span class="c1">#verify ssl context</span>
+        <span class="c1"># Verify ssl context</span>
         <span class="k">if</span> <span class="n">verify</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">req</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://&quot;</span> <span class="o">+</span> <span class="n">wml_services_url</span> <span class="o">+</span> <span class="s2">&quot;/wml_services/training/heartbeat&quot;</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">)</span>
@@ -563,7 +580,7 @@
                                   <span class="s2">&quot;TLS certificate, or set verify to False at your own risk. For more details, please see &quot;</span>
                                   <span class="s2">&quot;https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=client-using-custom-tls-certificate-connect-platform&quot;</span><span class="p">)</span>
 
-        <span class="c1">#check for aggregator state and start job</span>
+        <span class="c1"># Check for aggregator state and start job</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">training_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">get_status</span><span class="p">(</span><span class="n">aggregator_id</span><span class="p">)</span>
             <span class="n">state</span> <span class="o">=</span> <span class="n">training_status</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span>
