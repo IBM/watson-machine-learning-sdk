@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>ibm_watson_machine_learning.factsheets - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -178,6 +178,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -191,6 +192,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -235,15 +237,17 @@
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
 <span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
-<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils</span> <span class="kn">import</span> <span class="n">INSTANCE_DETAILS_TYPE</span><span class="p">,</span> <span class="n">print_text_header_h2</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span><span class="p">,</span> <span class="n">WrongMetaProps</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
 <span class="kn">from</span> <span class="nn">.metanames</span> <span class="kn">import</span> <span class="n">FactsheetsMetaNames</span>
 
 
-<div class="viewcode-block" id="Factsheets"><a class="viewcode-back" href="../../core_api.html#client.Factsheets">[docs]</a><span class="k">class</span> <span class="nc">Factsheets</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+<div class="viewcode-block" id="Factsheets">
+<a class="viewcode-back" href="../../core_api.html#client.Factsheets">[docs]</a>
+<span class="k">class</span> <span class="nc">Factsheets</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Link WML Model to Model Entry.&quot;&quot;&quot;</span>
 
     <span class="n">cloud_platform_spaces</span> <span class="o">=</span> <span class="kc">False</span>
@@ -263,7 +267,9 @@
         <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">ICP_PLATFORM_SPACES</span><span class="p">:</span>
             <span class="n">Factsheets</span><span class="o">.</span><span class="n">icp_platform_spaces</span> <span class="o">=</span> <span class="kc">True</span>
 
-<div class="viewcode-block" id="Factsheets.register_model_entry"><a class="viewcode-back" href="../../core_api.html#client.Factsheets.register_model_entry">[docs]</a>    <span class="k">def</span> <span class="nf">register_model_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">,</span> <span class="n">catalog_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Factsheets.register_model_entry">
+<a class="viewcode-back" href="../../core_api.html#client.Factsheets.register_model_entry">[docs]</a>
+    <span class="k">def</span> <span class="nf">register_model_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">,</span> <span class="n">catalog_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Link WML Model to Model Entry</span>
 
 <span class="sd">        :param model_id: published model/asset ID</span>
@@ -359,7 +365,10 @@
 
         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Factsheets.list_model_entries"><a class="viewcode-back" href="../../core_api.html#client.Factsheets.list_model_entries">[docs]</a>    <span class="k">def</span> <span class="nf">list_model_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catalog_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Factsheets.list_model_entries">
+<a class="viewcode-back" href="../../core_api.html#client.Factsheets.list_model_entries">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_model_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catalog_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns all WKC Model Entry assets for a catalog.</span>
 
 <span class="sd">        :param catalog_id: catalog ID where you want to register model, if None list from all catalogs</span>
@@ -402,7 +411,10 @@
             <span class="n">print_text_header_h2</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">error_msg</span> <span class="o">+</span> <span class="s1">&#39;. Error: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;. &#39;</span> <span class="o">+</span> <span class="n">reason</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Factsheets.unregister_model_entry"><a class="viewcode-back" href="../../core_api.html#client.Factsheets.unregister_model_entry">[docs]</a>    <span class="k">def</span> <span class="nf">unregister_model_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_id</span><span class="p">,</span> <span class="n">catalog_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Factsheets.unregister_model_entry">
+<a class="viewcode-back" href="../../core_api.html#client.Factsheets.unregister_model_entry">[docs]</a>
+    <span class="k">def</span> <span class="nf">unregister_model_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_id</span><span class="p">,</span> <span class="n">catalog_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Unregister WKC Model Entry</span>
 
 <span class="sd">        :param asset_id:  WKC model entry id</span>
@@ -454,7 +466,9 @@
             <span class="n">reason</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
             <span class="n">print_text_header_h2</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">error_msg</span> <span class="o">+</span> <span class="s1">&#39;. Error: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;. &#39;</span> <span class="o">+</span> <span class="n">reason</span><span class="p">)</span></div></div>
+            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">error_msg</span> <span class="o">+</span> <span class="s1">&#39;. Error: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;. &#39;</span> <span class="o">+</span> <span class="n">reason</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -487,9 +501,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/scripts/furo.js"></script>
+</div><script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

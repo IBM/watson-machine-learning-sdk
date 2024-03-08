@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>ibm_watson_machine_learning.foundation_models.prompts.prompt_template - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -178,6 +178,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -191,6 +192,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -425,7 +427,9 @@
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="PromptTemplateManager"><a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager">[docs]</a><span class="k">class</span> <span class="nc">PromptTemplateManager</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+<div class="viewcode-block" id="PromptTemplateManager">
+<a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager">[docs]</a>
+<span class="k">class</span> <span class="nc">PromptTemplateManager</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantiate the prompt template manager.</span>
 
 <span class="sd">    :param credentials: Credentials to watsonx.ai instance.</span>
@@ -674,7 +678,9 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;change_lock&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PromptTemplateManager.load_prompt"><a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.load_prompt">[docs]</a>    <span class="k">def</span> <span class="nf">load_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="PromptTemplateManager.load_prompt">
+<a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.load_prompt">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                     <span class="n">prompt_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                     <span class="n">astype</span><span class="p">:</span> <span class="n">PromptTemplateFormats</span> <span class="o">=</span> <span class="n">PromptTemplateFormats</span><span class="o">.</span><span class="n">PROMPTTEMPLATE</span><span class="p">,</span>
                     <span class="o">*</span><span class="p">,</span>
@@ -729,7 +735,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InvalidValue</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;astype&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PromptTemplateManager.list"><a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+
+<div class="viewcode-block" id="PromptTemplateManager.list">
+<a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.list">[docs]</a>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;List all available prompt templates in the DataFrame format.</span>
 
 <span class="sd">        :param limit: limit number of fetched records, defaults to None.</span>
@@ -769,7 +778,10 @@
 
         <span class="k">return</span> <span class="n">df_details</span></div>
 
-<div class="viewcode-block" id="PromptTemplateManager.store_prompt"><a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.store_prompt">[docs]</a>    <span class="k">def</span> <span class="nf">store_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_template</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PromptTemplate</span><span class="p">,</span> <span class="n">langchain</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">PromptTemplate</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">PromptTemplate</span><span class="p">:</span>
+
+<div class="viewcode-block" id="PromptTemplateManager.store_prompt">
+<a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.store_prompt">[docs]</a>
+    <span class="k">def</span> <span class="nf">store_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_template</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PromptTemplate</span><span class="p">,</span> <span class="n">langchain</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">PromptTemplate</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">PromptTemplate</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Store a new prompt template.</span>
 
 <span class="sd">        :param prompt_template: PromptTemplate to be stored.</span>
@@ -812,7 +824,10 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_json_to_prompt</span><span class="p">(</span><span class="n">response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PromptTemplateManager.delete_prompt"><a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.delete_prompt">[docs]</a>    <span class="k">def</span> <span class="nf">delete_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="PromptTemplateManager.delete_prompt">
+<a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.delete_prompt">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove prompt template from project or space.</span>
 
 <span class="sd">        :param prompt_id: Id of prompt template that will be delete. </span>
@@ -842,7 +857,10 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;delete_prompt&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PromptTemplateManager.update_prompt"><a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.update_prompt">[docs]</a>    <span class="k">def</span> <span class="nf">update_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prompt_template</span><span class="p">:</span> <span class="n">PromptTemplate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+
+<div class="viewcode-block" id="PromptTemplateManager.update_prompt">
+<a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.update_prompt">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prompt_template</span><span class="p">:</span> <span class="n">PromptTemplate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update prompt template data.</span>
 
 <span class="sd">        :param prompt_id: Id of the updated prompt template.</span>
@@ -885,7 +903,10 @@
                                   <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;update_prompt&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PromptTemplateManager.get_lock"><a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.get_lock">[docs]</a>    <span class="k">def</span> <span class="nf">get_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+
+<div class="viewcode-block" id="PromptTemplateManager.get_lock">
+<a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.get_lock">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the current locked state of a prompt template.</span>
 
 <span class="sd">        :param prompt_id: Id of prompt template</span>
@@ -910,7 +931,10 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;get_lock&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PromptTemplateManager.lock"><a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.lock">[docs]</a>    <span class="k">def</span> <span class="nf">lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+
+<div class="viewcode-block" id="PromptTemplateManager.lock">
+<a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.lock">[docs]</a>
+    <span class="k">def</span> <span class="nf">lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Lock the prompt template if it is unlocked and user has permission to do that. </span>
 
 <span class="sd">        :param promp_id: Id of prompt template.</span>
@@ -933,7 +957,10 @@
                                  <span class="n">locked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                  <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PromptTemplateManager.unlock"><a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.unlock">[docs]</a>    <span class="k">def</span> <span class="nf">unlock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+
+<div class="viewcode-block" id="PromptTemplateManager.unlock">
+<a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.prompts.PromptTemplateManager.unlock">[docs]</a>
+    <span class="k">def</span> <span class="nf">unlock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Unlock the prompt template if it is locked and user has permission to do that.</span>
 
 <span class="sd">        :param promp_id: Id of prompt template.</span>
@@ -955,7 +982,9 @@
                                      <span class="n">locked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                      <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">lock_state</span></div></div>
+            <span class="k">return</span> <span class="n">lock_state</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -988,9 +1017,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
-    <script src="../../../../_static/scripts/furo.js"></script>
+</div><script src="../../../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

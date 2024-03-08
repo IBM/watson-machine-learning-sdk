@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>ibm_watson_machine_learning.Set - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -178,6 +178,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -191,6 +192,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -244,14 +246,18 @@
 <span class="n">_DEFAULT_LIST_LENGTH</span> <span class="o">=</span> <span class="mi">50</span>
 
 
-<div class="viewcode-block" id="Set"><a class="viewcode-back" href="../../core_api.html#client.Set">[docs]</a><span class="k">class</span> <span class="nc">Set</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+<div class="viewcode-block" id="Set">
+<a class="viewcode-back" href="../../core_api.html#client.Set">[docs]</a>
+<span class="k">class</span> <span class="nc">Set</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set a space_id/project_id to be used in the subsequent actions.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="n">WMLResource</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ICP</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">ICP</span>
 
-<div class="viewcode-block" id="Set.default_space"><a class="viewcode-back" href="../../core_api.html#client.Set.default_space">[docs]</a>    <span class="k">def</span> <span class="nf">default_space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">space_uid</span><span class="p">):</span>
+<div class="viewcode-block" id="Set.default_space">
+<a class="viewcode-back" href="../../core_api.html#client.Set.default_space">[docs]</a>
+    <span class="k">def</span> <span class="nf">default_space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">space_uid</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a space ID.</span>
 
 <span class="sd">        :param space_uid: UID of the space to be used</span>
@@ -306,8 +312,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">CannotSetProjectOrSpace</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="n">space_details</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
 
+
     <span class="c1">##Setting project ID</span>
-<div class="viewcode-block" id="Set.default_project"><a class="viewcode-back" href="../../core_api.html#client.Set.default_project">[docs]</a>    <span class="k">def</span> <span class="nf">default_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_id</span><span class="p">):</span>
+<div class="viewcode-block" id="Set.default_project">
+<a class="viewcode-back" href="../../core_api.html#client.Set.default_project">[docs]</a>
+    <span class="k">def</span> <span class="nf">default_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_id</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a project ID.</span>
 
 <span class="sd">        :param project_id: UID of the project</span>
@@ -351,7 +360,7 @@
                             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span> <span class="o">=</span> <span class="n">ServiceInstanceNewPlan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
                         <span class="k">else</span><span class="p">:</span>
-                            <span class="c1"># Its possible that a previous project is used in the context of</span>
+                            <span class="c1"># It`s possible that a previous project is used in the context of</span>
                             <span class="c1"># this client which had compute but this project doesn&#39;t have</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">wml_credentials</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;instance_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;invalid&#39;</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span> <span class="o">=</span> <span class="n">ServiceInstanceNewPlan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
@@ -372,7 +381,9 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unsetting the space_id ...&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">default_space_id</span> <span class="o">=</span> <span class="kc">None</span>
             
-            <span class="k">return</span> <span class="s2">&quot;SUCCESS&quot;</span></div></div>
+            <span class="k">return</span> <span class="s2">&quot;SUCCESS&quot;</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -405,9 +416,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/scripts/furo.js"></script>
+</div><script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

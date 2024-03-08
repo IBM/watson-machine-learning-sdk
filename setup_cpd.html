@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API" href="api.html" /><link rel="prev" title="Cloud Pak for Data as a Service" href="setup_cloud.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Cloud Pak for Data - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -179,6 +179,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -192,6 +193,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -231,9 +233,9 @@
         </div>
         <article role="main">
           <section id="cloud-pak-for-data">
-<h1>Cloud Pak for Data<a class="headerlink" href="#cloud-pak-for-data" title="Permalink to this heading">#</a></h1>
+<h1>Cloud Pak for Data<a class="headerlink" href="#cloud-pak-for-data" title="Link to this heading">#</a></h1>
 <section id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading">#</a></h2>
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>Starting work with IBM Cloud Pak for Data refer to <cite>Getting started</cite> section in main product documentation:</dt><dd><ul class="simple">
 <li><p><a class="reference external" href="https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=getting-started">Version 4.0</a></p></li>
@@ -246,7 +248,7 @@
 </dl>
 </section>
 <section id="supported-machine-learning-frameworks">
-<h2>Supported machine learning frameworks<a class="headerlink" href="#supported-machine-learning-frameworks" title="Permalink to this heading">#</a></h2>
+<h2>Supported machine learning frameworks<a class="headerlink" href="#supported-machine-learning-frameworks" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>For the list of supported machine learning frameworks (models) of IBM Cloud Pak® for Data, refer to <cite>Watson Machine Learning Documentation</cite>:</dt><dd><ul class="simple">
 <li><p><a class="reference external" href="https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=functions-supported-deployment-frameworks">Version 4.0</a></p></li>
@@ -259,7 +261,7 @@
 </dl>
 </section>
 <section id="authentication">
-<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading">#</a></h2>
+<h2>Authentication<a class="headerlink" href="#authentication" title="Link to this heading">#</a></h2>
 <p>If you are a user of IBM Cloud Pak® for Data version 4.0, you can create an IBM Watson Machine Learning Python client by providing credentials, or using a token:</p>
 <p><strong>Note:</strong> To determine &lt;URL&gt; and &lt;APIKEY&gt; refer to <a class="reference external" href="https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=functions-authentication-watson-machine-learning">Authentication</a>
 section of product documentation.</p>
@@ -399,9 +401,9 @@ In this situation IBM Cloud Pak foundational services URL should be provided as 
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/scripts/furo.js"></script>
+</div><script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

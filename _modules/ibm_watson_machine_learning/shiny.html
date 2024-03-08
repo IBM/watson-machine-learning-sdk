@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>ibm_watson_machine_learning.shiny - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -178,6 +178,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -191,6 +192,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -246,7 +248,9 @@
 <span class="n">_DEFAULT_LIST_LENGTH</span> <span class="o">=</span> <span class="mi">50</span>
 
 
-<div class="viewcode-block" id="Shiny"><a class="viewcode-back" href="../../core_api.html#client.Shiny">[docs]</a><span class="k">class</span> <span class="nc">Shiny</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+<div class="viewcode-block" id="Shiny">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny">[docs]</a>
+<span class="k">class</span> <span class="nc">Shiny</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Store and manage shiny assets.&quot;&quot;&quot;</span>
 
     <span class="n">ConfigurationMetaNames</span> <span class="o">=</span> <span class="n">ShinyMetaNames</span><span class="p">()</span>
@@ -256,7 +260,9 @@
         <span class="n">WMLResource</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ICP</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">ICP</span>
 
-<div class="viewcode-block" id="Shiny.get_details"><a class="viewcode-back" href="../../core_api.html#client.Shiny.get_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Shiny.get_details">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny.get_details">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get shiny asset details. If no shiny_uid is passed, details for all shiny assets will be returned.</span>
 
 <span class="sd">        :param shiny_uid: Unique id of shiny asset</span>
@@ -288,7 +294,10 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_asset_based_resource</span><span class="p">(</span><span class="n">shiny_uid</span><span class="p">,</span> <span class="s1">&#39;shiny_asset&#39;</span><span class="p">,</span> <span class="n">get_required_elements</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Shiny.store"><a class="viewcode-back" href="../../core_api.html#client.Shiny.store">[docs]</a>    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Shiny.store">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny.store">[docs]</a>
+    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a shiny asset and uploads content to it.</span>
 
 <span class="sd">        :param meta_props: metadata of shiny asset</span>
@@ -333,6 +342,7 @@
             <span class="p">}</span>
 
             <span class="k">return</span> <span class="n">final_response</span></div>
+
 
     <span class="k">def</span> <span class="nf">_create_asset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_meta</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
 
@@ -540,7 +550,9 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;Failed while creating a shiny asset. Try again.&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Shiny.list"><a class="viewcode-back" href="../../core_api.html#client.Shiny.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Shiny.list">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny.list">[docs]</a>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print stored shiny assets in a table format. If limit is set to None</span>
 <span class="sd">        there will be only first 50 records shown.</span>
 
@@ -580,7 +592,10 @@
         <span class="k">if</span> <span class="n">return_as_df</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">table</span></div>
 
-<div class="viewcode-block" id="Shiny.download"><a class="viewcode-back" href="../../core_api.html#client.Shiny.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">rev_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Shiny.download">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny.download">[docs]</a>
+    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">rev_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Download the content of a shiny asset.</span>
 
 <span class="sd">        :param shiny_uid: the Unique Id of the shiny asset to be downloaded</span>
@@ -663,7 +678,10 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;Failed while downloading the shiny asset &quot;</span> <span class="o">+</span> <span class="n">shiny_uid</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Shiny.get_id"><a class="viewcode-back" href="../../core_api.html#client.Shiny.get_id">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Shiny.get_id">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny.get_id">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="n">shiny_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Unique Id of stored shiny asset.</span>
 
@@ -683,7 +701,10 @@
 
         <span class="k">return</span> <span class="n">Shiny</span><span class="o">.</span><span class="n">get_uid</span><span class="p">(</span><span class="n">shiny_details</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Shiny.get_uid"><a class="viewcode-back" href="../../core_api.html#client.Shiny.get_uid">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Shiny.get_uid">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny.get_uid">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_uid</span><span class="p">(</span><span class="n">shiny_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Unique Id  of stored shiny asset.</span>
 
@@ -708,7 +729,10 @@
         <span class="k">return</span> <span class="n">WMLResource</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">shiny_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;data_assets_details&#39;</span><span class="p">,</span>
                                                            <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;guid&#39;</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Shiny.get_href"><a class="viewcode-back" href="../../core_api.html#client.Shiny.get_href">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Shiny.get_href">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny.get_href">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_href</span><span class="p">(</span><span class="n">shiny_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get url of stored shiny asset.</span>
 
@@ -730,7 +754,10 @@
 
         <span class="k">return</span> <span class="n">WMLResource</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">shiny_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;shiny_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;href&#39;</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Shiny.update"><a class="viewcode-back" href="../../core_api.html#client.Shiny.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="p">,</span> <span class="n">meta_props</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Shiny.update">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="p">,</span> <span class="n">meta_props</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update shiny with either metadata or attachment or both.</span>
 
 <span class="sd">        :param shiny_uid:  Shiny UID</span>
@@ -868,6 +895,7 @@
 
             <span class="k">return</span> <span class="n">final_response</span></div>
 
+
     <span class="k">def</span> <span class="nf">_update_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">updated_details</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">updated_details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Could not update the attachment because of server error.&quot;</span>
@@ -875,7 +903,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Unable to update attachment because of server error. Try again later&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Shiny.delete"><a class="viewcode-back" href="../../core_api.html#client.Shiny.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="p">):</span>
+<div class="viewcode-block" id="Shiny.delete">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny.delete">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a stored shiny asset.</span>
 
 <span class="sd">        :param shiny_uid: Unique Id of shiny asset</span>
@@ -905,7 +935,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;delete assets&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Shiny.create_revision"><a class="viewcode-back" href="../../core_api.html#client.Shiny.create_revision">[docs]</a>    <span class="k">def</span> <span class="nf">create_revision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Shiny.create_revision">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny.create_revision">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_revision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create revision for the given Shiny asset. Revisions are immutable once created.</span>
 <span class="sd">        The metadata and attachment at `script_uid` is taken and a revision is created out of it.</span>
 
@@ -948,7 +981,10 @@
 
             <span class="k">return</span> <span class="n">final_response</span></div>
 
-<div class="viewcode-block" id="Shiny.list_revisions"><a class="viewcode-back" href="../../core_api.html#client.Shiny.list_revisions">[docs]</a>    <span class="k">def</span> <span class="nf">list_revisions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Shiny.list_revisions">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny.list_revisions">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_revisions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print all revisions for the given shiny asset uid in a table format.</span>
 
 <span class="sd">        :param shiny_uid: stored shiny asset ID</span>
@@ -994,7 +1030,10 @@
         <span class="k">if</span> <span class="n">return_as_df</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">table</span></div>
 
-<div class="viewcode-block" id="Shiny.get_revision_details"><a class="viewcode-back" href="../../core_api.html#client.Shiny.get_revision_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_revision_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rev_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Shiny.get_revision_details">
+<a class="viewcode-back" href="../../core_api.html#client.Shiny.get_revision_details">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_revision_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rev_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get metadata of `shiny_uid` revision.</span>
 
 <span class="sd">        :param shiny_uid: shiny asset ID</span>
@@ -1047,6 +1086,7 @@
             <span class="p">}</span> <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">]</span>
 
             <span class="k">return</span> <span class="n">final_responses</span></div>
+
 
     <span class="k">def</span> <span class="nf">_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shiny_uid</span><span class="p">):</span>
         <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">shiny_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;shiny_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
@@ -1193,6 +1233,7 @@
             <span class="k">return</span> <span class="n">new_el</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;Failed to read Response from down-stream service: &quot;</span> <span class="o">+</span> <span class="n">response_data</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -1225,9 +1266,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/scripts/furo.js"></script>
+</div><script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

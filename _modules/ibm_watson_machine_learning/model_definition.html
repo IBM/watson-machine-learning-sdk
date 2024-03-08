@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>ibm_watson_machine_learning.model_definition - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -178,6 +178,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -191,6 +192,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -246,7 +248,9 @@
 <span class="n">_DEFAULT_LIST_LENGTH</span> <span class="o">=</span> <span class="mi">50</span>
 
 
-<div class="viewcode-block" id="ModelDefinition"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition">[docs]</a><span class="k">class</span> <span class="nc">ModelDefinition</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelDefinition">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition">[docs]</a>
+<span class="k">class</span> <span class="nc">ModelDefinition</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Store and manage model definitions.&quot;&quot;&quot;</span>
 
     <span class="n">ConfigurationMetaNames</span> <span class="o">=</span> <span class="n">ModelDefinitionMetaNames</span><span class="p">()</span>
@@ -346,7 +350,9 @@
 
         <span class="k">return</span> <span class="n">doc</span>
 
-<div class="viewcode-block" id="ModelDefinition.store"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.store">[docs]</a>    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelDefinition.store">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.store">[docs]</a>
+    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a model definition.</span>
 
 <span class="sd">        :param meta_props: meta data of the model definition configuration, to see available meta names use:</span>
@@ -496,7 +502,10 @@
             <span class="k">finally</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">e</span></div>
 
-<div class="viewcode-block" id="ModelDefinition.get_details"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.get_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelDefinition.get_details">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.get_details">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get metadata of stored model definition. If no `model_definition_uid` is passed,</span>
 <span class="sd">        details for all model definitions will be returned.</span>
 
@@ -535,7 +544,10 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_asset_based_resource</span><span class="p">(</span><span class="n">model_definition_uid</span><span class="p">,</span> <span class="s1">&#39;wml_model_definition&#39;</span><span class="p">,</span> <span class="n">get_required_element_from_response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ModelDefinition.download"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">rev_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelDefinition.download">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.download">[docs]</a>
+    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">rev_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Download the content of a model definition asset.</span>
 
 <span class="sd">        :param model_definition_uid: the Unique Id of the model definition asset to be downloaded</span>
@@ -613,7 +625,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s2">&quot;Failed while downloading the asset &quot;</span> <span class="o">+</span> <span class="n">model_definition_uid</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ModelDefinition.delete"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelDefinition.delete">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.delete">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a stored model definition.</span>
 
 <span class="sd">        :param model_definition_uid: Unique Id of stored model definition</span>
@@ -639,6 +654,7 @@
         <span class="n">response_delete</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">model_definition_endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">paramvalue</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">())</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Model definition deletion&#39;</span><span class="p">,</span> <span class="n">response_delete</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a stored model definition.</span>
@@ -746,7 +762,9 @@
 
         <span class="k">return</span> <span class="n">attachment_id</span>
 
-<div class="viewcode-block" id="ModelDefinition.list"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelDefinition.list">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.list">[docs]</a>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print stored model definition assets in a table format.</span>
 <span class="sd">        If limit is set to None there will be only first 50 records shown.</span>
 
@@ -792,7 +810,10 @@
             <span class="k">return</span> <span class="n">table</span></div>
 
 
-<div class="viewcode-block" id="ModelDefinition.get_id"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.get_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_details</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelDefinition.get_id">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.get_id">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Unique Id of stored model definition asset.</span>
 
 <span class="sd">        :param model_definition_details: metadata of the stored model definition asset</span>
@@ -811,7 +832,10 @@
 
         <span class="k">return</span> <span class="n">ModelDefinition</span><span class="o">.</span><span class="n">get_uid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_details</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ModelDefinition.get_uid"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.get_uid">[docs]</a>    <span class="k">def</span> <span class="nf">get_uid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_details</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelDefinition.get_uid">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.get_uid">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_uid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get uid of stored model.</span>
 
 <span class="sd">        *Deprecated:* Use ``get_id(model_definition_details)`` instead.</span>
@@ -837,7 +861,10 @@
 
             <span class="k">return</span> <span class="n">WMLResource</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">model_definition_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;model_definition_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;guid&#39;</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="ModelDefinition.get_href"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.get_href">[docs]</a>    <span class="k">def</span> <span class="nf">get_href</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_details</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelDefinition.get_href">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.get_href">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_href</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get href of stored model definition.</span>
 
 <span class="sd">        :param model_definition_details: stored model definition details</span>
@@ -861,7 +888,10 @@
             <span class="k">return</span> <span class="n">WMLResource</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">model_definition_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;model_definition_details&#39;</span><span class="p">,</span>
                                                                <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;href&#39;</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="ModelDefinition.update"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_id</span><span class="p">,</span> <span class="n">meta_props</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelDefinition.update">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_id</span><span class="p">,</span> <span class="n">meta_props</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update model definition with either metadata or attachment or both.</span>
 
 <span class="sd">        :param model_definition_id: model definition ID</span>
@@ -1024,6 +1054,7 @@
 
             <span class="k">return</span> <span class="n">final_response</span></div>
 
+
         <span class="c1"># return self._get_required_element_from_response(response)</span>
 
     <span class="k">def</span> <span class="nf">_update_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">updated_details</span><span class="p">):</span>
@@ -1033,7 +1064,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Unable to update attachment because of server error. Try again later&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ModelDefinition.create_revision"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.create_revision">[docs]</a>    <span class="k">def</span> <span class="nf">create_revision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelDefinition.create_revision">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.create_revision">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_revision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create revision for the given model definition. Revisions are immutable once created.</span>
 <span class="sd">        The metadata and attachment at model definition is taken and a revision is created out of it.</span>
 
@@ -1084,7 +1117,10 @@
 
             <span class="k">return</span> <span class="n">final_response</span></div>
 
-<div class="viewcode-block" id="ModelDefinition.get_revision_details"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.get_revision_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_revision_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="p">,</span> <span class="n">rev_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelDefinition.get_revision_details">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.get_revision_details">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_revision_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="p">,</span> <span class="n">rev_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get metadata of model definition.</span>
 
 <span class="sd">        :param model_definition_uid: model definition ID</span>
@@ -1147,7 +1183,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">op_name</span><span class="p">,</span> <span class="n">response_get</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ModelDefinition.list_revisions"><a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.list_revisions">[docs]</a>    <span class="k">def</span> <span class="nf">list_revisions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelDefinition.list_revisions">
+<a class="viewcode-back" href="../../core_api.html#client.ModelDefinition.list_revisions">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_revisions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_definition_uid</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print stored model definition assets in a table format.</span>
 <span class="sd">        If limit is set to None there will be only first 50 records shown.</span>
 
@@ -1190,7 +1229,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="n">model_def_values</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;GUID&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;REV_ID&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;NAME&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;ASSET_TYPE&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;REVISION_COMMIT&#39;</span><span class="p">],</span>
                    <span class="n">limit</span><span class="p">,</span>
-                   <span class="n">_DEFAULT_LIST_LENGTH</span><span class="p">)</span></div></div>
+                   <span class="n">_DEFAULT_LIST_LENGTH</span><span class="p">)</span></div>
+</div>
+
 
 
 
@@ -1226,9 +1267,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/scripts/furo.js"></script>
+</div><script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

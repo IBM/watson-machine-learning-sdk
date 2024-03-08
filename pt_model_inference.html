@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tune Experiment" href="tune_experiment.html" /><link rel="prev" title="Tune Experiment run" href="pt_tune_experiment_run.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Tuned Model Inference - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -179,6 +179,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 current has-children"><a class="reference internal" href="prompt_tuner.html">Prompt Tuning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
@@ -192,6 +193,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -231,11 +233,11 @@
         </div>
         <article role="main">
           <section id="tuned-model-inference">
-<h1>Tuned Model Inference<a class="headerlink" href="#tuned-model-inference" title="Permalink to this heading">#</a></h1>
-<p id="pt-model-inference-module">This section shows how to deploy model and use ModelInference module with created deployment.</p>
+<h1>Tuned Model Inference<a class="headerlink" href="#tuned-model-inference" title="Link to this heading">#</a></h1>
+<p id="pt-model-inference-module">This section shows how to deploy model and use <code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> class with created deployment.</p>
 <p>There are two ways to query <code class="docutils literal notranslate"><span class="pre">generate_text</span></code> using the <a class="reference internal" href="#generate-text-deployments"><span class="std std-ref">deployments</span></a> module or using <a class="reference internal" href="#generate-text-modelinference"><span class="std std-ref">ModelInference</span></a> module .</p>
 <section id="working-with-deployments">
-<h2>Working with deployments<a class="headerlink" href="#working-with-deployments" title="Permalink to this heading">#</a></h2>
+<h2>Working with deployments<a class="headerlink" href="#working-with-deployments" title="Link to this heading">#</a></h2>
 <p>This section describes methods that enable user to work with deployments. But first it will be needed to create client and set <code class="docutils literal notranslate"><span class="pre">project_id</span></code> or <code class="docutils literal notranslate"><span class="pre">space_id</span></code>.</p>
 <div class="highlight-python notranslate" id="api-client-init"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning</span> <span class="kn">import</span> <span class="n">APIClient</span>
 
@@ -269,8 +271,8 @@
 </pre></div>
 </div>
 </section>
-<section id="creating-modelinference-module">
-<h2>Creating ModelInference module<a class="headerlink" href="#creating-modelinference-module" title="Permalink to this heading">#</a></h2>
+<section id="creating-modelinference-instance">
+<h2>Creating <code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> instance<a class="headerlink" href="#creating-modelinference-instance" title="Link to this heading">#</a></h2>
 <p>At the beginning, it is recommended to define parameters (later used by module).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">GenTextParamsMetaNames</span> <span class="k">as</span> <span class="n">GenParams</span>
 
@@ -299,13 +301,13 @@
 <span class="p">)</span>
 </pre></div>
 </div>
-<p id="generate-text-modelinference">You can directly query <code class="docutils literal notranslate"><span class="pre">generate_text</span></code> using the <code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> module.</p>
+<p id="generate-text-modelinference">You can directly query <code class="docutils literal notranslate"><span class="pre">generate_text</span></code> using the <code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tuned_model</span><span class="o">.</span><span class="n">generate_text</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="s2">&quot;Example prompt&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="importing-data">
-<h2>Importing data<a class="headerlink" href="#importing-data" title="Permalink to this heading">#</a></h2>
+<h2>Importing data<a class="headerlink" href="#importing-data" title="Link to this heading">#</a></h2>
 <p>To use ModelInference, an example data may be need.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
@@ -320,7 +322,7 @@
 </div>
 </section>
 <section id="analyzing-satisfaction">
-<h2>Analyzing satisfaction<a class="headerlink" href="#analyzing-satisfaction" title="Permalink to this heading">#</a></h2>
+<h2>Analyzing satisfaction<a class="headerlink" href="#analyzing-satisfaction" title="Link to this heading">#</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The satisfaction analysis was performed for a specific example - <strong>car rental</strong>, it may not work in the case of other data sets.</p>
@@ -352,7 +354,7 @@
 </div>
 </section>
 <section id="generate-methods">
-<h2>Generate methods<a class="headerlink" href="#generate-methods" title="Permalink to this heading">#</a></h2>
+<h2>Generate methods<a class="headerlink" href="#generate-methods" title="Link to this heading">#</a></h2>
 <p>The detailed explanation of available generate methods with exact parameters can be found in the <a class="reference internal" href="fm_model_inference.html#model-inference-class"><span class="std std-ref">ModelInferece class</span></a>.</p>
 <p>With previously created <code class="docutils literal notranslate"><span class="pre">tuned_model</span></code> object, it is possible to generate a text stream (generator) using defined inference and <code class="docutils literal notranslate"><span class="pre">generate_text_stream()</span></code> method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tuned_model</span><span class="o">.</span><span class="n">generate_text_stream</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">input_prompt</span><span class="p">):</span>
@@ -438,7 +440,7 @@
             <ul>
 <li><a class="reference internal" href="#">Tuned Model Inference</a><ul>
 <li><a class="reference internal" href="#working-with-deployments">Working with deployments</a></li>
-<li><a class="reference internal" href="#creating-modelinference-module">Creating ModelInference module</a></li>
+<li><a class="reference internal" href="#creating-modelinference-instance">Creating <code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> instance</a></li>
 <li><a class="reference internal" href="#importing-data">Importing data</a></li>
 <li><a class="reference internal" href="#analyzing-satisfaction">Analyzing satisfaction</a></li>
 <li><a class="reference internal" href="#generate-methods">Generate methods</a></li>
@@ -453,9 +455,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/scripts/furo.js"></script>
+</div><script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

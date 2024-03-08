@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>ibm_watson_machine_learning.runtimes - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -178,6 +178,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -191,6 +192,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -235,18 +237,18 @@
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
 <span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
+
 <span class="n">requests</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">urllib3</span><span class="o">.</span><span class="n">disable_warnings</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils</span> <span class="kn">import</span> <span class="n">INSTANCE_DETAILS_TYPE</span><span class="p">,</span> <span class="n">RUNTIME_SPEC_DETAILS_TYPE</span><span class="p">,</span> <span class="n">MODEL_DETAILS_TYPE</span><span class="p">,</span> <span class="n">LIBRARY_DETAILS_TYPE</span><span class="p">,</span> <span class="n">FUNCTION_DETAILS_TYPE</span><span class="p">,</span> <span class="n">get_type_of_details</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.href_definitions</span> <span class="kn">import</span> <span class="n">is_uid</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">RuntimeMetaNames</span><span class="p">,</span> <span class="n">LibraryMetaNames</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.libs.repo.mlrepositoryartifact</span> <span class="kn">import</span> <span class="n">MLRepositoryArtifact</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.libs.repo.mlrepository</span> <span class="kn">import</span> <span class="n">MetaProps</span><span class="p">,</span> <span class="n">MetaNames</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.href_definitions</span> <span class="kn">import</span> <span class="n">API_VERSION</span><span class="p">,</span> <span class="n">SPACES</span><span class="p">,</span><span class="n">PIPELINES</span><span class="p">,</span> <span class="n">LIBRARIES</span><span class="p">,</span> <span class="n">EXPERIMENTS</span><span class="p">,</span> <span class="n">RUNTIMES</span><span class="p">,</span> <span class="n">DEPLOYMENTS</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.libs.repo.mlrepository</span> <span class="kn">import</span> <span class="n">MetaNames</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.href_definitions</span> <span class="kn">import</span> <span class="n">API_VERSION</span><span class="p">,</span> <span class="n">SPACES</span>
 
 
 <span class="k">def</span> <span class="nf">LibraryDefinition</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">platform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_definition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">custom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -286,7 +288,9 @@
     <span class="k">return</span> <span class="n">definition</span>
 
 
-<div class="viewcode-block" id="Runtimes"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes">[docs]</a><span class="k">class</span> <span class="nc">Runtimes</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+<div class="viewcode-block" id="Runtimes">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes">[docs]</a>
+<span class="k">class</span> <span class="nc">Runtimes</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create Runtime Specs and associated Custom Libraries.</span>
 
 <span class="sd">    .. note::</span>
@@ -351,7 +355,9 @@
         <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">store_library</span><span class="p">(</span><span class="n">lib_metadata</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_library_uid</span><span class="p">(</span><span class="n">details</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Runtimes.store_library"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.store_library">[docs]</a>    <span class="k">def</span> <span class="nf">store_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
+<div class="viewcode-block" id="Runtimes.store_library">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.store_library">[docs]</a>
+    <span class="k">def</span> <span class="nf">store_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a library.</span>
 
 <span class="sd">        :param meta_props:  metadata of the library configuration. To see available meta names use:</span>
@@ -407,6 +413,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Failure during creation of libraries.&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">details</span></div>
+
 
     <span class="k">def</span> <span class="nf">_create_runtime_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">custom_libs_list</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
 
@@ -465,7 +472,9 @@
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Failure during creation of runtime.&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">details</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;guid&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Runtimes.store"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.store">[docs]</a>    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
+<div class="viewcode-block" id="Runtimes.store">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.store">[docs]</a>
+    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a runtime.</span>
 
 <span class="sd">        :param meta_props:  metadata of the runtime configuration. To see available meta names use:</span>
@@ -533,7 +542,10 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">runtime_uid</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Runtimes.get_details"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pre_defined</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Runtimes.get_details">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_details">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pre_defined</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get metadata of stored runtime(s). If runtime UID is not specified returns all runtimes metadata.</span>
 
 <span class="sd">        :param runtime_uid: runtime UID</span>
@@ -569,7 +581,10 @@
         <span class="k">else</span><span class="p">:</span>
          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_artifact_details</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="s1">&#39;runtime specs&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Runtimes.get_library_details"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_library_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_library_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Runtimes.get_library_details">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_library_details">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_library_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get metadata of stored librarie(s). If library UID is not specified returns all libraries metadata.</span>
 
 <span class="sd">        :param library_uid: library UID</span>
@@ -600,7 +615,10 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_no_space_artifact_details</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="s1">&#39;libraries&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_artifact_details</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="s1">&#39;libraries&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Runtimes.get_href"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_href">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Runtimes.get_href">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_href">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_href</span><span class="p">(</span><span class="n">details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get runtime href from runtime details.</span>
 
@@ -632,7 +650,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Unexpected details type: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">details_type</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Runtimes.get_uid"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_uid">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Runtimes.get_uid">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_uid">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_uid</span><span class="p">(</span><span class="n">details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get runtime uid from runtime details.</span>
 
@@ -664,7 +685,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Unexpected details type: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">details_type</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Runtimes.get_library_href"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_library_href">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Runtimes.get_library_href">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_library_href">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_library_href</span><span class="p">(</span><span class="n">library_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get library href from library details.</span>
 
@@ -687,7 +711,10 @@
 
         <span class="k">return</span> <span class="n">Runtimes</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">library_details</span><span class="p">,</span> <span class="s1">&#39;library_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="s1">&#39;href&#39;</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Runtimes.get_library_uid"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_library_uid">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Runtimes.get_library_uid">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.get_library_uid">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_library_uid</span><span class="p">(</span><span class="n">library_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get library uid from library details.</span>
 
@@ -711,6 +738,7 @@
         <span class="c1"># TODO error handling</span>
         <span class="k">return</span> <span class="n">Runtimes</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">library_details</span><span class="p">,</span> <span class="s1">&#39;library_details&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="s1">&#39;guid&#39;</span><span class="p">])</span></div>
 
+
     <span class="k">def</span> <span class="nf">_get_runtimes_uids_for_lib</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">runtime_details</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="c1"># Return list of runtimes which contains library_uid that is passed.</span>
         <span class="k">if</span> <span class="n">runtime_details</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -728,7 +756,9 @@
             <span class="p">)</span>
         <span class="p">))</span>
 
-<div class="viewcode-block" id="Runtimes.delete"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">with_libraries</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Runtimes.delete">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.delete">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">with_libraries</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a runtime.</span>
 
 <span class="sd">        :param runtime_uid: runtime UID</span>
@@ -776,6 +806,7 @@
                     <span class="nb">print</span><span class="p">(</span><span class="n">delete_status</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;runtime deletion&#39;</span><span class="p">,</span> <span class="n">response_delete</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
 
+
     <span class="k">def</span> <span class="nf">_delete_orphaned_libraries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete all custom libraries without runtime.</span>
 
@@ -800,7 +831,9 @@
                 <span class="k">except</span><span class="p">:</span>
                     <span class="k">pass</span>
 
-<div class="viewcode-block" id="Runtimes.delete_library"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.delete_library">[docs]</a>    <span class="k">def</span> <span class="nf">delete_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">):</span>
+<div class="viewcode-block" id="Runtimes.delete_library">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.delete_library">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a library.</span>
 
 <span class="sd">        :param library_uid: library UID</span>
@@ -822,7 +855,10 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;library deletion&#39;</span><span class="p">,</span> <span class="n">response_delete</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Runtimes.list"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pre_defined</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Runtimes.list">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.list">[docs]</a>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pre_defined</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print stored runtimes in a table format. If limit is set to None there will be only first 50 records shown.</span>
 
 <span class="sd">        :param limit: limit number of fetched records</span>
@@ -842,6 +878,7 @@
         <span class="n">values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;guid&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;created_at&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;platform&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;GUID&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;NAME&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;CREATED&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;PLATFORM&#39;</span><span class="p">],</span> <span class="n">limit</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">_list_runtimes_for_libraries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># TODO make public when the time&#39;ll come</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print runtimes uids for libraries in a table format.</span>
@@ -870,7 +907,9 @@
 
         <span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Runtimes.list_libraries"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.list_libraries">[docs]</a>    <span class="k">def</span> <span class="nf">list_libraries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Runtimes.list_libraries">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.list_libraries">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_libraries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print stored libraries in a table format. If runtime UID is not provided, all libraries are listed else,</span>
 <span class="sd">        libraries associated with a runtime are listed. If limit is set to None there will be only first 50 records</span>
 <span class="sd">        shown.</span>
@@ -915,7 +954,10 @@
 
             <span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Runtimes.download_configuration"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.download_configuration">[docs]</a>    <span class="k">def</span> <span class="nf">download_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;runtime_configuration.yaml&#39;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Runtimes.download_configuration">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.download_configuration">[docs]</a>
+    <span class="k">def</span> <span class="nf">download_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;runtime_configuration.yaml&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Downloads configuration file for runtime with specified uid.</span>
 
 <span class="sd">        :param runtime_uid: UID of runtime</span>
@@ -957,7 +999,10 @@
                                      <span class="sa">u</span><span class="s1">&#39;only when CONFIGURATION_FILEPATH meta prop is set during store. &#39;</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Unable to download configuration content: &#39;</span> <span class="o">+</span> <span class="n">response_get</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Runtimes.download_library"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.download_library">[docs]</a>    <span class="k">def</span> <span class="nf">download_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Runtimes.download_library">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.download_library">[docs]</a>
+    <span class="k">def</span> <span class="nf">download_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Downloads library content with specified uid.</span>
 
 <span class="sd">        :param library_uid: UID of library</span>
@@ -1000,7 +1045,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Unable to download library content: &#39;</span> <span class="o">+</span> <span class="n">response_get</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Runtimes.update_library"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.update_library">[docs]</a>    <span class="k">def</span> <span class="nf">update_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">changes</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Runtimes.update_library">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.update_library">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">changes</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates existing library metadata.</span>
 
 <span class="sd">        :param library_uid: UID of library which definition should be updated</span>
@@ -1038,7 +1086,10 @@
 
         <span class="k">return</span> <span class="n">updated_details</span></div>
 
-<div class="viewcode-block" id="Runtimes.update_runtime"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.update_runtime">[docs]</a>    <span class="k">def</span> <span class="nf">update_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">changes</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Runtimes.update_runtime">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.update_runtime">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">changes</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates existing runtime metadata.</span>
 
 <span class="sd">        :param runtime_uid: UID of runtime which definition should be updated</span>
@@ -1076,7 +1127,10 @@
 
         <span class="k">return</span> <span class="n">updated_details</span></div>
 
-<div class="viewcode-block" id="Runtimes.clone_runtime"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.clone_runtime">[docs]</a>    <span class="k">def</span> <span class="nf">clone_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">space_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;copy&quot;</span><span class="p">,</span> <span class="n">rev_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Runtimes.clone_runtime">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.clone_runtime">[docs]</a>
+    <span class="k">def</span> <span class="nf">clone_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runtime_uid</span><span class="p">,</span> <span class="n">space_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;copy&quot;</span><span class="p">,</span> <span class="n">rev_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new runtime identical with the given runtime either in the same space or in a new space.</span>
 <span class="sd">        All dependent assets will be cloned too.</span>
 
@@ -1124,7 +1178,10 @@
 
         <span class="k">return</span> <span class="n">details</span></div>
 
-<div class="viewcode-block" id="Runtimes.clone_library"><a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.clone_library">[docs]</a>    <span class="k">def</span> <span class="nf">clone_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">space_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;copy&quot;</span><span class="p">,</span> <span class="n">rev_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Runtimes.clone_library">
+<a class="viewcode-back" href="../../core_api.html#ibm_watson_machine_learning.runtimes.Runtimes.clone_library">[docs]</a>
+    <span class="k">def</span> <span class="nf">clone_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library_uid</span><span class="p">,</span> <span class="n">space_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;copy&quot;</span><span class="p">,</span> <span class="n">rev_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new function library with the given library either in the same space or in a new space.</span>
 <span class="sd">        All dependent assets will be cloned too.</span>
 
@@ -1170,7 +1227,9 @@
         <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="n">expected_status_code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">operationName</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;cloning library&#39;</span><span class="p">,</span>
                                             <span class="n">response</span><span class="o">=</span><span class="n">response_post</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">details</span></div></div>
+        <span class="k">return</span> <span class="n">details</span></div>
+</div>
+
 
 
 </pre></div>
@@ -1205,9 +1264,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/scripts/furo.js"></script>
+</div><script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

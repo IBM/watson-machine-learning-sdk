@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 --><title>Index - IBM Watson Machine Learning</title>
-<link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="_static/mystyle2.css" />
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 --><title>Index - IBM Watson Machine Learning</title>
+<link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -177,6 +177,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -190,6 +191,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -522,6 +524,8 @@
           <li><a href="core_api.html#client.Deployments.delete">(client.Deployments method)</a>
 </li>
           <li><a href="core_api.html#client.Export.delete">(client.Export method)</a>
+</li>
+          <li><a href="core_api.html#client.HwSpec.delete">(client.HwSpec method)</a>
 </li>
           <li><a href="core_api.html#client.Import.delete">(client.Import method)</a>
 </li>
@@ -1030,7 +1034,13 @@
           <li><a href="tune_experiment.html#ibm_watson_machine_learning.foundation_models.PromptTuner.get_model_id">(ibm_watson_machine_learning.foundation_models.PromptTuner method)</a>
 </li>
         </ul></li>
+        <li><a href="fm_helpers.html#ibm_watson_machine_learning.foundation_models.get_model_lifecycle">get_model_lifecycle() (in module ibm_watson_machine_learning.foundation_models)</a>
+</li>
         <li><a href="core_api.html#client.Repository.get_model_revision_details">get_model_revision_details() (client.Repository method)</a>
+</li>
+        <li><a href="fm_helpers.html#ibm_watson_machine_learning.foundation_models.get_model_specs">get_model_specs() (in module ibm_watson_machine_learning.foundation_models)</a>
+</li>
+        <li><a href="fm_helpers.html#ibm_watson_machine_learning.foundation_models.get_model_specs_with_prompt_tuning_support">get_model_specs_with_prompt_tuning_support() (in module ibm_watson_machine_learning.foundation_models)</a>
 </li>
         <li><a href="core_api.html#client.Repository.get_model_uid">get_model_uid() (client.Repository static method)</a>
 </li>
@@ -1087,6 +1097,8 @@
         <li><a href="core_api.html#client.Repository.get_space_uid">get_space_uid() (client.Repository static method)</a>
 </li>
         <li><a href="core_api.html#client.Training.get_status">get_status() (client.Training method)</a>
+</li>
+        <li><a href="fm_helpers.html#ibm_watson_machine_learning.foundation_models.get_supported_tasks">get_supported_tasks() (in module ibm_watson_machine_learning.foundation_models)</a>
 </li>
         <li><a href="tune_experiment.html#ibm_watson_machine_learning.experiment.fm_tune.TuneRuns.get_tuner">get_tuner() (ibm_watson_machine_learning.experiment.fm_tune.TuneRuns method)</a>
 </li>
@@ -1447,6 +1459,8 @@
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="model.html#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes.MIXTRAL_8X7B_INSTRUCT_V01_Q">MIXTRAL_8X7B_INSTRUCT_V01_Q (ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes attribute)</a>
+</li>
         <li><a href="model.html#ibm_watson_machine_learning.foundation_models.Model">Model (class in ibm_watson_machine_learning.foundation_models)</a>
 </li>
         <li><a href="core_api.html#client.ModelDefinition">ModelDefinition (class in client)</a>
@@ -1748,9 +1762,11 @@
 </li>
         <li><a href="federated_learning.html#remote_training_system.RemoteTrainingSystem">RemoteTrainingSystem (class in remote_training_system)</a>
 </li>
+        <li><a href="core_api.html#client.Repository">Repository (class in client)</a>
+</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="core_api.html#client.Repository">Repository (class in client)</a>
+        <li><a href="core_api.html#client.Repository.ModelAssetTypes">Repository.ModelAssetTypes (class in client)</a>
 </li>
         <li><a href="autoai_deployment_modules.html#ibm_watson_machine_learning.deployment.Batch.rerun_job">rerun_job() (ibm_watson_machine_learning.deployment.Batch method)</a>
 </li>
@@ -1995,6 +2011,8 @@
         <li><a href="core_api.html#client.Assets.store">store() (client.Assets method)</a>
 
         <ul>
+          <li><a href="core_api.html#client.HwSpec.store">(client.HwSpec method)</a>
+</li>
           <li><a href="core_api.html#client.ModelDefinition.store">(client.ModelDefinition method)</a>
 </li>
           <li><a href="core_api.html#client.PkgExtn.store">(client.PkgExtn method)</a>
@@ -2264,9 +2282,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/scripts/furo.js"></script>
+</div><script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

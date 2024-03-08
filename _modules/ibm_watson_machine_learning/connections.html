@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>ibm_watson_machine_learning.connections - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -178,6 +178,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -191,6 +192,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -235,20 +237,22 @@
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
 
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.messages.messages</span> <span class="kn">import</span> <span class="n">Messages</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">ConnectionMetaNames</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">unquote</span><span class="p">,</span> <span class="n">quote</span>
+
+<span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.messages.messages</span> <span class="kn">import</span> <span class="n">Messages</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">ConnectionMetaNames</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
 
 <span class="n">_DEFAULT_LIST_LENGTH</span> <span class="o">=</span> <span class="mi">0</span>
 
 
-<div class="viewcode-block" id="Connections"><a class="viewcode-back" href="../../core_api.html#client.Connections">[docs]</a><span class="k">class</span> <span class="nc">Connections</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+<div class="viewcode-block" id="Connections">
+<a class="viewcode-back" href="../../core_api.html#client.Connections">[docs]</a>
+<span class="k">class</span> <span class="nc">Connections</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Store and manage Connections.&quot;&quot;&quot;</span>
 
     <span class="n">ConfigurationMetaNames</span> <span class="o">=</span> <span class="n">ConnectionMetaNames</span><span class="p">()</span>
@@ -302,7 +306,9 @@
             <span class="k">raise</span> <span class="n">e</span>
             <span class="c1">#raise WMLClientError(Messages.get_message(response_data, message_id=&quot;failed_to_read_response_from_down_stream_service&quot;))</span>
 
-<div class="viewcode-block" id="Connections.get_details"><a class="viewcode-back" href="../../core_api.html#client.Connections.get_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Connections.get_details">
+<a class="viewcode-back" href="../../core_api.html#client.Connections.get_details">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get connection details for the given unique Connection id.</span>
 <span class="sd">        If no connection_id is passed, details for all connections will be returned.</span>
 
@@ -353,7 +359,10 @@
                 <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;resources&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_required_element_from_response</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span>
                                       <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;get connection details&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)[</span><span class="s1">&#39;results&#39;</span><span class="p">]]}</span></div>
 
-<div class="viewcode-block" id="Connections.create"><a class="viewcode-back" href="../../core_api.html#client.Connections.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Connections.create">
+<a class="viewcode-back" href="../../core_api.html#client.Connections.create">[docs]</a>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a connection. Input to PROPERTIES field examples:</span>
 
 <span class="sd">        1. MySQL</span>
@@ -495,7 +504,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;failed_while_creating_connections&quot;</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Connections.delete"><a class="viewcode-back" href="../../core_api.html#client.Connections.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_id</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Connections.delete">
+<a class="viewcode-back" href="../../core_api.html#client.Connections.delete">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_id</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a stored Connection.</span>
 
 <span class="sd">        :param connection_id: Unique id of the connection to be deleted.</span>
@@ -526,7 +538,10 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;connection deletion&#39;</span><span class="p">,</span> <span class="n">response_delete</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Connections.get_uid"><a class="viewcode-back" href="../../core_api.html#client.Connections.get_uid">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Connections.get_uid">
+<a class="viewcode-back" href="../../core_api.html#client.Connections.get_uid">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_uid</span><span class="p">(</span><span class="n">connection_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Unique Id of stored connection.</span>
 
@@ -548,7 +563,10 @@
         <span class="k">return</span> <span class="n">WMLResource</span><span class="o">.</span><span class="n">_get_required_element_from_dict</span><span class="p">(</span><span class="n">connection_details</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;connection_details&#39;</span><span class="p">,</span>
                                                            <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;id&#39;</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Connections.list_datasource_types"><a class="viewcode-back" href="../../core_api.html#client.Connections.list_datasource_types">[docs]</a>    <span class="k">def</span> <span class="nf">list_datasource_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Connections.list_datasource_types">
+<a class="viewcode-back" href="../../core_api.html#client.Connections.list_datasource_types">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_datasource_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print stored datasource types assets in a table format.</span>
 <span class="sd">        :param return_as_df: determinate if table should be returned as pandas.DataFrame object, default: True</span>
 <span class="sd">        :type return_as_df: bool, optional</span>
@@ -581,7 +599,10 @@
         <span class="k">if</span> <span class="n">return_as_df</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">table</span></div>
 
-<div class="viewcode-block" id="Connections.list"><a class="viewcode-back" href="../../core_api.html#client.Connections.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Connections.list">
+<a class="viewcode-back" href="../../core_api.html#client.Connections.list">[docs]</a>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print all stored connections in a table format.</span>
 
 <span class="sd">        :param return_as_df: determinate if table should be returned as pandas.DataFrame object, default: True</span>
@@ -607,7 +628,10 @@
         <span class="k">if</span> <span class="n">return_as_df</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">list_table</span></div>
 
-<div class="viewcode-block" id="Connections.list_uploaded_db_drivers"><a class="viewcode-back" href="../../core_api.html#client.Connections.list_uploaded_db_drivers">[docs]</a>    <span class="k">def</span> <span class="nf">list_uploaded_db_drivers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Connections.list_uploaded_db_drivers">
+<a class="viewcode-back" href="../../core_api.html#client.Connections.list_uploaded_db_drivers">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_uploaded_db_drivers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print uploaded db driver jars in table a format. Supported for IBM Cloud Pak for Data only.</span>
 
 <span class="sd">        :param return_as_df: determinate if table should be returned as pandas.DataFrame object, default: True</span>
@@ -641,6 +665,7 @@
             <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="n">jars</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;NAME&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">return_as_df</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">table</span></div>
+
 
     <span class="k">def</span> <span class="nf">get_uploaded_db_drivers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># TODO not yet documented</span>
         <span class="c1"># &quot;&quot;&quot;</span>
@@ -684,7 +709,9 @@
         <span class="n">jars</span> <span class="o">=</span> <span class="p">[[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_uploaded_db_drivers</span><span class="p">()]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="n">jars</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;NAME&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Connections.get_datasource_type_uid_by_name"><a class="viewcode-back" href="../../core_api.html#client.Connections.get_datasource_type_uid_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_datasource_type_uid_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="Connections.get_datasource_type_uid_by_name">
+<a class="viewcode-back" href="../../core_api.html#client.Connections.get_datasource_type_uid_by_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_datasource_type_uid_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get stored datasource types id for the given datasource type name.</span>
 
 <span class="sd">        :param name:  name of datasource type</span>
@@ -719,7 +746,33 @@
                 <span class="n">datasource_id</span> <span class="o">=</span> <span class="n">ds_resource</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;asset_id&#39;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">datasource_id</span></div>
 
-<div class="viewcode-block" id="Connections.upload_db_driver"><a class="viewcode-back" href="../../core_api.html#client.Connections.upload_db_driver">[docs]</a>    <span class="k">def</span> <span class="nf">upload_db_driver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get_write_mode_by_datasource_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datasource_type</span><span class="p">):</span>
+        <span class="n">Connections</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">datasource_type</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;datasource_type&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">write_mode</span> <span class="o">=</span> <span class="s1">&#39;write_raw&#39;</span> <span class="c1"># default</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">datasource_type</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">write_mode</span>
+
+        <span class="n">header_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_headers</span><span class="p">()</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;interaction_properties&#39;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">}</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">requests_retry_session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_connection_data_type_by_id_href</span><span class="p">(</span><span class="n">datasource_type</span><span class="p">),</span>
+                                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                                <span class="n">headers</span><span class="o">=</span><span class="n">header_param</span><span class="p">)</span>
+
+            <span class="n">datasource_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;get datasource details&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">datasource_details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;target&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;values&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;write_raw&quot;</span> <span class="ow">or</span> <span class="n">val</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;insert&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">val</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">write_mode</span>
+
+<div class="viewcode-block" id="Connections.upload_db_driver">
+<a class="viewcode-back" href="../../core_api.html#client.Connections.upload_db_driver">[docs]</a>
+    <span class="k">def</span> <span class="nf">upload_db_driver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Upload db driver jar. Supported for IBM Cloud Pak for Data only, version 4.0.4 and above.</span>
 
 <span class="sd">        :param path:  path to db driver jar</span>
@@ -751,6 +804,7 @@
                 <span class="p">)</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">repository</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">201</span><span class="p">,</span> <span class="s1">&#39;uploading db driver jar&#39;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">_upload_db_driver_new_api</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Upload db driver jar. Supported for IBM Cloud Pak for Data only, version 4.6.1 and above.</span>
@@ -808,7 +862,9 @@
         <span class="k">except</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Driver jar with name </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not found.&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Connections.sign_db_driver_url"><a class="viewcode-back" href="../../core_api.html#client.Connections.sign_db_driver_url">[docs]</a>    <span class="k">def</span> <span class="nf">sign_db_driver_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jar_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="Connections.sign_db_driver_url">
+<a class="viewcode-back" href="../../core_api.html#client.Connections.sign_db_driver_url">[docs]</a>
+    <span class="k">def</span> <span class="nf">sign_db_driver_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jar_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get signed db driver jar url to be used during creating of JDBC generic connection.</span>
 <span class="sd">        The jar name passed as argument needs to be uploaded into system first.</span>
 <span class="sd">        Supported for IBM Cloud Pak for Data only, version 4.0.4 and above.</span>
@@ -851,6 +907,7 @@
 
             <span class="k">return</span> <span class="n">unquote</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Location&#39;</span><span class="p">])</span></div>
 
+
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">requests_retry_session</span><span class="p">(</span><span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">backoff_factor</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">status_forcelist</span><span class="o">=</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">,</span> <span class="mi">521</span><span class="p">,</span> <span class="mi">524</span><span class="p">),</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="kn">import</span> <span class="n">HTTPAdapter</span>
@@ -869,6 +926,7 @@
         <span class="n">session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;http://&#39;</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
         <span class="n">session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;https://&#39;</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">session</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -901,9 +959,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/scripts/furo.js"></script>
+</div><script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

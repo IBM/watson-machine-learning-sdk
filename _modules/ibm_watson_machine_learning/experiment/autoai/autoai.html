@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>ibm_watson_machine_learning.experiment.autoai.autoai - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -178,6 +178,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -191,6 +192,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -266,7 +268,9 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="AutoAI"><a class="viewcode-back" href="../../../../autoai_experiment.html#ibm_watson_machine_learning.experiment.autoai.autoai.AutoAI">[docs]</a><span class="k">class</span> <span class="nc">AutoAI</span><span class="p">(</span><span class="n">BaseExperiment</span><span class="p">):</span>
+<div class="viewcode-block" id="AutoAI">
+<a class="viewcode-back" href="../../../../autoai_experiment.html#ibm_watson_machine_learning.experiment.autoai.autoai.AutoAI">[docs]</a>
+<span class="k">class</span> <span class="nc">AutoAI</span><span class="p">(</span><span class="n">BaseExperiment</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;AutoAI class for pipeline models optimization automation.</span>
 
 <span class="sd">    :param wml_credentials: credentials to Watson Machine Learning instance</span>
@@ -353,7 +357,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_20_class_limit_removal_test</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="c1"># --- end note</span>
 
-<div class="viewcode-block" id="AutoAI.runs"><a class="viewcode-back" href="../../../../autoai_experiment.html#ibm_watson_machine_learning.experiment.autoai.autoai.AutoAI.runs">[docs]</a>    <span class="k">def</span> <span class="nf">runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;AutoPipelinesRuns&#39;</span><span class="p">,</span> <span class="s1">&#39;LocalAutoPipelinesRuns&#39;</span><span class="p">]:</span>
+<div class="viewcode-block" id="AutoAI.runs">
+<a class="viewcode-back" href="../../../../autoai_experiment.html#ibm_watson_machine_learning.experiment.autoai.autoai.AutoAI.runs">[docs]</a>
+    <span class="k">def</span> <span class="nf">runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;AutoPipelinesRuns&#39;</span><span class="p">,</span> <span class="s1">&#39;LocalAutoPipelinesRuns&#39;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the historical runs but with WML Pipeline name filter (for remote scenario).</span>
 <span class="sd">        Get the historical runs but with experiment name filter (for local scenario).</span>
 
@@ -380,7 +386,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">AutoPipelinesRuns</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="n">WMLEngine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">wml_client</span><span class="p">),</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AutoAI.optimizer"><a class="viewcode-back" href="../../../../autoai_experiment.html#ibm_watson_machine_learning.experiment.autoai.autoai.AutoAI.optimizer">[docs]</a>    <span class="k">def</span> <span class="nf">optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="AutoAI.optimizer">
+<a class="viewcode-back" href="../../../../autoai_experiment.html#ibm_watson_machine_learning.experiment.autoai.autoai.AutoAI.optimizer">[docs]</a>
+    <span class="k">def</span> <span class="nf">optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                   <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                   <span class="o">*</span><span class="p">,</span>
                   <span class="n">prediction_type</span><span class="p">:</span> <span class="s1">&#39;PredictionType&#39;</span><span class="p">,</span>
@@ -440,7 +449,6 @@
                   <span class="n">early_stop_window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                   <span class="n">time_ordered_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                   <span class="n">feature_selector_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                  <span class="n">feature_selector_auto_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                   <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;RemoteAutoPipelines&#39;</span><span class="p">,</span> <span class="s1">&#39;LocalAutoPipelines&#39;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize an AutoAi optimizer.</span>
@@ -688,10 +696,6 @@
 <span class="sd">                The &quot;on&quot; mode removes all insignificant features (0.0. importance). Feature selector is applied during</span>
 <span class="sd">                cognito phase (applicable to pipelines with feature engineering stage).</span>
 <span class="sd">        :type feature_selector_mode: str, optional</span>
-
-<span class="sd">        :param feature_selector_auto_delta: maximum accepted delta between score before and after dropping</span>
-<span class="sd">                insignificant features</span>
-<span class="sd">        :type feature_selector_auto_delta: float, optional</span>
 
 <span class="sd">        :return: RemoteAutoPipelines or LocalAutoPipelines, depends on how you initialize the AutoAI object</span>
 <span class="sd">        :rtype: RemoteAutoPipelines or LocalAutoPipelines</span>
@@ -989,11 +993,11 @@
                 <span class="n">early_stop_window_size</span><span class="o">=</span><span class="n">early_stop_window_size</span><span class="p">,</span>
                 <span class="n">time_ordered_data</span><span class="o">=</span><span class="n">time_ordered_data</span><span class="p">,</span>
                 <span class="n">feature_selector_mode</span><span class="o">=</span><span class="n">feature_selector_mode</span><span class="p">,</span>
-                <span class="n">feature_selector_auto_delta</span><span class="o">=</span><span class="n">feature_selector_auto_delta</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">reduced_kwargs</span>
             <span class="p">)</span>
             <span class="n">optimizer</span><span class="o">.</span><span class="n">_workspace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span>
             <span class="k">return</span> <span class="n">optimizer</span></div>
+
 
     <span class="k">def</span> <span class="nf">_init_estimator_enums</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">wml_client</span><span class="o">.</span><span class="n">ICP</span><span class="p">:</span>
@@ -1015,6 +1019,7 @@
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">wml_client</span><span class="p">,</span> <span class="s1">&#39;project_type&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;local_git_storage&#39;</span> \
                     <span class="ow">and</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ENABLE_AUTOAI&#39;</span><span class="p">,</span> <span class="s1">&#39;false&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;false&#39;</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ForbiddenActionForGitBasedProject</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Creating AutoAI experiment is not supported for git based project.&quot;</span><span class="p">)</span></div>
+
 
 
 </pre></div>
@@ -1049,9 +1054,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
-    <script src="../../../../_static/scripts/furo.js"></script>
+</div><script src="../../../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

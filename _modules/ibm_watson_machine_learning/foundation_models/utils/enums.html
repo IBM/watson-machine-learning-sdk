@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>ibm_watson_machine_learning.foundation_models.utils.enums - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -178,6 +178,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -191,6 +192,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -246,7 +248,9 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="ModelTypes"><a class="viewcode-back" href="../../../../model.html#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes">[docs]</a><span class="k">class</span> <span class="nc">ModelTypes</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelTypes">
+<a class="viewcode-back" href="../../../../model.html#ibm_watson_machine_learning.foundation_models.utils.enums.ModelTypes">[docs]</a>
+<span class="k">class</span> <span class="nc">ModelTypes</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Supported foundation models.&quot;&quot;&quot;</span>
     <span class="n">FLAN_T5_XXL</span> <span class="o">=</span> <span class="s2">&quot;google/flan-t5-xxl&quot;</span>
     <span class="n">FLAN_UL2</span> <span class="o">=</span> <span class="s2">&quot;google/flan-ul2&quot;</span>
@@ -261,27 +265,39 @@
     <span class="n">FLAN_T5_XL</span> <span class="o">=</span> <span class="s1">&#39;google/flan-t5-xl&#39;</span>
     <span class="n">GRANITE_13B_CHAT_V2</span> <span class="o">=</span> <span class="s1">&#39;ibm/granite-13b-chat-v2&#39;</span>
     <span class="n">GRANITE_13B_INSTRUCT_V2</span> <span class="o">=</span> <span class="s1">&#39;ibm/granite-13b-instruct-v2&#39;</span>
-    <span class="n">ELYZA_JAPANESE_LLAMA_2_7B_INSTRUCT</span> <span class="o">=</span> <span class="s1">&#39;elyza/elyza-japanese-llama-2-7b-instruct&#39;</span></div>
+    <span class="n">ELYZA_JAPANESE_LLAMA_2_7B_INSTRUCT</span> <span class="o">=</span> <span class="s1">&#39;elyza/elyza-japanese-llama-2-7b-instruct&#39;</span>
+    <span class="n">MIXTRAL_8X7B_INSTRUCT_V01_Q</span> <span class="o">=</span> <span class="s1">&#39;ibm-mistralai/mixtral-8x7b-instruct-v01-q&#39;</span></div>
 
 
-<div class="viewcode-block" id="DecodingMethods"><a class="viewcode-back" href="../../../../model.html#ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods">[docs]</a><span class="k">class</span> <span class="nc">DecodingMethods</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="DecodingMethods">
+<a class="viewcode-back" href="../../../../model.html#ibm_watson_machine_learning.foundation_models.utils.enums.DecodingMethods">[docs]</a>
+<span class="k">class</span> <span class="nc">DecodingMethods</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Supported decoding methods for text generation.&quot;&quot;&quot;</span>
     <span class="n">SAMPLE</span> <span class="o">=</span> <span class="s2">&quot;sample&quot;</span>
     <span class="n">GREEDY</span> <span class="o">=</span> <span class="s2">&quot;greedy&quot;</span></div>
 
 
-<div class="viewcode-block" id="PromptTuningTypes"><a class="viewcode-back" href="../../../../tune_experiment.html#ibm_watson_machine_learning.foundation_models.utils.enums.PromptTuningTypes">[docs]</a><span class="k">class</span> <span class="nc">PromptTuningTypes</span><span class="p">:</span>
+
+<div class="viewcode-block" id="PromptTuningTypes">
+<a class="viewcode-back" href="../../../../tune_experiment.html#ibm_watson_machine_learning.foundation_models.utils.enums.PromptTuningTypes">[docs]</a>
+<span class="k">class</span> <span class="nc">PromptTuningTypes</span><span class="p">:</span>
     <span class="n">PT</span> <span class="o">=</span> <span class="s2">&quot;prompt_tuning&quot;</span></div>
 
 
-<div class="viewcode-block" id="PromptTuningInitMethods"><a class="viewcode-back" href="../../../../tune_experiment.html#ibm_watson_machine_learning.foundation_models.utils.enums.PromptTuningInitMethods">[docs]</a><span class="k">class</span> <span class="nc">PromptTuningInitMethods</span><span class="p">:</span>
+
+<div class="viewcode-block" id="PromptTuningInitMethods">
+<a class="viewcode-back" href="../../../../tune_experiment.html#ibm_watson_machine_learning.foundation_models.utils.enums.PromptTuningInitMethods">[docs]</a>
+<span class="k">class</span> <span class="nc">PromptTuningInitMethods</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Supported methods for prompt initialization in prompt tuning.&quot;&quot;&quot;</span>
     <span class="n">RANDOM</span> <span class="o">=</span> <span class="s2">&quot;random&quot;</span>
     <span class="n">TEXT</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span></div>
+
     <span class="c1"># PRESET ?</span>
 
 
-<div class="viewcode-block" id="TuneExperimentTasks"><a class="viewcode-back" href="../../../../tune_experiment.html#ibm_watson_machine_learning.foundation_models.utils.enums.TuneExperimentTasks">[docs]</a><span class="k">class</span> <span class="nc">TuneExperimentTasks</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="TuneExperimentTasks">
+<a class="viewcode-back" href="../../../../tune_experiment.html#ibm_watson_machine_learning.foundation_models.utils.enums.TuneExperimentTasks">[docs]</a>
+<span class="k">class</span> <span class="nc">TuneExperimentTasks</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">QUESTION_ANSWERING</span> <span class="o">=</span> <span class="s2">&quot;question_answering&quot;</span>
     <span class="n">SUMMARIZATION</span> <span class="o">=</span> <span class="s2">&quot;summarization&quot;</span>
     <span class="n">RETRIEVAL_AUGMENTED_GENERATION</span> <span class="o">=</span> <span class="s2">&quot;retrieval_augmented_generation&quot;</span>
@@ -291,11 +307,15 @@
     <span class="n">EXTRACTION</span> <span class="o">=</span> <span class="s2">&quot;extraction&quot;</span></div>
 
 
-<div class="viewcode-block" id="PromptTemplateFormats"><a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.utils.enums.PromptTemplateFormats">[docs]</a><span class="k">class</span> <span class="nc">PromptTemplateFormats</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PromptTemplateFormats">
+<a class="viewcode-back" href="../../../../prompt_template_manager.html#ibm_watson_machine_learning.foundation_models.utils.enums.PromptTemplateFormats">[docs]</a>
+<span class="k">class</span> <span class="nc">PromptTemplateFormats</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Supported formats of loaded prompt template.&quot;&quot;&quot;</span>
     <span class="n">PROMPTTEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;prompt&quot;</span>
     <span class="n">STRING</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>
     <span class="n">LANGCHAIN</span> <span class="o">=</span> <span class="s2">&quot;langchain&quot;</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -328,9 +348,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
-    <script src="../../../../_static/scripts/furo.js"></script>
+</div><script src="../../../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

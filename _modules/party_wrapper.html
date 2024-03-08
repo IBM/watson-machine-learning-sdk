@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>party_wrapper - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -178,6 +178,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -191,6 +192,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -247,7 +249,9 @@
 <span class="kn">import</span> <span class="nn">ibm_watson_machine_learning._wrappers.requests</span> <span class="k">as</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="nn">req</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils.utils</span> <span class="kn">import</span> <span class="n">get_module_version</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">ApiRequestFailure</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
+
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -400,7 +404,9 @@
     <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fl_path</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Party"><a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party">[docs]</a><span class="k">class</span> <span class="nc">Party</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+<div class="viewcode-block" id="Party">
+<a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party">[docs]</a>
+<span class="k">class</span> <span class="nc">Party</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The Party class embodies a Federated Learning party, with methods to run, cancel, and query local training.</span>
 <span class="sd">    Refer to the ``client.remote_training_system.create_party()`` API for more information about creating an</span>
 <span class="sd">    instance of the Party class.</span>
@@ -479,7 +485,9 @@
     <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Party</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Party.run"><a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregator_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">experiment_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asynchronous</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">10</span><span class="p">):</span>
+<div class="viewcode-block" id="Party.run">
+<a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregator_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">experiment_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asynchronous</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect to a Federated Learning aggregator and run local training.</span>
 <span class="sd">        Exactly one of `aggregator_id` and `experiment_id` must be supplied.</span>
 
@@ -502,7 +510,7 @@
 <span class="sd">        :type verify: bool, optional</span>
 <span class="sd">        :param timeout: timeout in seconds</span>
 
-<span class="sd">              * If the aggregator is not ready within timeout seconds, exit.</span>
+<span class="sd">            * If the aggregator is not ready within timeout seconds from now, exit.</span>
 
 <span class="sd">        :type timeout: int, or None for no timeout</span>
 
@@ -546,10 +554,29 @@
 
         <span class="c1"># If crypto is enabled, test if this client supports it</span>
         <span class="c1"># WML training service uses the fusion_type field to determine if encryption is required.</span>
-        <span class="k">if</span> <span class="n">details</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;federated_learning&quot;</span><span class="p">][</span><span class="s2">&quot;fusion_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;crypto_iter_avg&quot;</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Encryption is set as required&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">aggregator_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span>
+                <span class="n">training_uid</span><span class="o">=</span><span class="n">aggregator_id</span><span class="p">,</span> <span class="n">_internal</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">ApiRequestFailure</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed get training details&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FLException</span><span class="p">(</span><span class="s2">&quot;Failed get training details&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+
+        <span class="c1"># Response might not be for a federated learning training</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fusion_type</span> <span class="o">=</span> <span class="n">aggregator_details</span><span class="p">[</span><span class="s2">&quot;entity&quot;</span><span class="p">][</span><span class="s2">&quot;federated_learning&quot;</span><span class="p">][</span><span class="s2">&quot;fusion_type&quot;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to read fusion type from training details&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FLException</span><span class="p">(</span><span class="s2">&quot;Failed to read fusion type from training details&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+
+        <span class="k">if</span> <span class="n">fusion_type</span> <span class="o">==</span> <span class="s2">&quot;crypto_iter_avg&quot;</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;This training requires encryption&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_crypto_supported</span><span class="p">():</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Encryption is required, but the &#39;</span><span class="si">%s</span><span class="s2">&#39; module required for encryption was not found&quot;</span><span class="p">,</span> <span class="n">CRYPTO_LIBRARY</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;Encryption is required, but the &#39;</span><span class="si">%s</span><span class="s2">&#39; module required for encryption was not found&quot;</span><span class="p">,</span>
+                    <span class="n">CRYPTO_LIBRARY</span><span class="p">,</span>
+                <span class="p">)</span>
                 <span class="k">raise</span> <span class="n">FLException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">CRYPTO_LIBRARY</span><span class="si">}</span><span class="s2">&#39; module not found&quot;</span><span class="p">)</span>
 
         <span class="c1"># Import the changed files in the desired lib version</span>
@@ -628,12 +655,15 @@
                     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;The training finishes with </span><span class="si">%s</span><span class="s2"> status&quot;</span> <span class="o">%</span> <span class="n">state</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">FLException</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">FLException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">FLException</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">ex</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;The party failed to start training&quot;</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Party.monitor_logs"><a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party.monitor_logs">[docs]</a>    <span class="k">def</span> <span class="nf">monitor_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Party.monitor_logs">
+<a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party.monitor_logs">[docs]</a>
+    <span class="k">def</span> <span class="nf">monitor_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Enable logging of the training job to standard output.</span>
 <span class="sd">        This method should be called before calling the ``run()`` method.</span>
 
@@ -654,7 +684,10 @@
         <span class="n">configure_logging_from_file</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="n">log_level</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Party.monitor_metrics"><a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party.monitor_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">monitor_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics_file</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Party.monitor_metrics">
+<a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party.monitor_metrics">[docs]</a>
+    <span class="k">def</span> <span class="nf">monitor_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics_file</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Enable output of training metrics.</span>
 
 <span class="sd">        :param metrics_file: a filename specified by user to which the metrics should be written</span>
@@ -672,7 +705,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metrics_output</span> <span class="o">=</span> <span class="n">metrics_file</span></div>
 
-<div class="viewcode-block" id="Party.is_running"><a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party.is_running">[docs]</a>    <span class="k">def</span> <span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Party.is_running">
+<a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party.is_running">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the training job is running.</span>
 
 <span class="sd">        :return: if the job is running</span>
@@ -687,7 +723,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">stopped</span></div>
 
-<div class="viewcode-block" id="Party.get_round"><a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party.get_round">[docs]</a>    <span class="k">def</span> <span class="nf">get_round</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Party.get_round">
+<a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party.get_round">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_round</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the current round number.</span>
 
 <span class="sd">        :return: the current round number</span>
@@ -702,7 +741,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Party</span><span class="o">.</span><span class="n">proto_handler</span><span class="o">.</span><span class="n">metrics_recorder</span><span class="o">.</span><span class="n">get_round_no</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Party.cancel"><a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Party.cancel">
+<a class="viewcode-back" href="../federated_learning.html#party_wrapper.Party.cancel">[docs]</a>
+    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop the local connection to the training on the party side.</span>
 
 <span class="sd">        **Example**</span>
@@ -712,7 +754,9 @@
 <span class="sd">            party.cancel()</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Party</span><span class="o">.</span><span class="n">stop_connection</span><span class="p">()</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Party</span><span class="o">.</span><span class="n">stop_connection</span><span class="p">()</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -745,9 +789,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/scripts/furo.js"></script>
+</div><script src="../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

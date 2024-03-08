@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>ibm_watson_machine_learning.deployments - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -178,6 +178,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -191,6 +192,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -235,7 +237,7 @@
 <span class="c1">#  -----------------------------------------------------------------------------------------</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Literal</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
@@ -249,6 +251,7 @@
                                                           <span class="n">InvalidValue</span><span class="p">,</span> <span class="n">MissingArgument</span><span class="p">,</span> <span class="n">PromptVariablesError</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.href_definitions</span> <span class="kn">import</span> <span class="n">is_uid</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.messages.messages</span> <span class="kn">import</span> <span class="n">Messages</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">DeploymentMetaNames</span><span class="p">,</span> <span class="n">ScoringMetaNames</span><span class="p">,</span> <span class="n">DecisionOptimizationMetaNames</span><span class="p">,</span> <span class="n">DeploymentNewMetaNames</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.libs.repo.util.library_imports</span> <span class="kn">import</span> <span class="n">LibraryChecker</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils.autoai.utils</span> <span class="kn">import</span> <span class="n">all_logging_disabled</span>
@@ -257,7 +260,9 @@
 <span class="n">lib_checker</span> <span class="o">=</span> <span class="n">LibraryChecker</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="Deployments"><a class="viewcode-back" href="../../core_api.html#client.Deployments">[docs]</a><span class="k">class</span> <span class="nc">Deployments</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
+<div class="viewcode-block" id="Deployments">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments">[docs]</a>
+<span class="k">class</span> <span class="nc">Deployments</span><span class="p">(</span><span class="n">WMLResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Deploy and score published artifacts (models and functions).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">cloud_platform_spaces</span> <span class="o">=</span> <span class="kc">False</span>
@@ -310,8 +315,10 @@
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="s1">&#39;Deployment &#39;</span> <span class="o">+</span> <span class="n">operation_name</span> <span class="o">+</span> <span class="s1">&#39; failed for deployment id: &#39;</span> <span class="o">+</span> <span class="n">deployment_id</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
 
     <span class="c1"># TODO model_uid and artifact_uid should be changed to artifact_uid only</span>
-<div class="viewcode-block" id="Deployments.create"><a class="viewcode-back" href="../../core_api.html#client.Deployments.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifact_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">meta_props</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rev_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a deployment from an artifact. As artifact we understand model or function which may be deployed.</span>
+<div class="viewcode-block" id="Deployments.create">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.create">[docs]</a>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifact_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">meta_props</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rev_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a deployment from an artifact. As artifact, we understand model or function which may be deployed.</span>
 
 <span class="sd">        :param artifact_uid:  published artifact UID (model or function uid)</span>
 <span class="sd">        :type artifact_uid: str</span>
@@ -515,9 +522,12 @@
             <span class="n">print_text_header_h2</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">error_msg</span> <span class="o">+</span> <span class="s1">&#39;. Error: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;. &#39;</span> <span class="o">+</span> <span class="n">reason</span><span class="p">)</span></div>
 
+
             <span class="c1">#return self._handle_response(202, u&#39;created deployment&#39;, response)</span>
 
-<div class="viewcode-block" id="Deployments.get_uid"><a class="viewcode-back" href="../../core_api.html#client.Deployments.get_uid">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Deployments.get_uid">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.get_uid">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_uid</span><span class="p">(</span><span class="n">deployment_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get deployment_uid from deployment details.</span>
 
@@ -554,7 +564,10 @@
 
         <span class="k">return</span> <span class="n">uid</span></div>
 
-<div class="viewcode-block" id="Deployments.get_id"><a class="viewcode-back" href="../../core_api.html#client.Deployments.get_id">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Deployments.get_id">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.get_id">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="n">deployment_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get deployment id from deployment details.</span>
 
@@ -574,7 +587,10 @@
 
         <span class="k">return</span> <span class="n">Deployments</span><span class="o">.</span><span class="n">get_uid</span><span class="p">(</span><span class="n">deployment_details</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Deployments.get_href"><a class="viewcode-back" href="../../core_api.html#client.Deployments.get_href">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Deployments.get_href">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.get_href">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_href</span><span class="p">(</span><span class="n">deployment_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get deployment_href from deployment details.</span>
 
@@ -607,6 +623,7 @@
             <span class="k">raise</span> <span class="n">MissingValue</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;deployment_details.metadata.href&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">url</span></div>
+
 
     <span class="k">def</span> <span class="nf">_get_serving_name_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serving_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get info about serving name.</span>
@@ -642,7 +659,9 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Deployments.is_serving_name_available"><a class="viewcode-back" href="../../core_api.html#client.Deployments.is_serving_name_available">[docs]</a>    <span class="k">def</span> <span class="nf">is_serving_name_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serving_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="Deployments.is_serving_name_available">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.is_serving_name_available">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_serving_name_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serving_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if serving name is available for usage.</span>
 
 <span class="sd">        :param serving_name: serving name to filter deployments</span>
@@ -662,7 +681,10 @@
 
         <span class="k">return</span> <span class="n">status_code</span> <span class="o">!=</span> <span class="mi">409</span></div>
 
-<div class="viewcode-block" id="Deployments.get_details"><a class="viewcode-back" href="../../core_api.html#client.Deployments.get_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">serving_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asynchronous</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">get_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+
+<div class="viewcode-block" id="Deployments.get_details">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.get_details">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">serving_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asynchronous</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">get_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                     <span class="n">spec_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_silent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get information about deployment(s).</span>
 <span class="sd">        If deployment_uid is not passed, all deployment details are fetched.</span>
@@ -734,7 +756,10 @@
 
         <span class="k">return</span> <span class="n">deployment_details</span></div>
 
-<div class="viewcode-block" id="Deployments.get_scoring_href"><a class="viewcode-back" href="../../core_api.html#client.Deployments.get_scoring_href">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Deployments.get_scoring_href">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.get_scoring_href">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_scoring_href</span><span class="p">(</span><span class="n">deployment_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get scoring url from deployment details.</span>
 
@@ -771,7 +796,10 @@
             <span class="k">raise</span> <span class="n">MissingValue</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;scoring_url missing in online_predictions&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">scoring_url</span></div>
 
-<div class="viewcode-block" id="Deployments.get_serving_href"><a class="viewcode-back" href="../../core_api.html#client.Deployments.get_serving_href">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Deployments.get_serving_href">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.get_serving_href">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_serving_href</span><span class="p">(</span><span class="n">deployment_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get serving url from deployment details.</span>
 
@@ -809,7 +837,10 @@
                 <span class="sa">u</span><span class="s1">&#39;Getting serving url for deployment failed. This functionality is available only for sync deployments with serving name.&#39;</span><span class="p">,</span>
                 <span class="n">e</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Deployments.delete"><a class="viewcode-back" href="../../core_api.html#client.Deployments.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_uid</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Deployments.delete">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.delete">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_uid</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete deployment.</span>
 
 <span class="sd">        :param deployment_uid: Unique Id of Deployment</span>
@@ -849,7 +880,10 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;deployment deletion&#39;</span><span class="p">,</span> <span class="n">response_delete</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Deployments.score"><a class="viewcode-back" href="../../core_api.html#client.Deployments.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_id</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Deployments.score">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.score">[docs]</a>
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_id</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Make scoring requests against deployed artifact.</span>
 
 <span class="sd">        :param deployment_id: Unique Id of the deployment to be scored</span>
@@ -968,9 +1002,12 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;scoring&#39;</span><span class="p">,</span> <span class="n">response_scoring</span><span class="p">)</span></div>
 
+
         <span class="c1">#########################################</span>
 
-<div class="viewcode-block" id="Deployments.get_download_url"><a class="viewcode-back" href="../../core_api.html#client.Deployments.get_download_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_download_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_details</span><span class="p">):</span>
+<div class="viewcode-block" id="Deployments.get_download_url">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.get_download_url">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_download_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get deployment_download_url from deployment details.</span>
 
 <span class="sd">        :param deployment_details: created deployment details</span>
@@ -1007,7 +1044,10 @@
 
         <span class="k">return</span> <span class="n">url</span></div>
 
-<div class="viewcode-block" id="Deployments.list"><a class="viewcode-back" href="../../core_api.html#client.Deployments.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Deployments.list">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.list">[docs]</a>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">artifact_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print deployments in a table format. If limit is set to None there will be only first 50 records shown.</span>
 
 <span class="sd">        :param limit:  limit number of fetched records</span>
@@ -1015,6 +1055,9 @@
 
 <span class="sd">        :param return_as_df: determinate if table should be returned as pandas.DataFrame object, default: True</span>
 <span class="sd">        :type return_as_df: bool, optional</span>
+
+<span class="sd">        :param artifact_type: return only deployments with the specified artifact_type</span>
+<span class="sd">        :type artifact_type: str, optional</span>
 
 <span class="sd">        :return: pandas.DataFrame with listed deployments or None if return_as_df is False</span>
 <span class="sd">        :rtype: pandas.DataFrame or None</span>
@@ -1075,14 +1118,17 @@
                 <span class="n">spec_id</span> <span class="o">=</span> <span class="n">asset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;asset&#39;</span><span class="p">,</span> <span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;prompt_template&#39;</span><span class="p">))[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="p">{})</span>\
                     <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;entity&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;software_spec&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
 
-                <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;guid&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;guid&#39;</span> <span class="ow">in</span> <span class="n">m</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="n">m</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
-                     <span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
-                     <span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">][</span><span class="s1">&#39;state&#39;</span><span class="p">],</span>
-                     <span class="n">m</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;created_at&#39;</span><span class="p">],</span>
-                     <span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;deployed_asset_type&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">),</span>
-                     <span class="n">get_spec_info</span><span class="p">(</span><span class="n">spec_id</span><span class="p">,</span> <span class="s1">&#39;state&#39;</span><span class="p">),</span>
-                     <span class="n">get_spec_info</span><span class="p">(</span><span class="n">spec_id</span><span class="p">,</span> <span class="s1">&#39;replacement&#39;</span><span class="p">)))</span>
+                <span class="k">if</span> <span class="n">artifact_type</span> <span class="ow">and</span> <span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;deployed_asset_type&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">artifact_type</span><span class="p">:</span>
+                    <span class="k">pass</span> <span class="c1"># filter by artifact_type</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;guid&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;guid&#39;</span> <span class="ow">in</span> <span class="n">m</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="n">m</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                         <span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+                         <span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">][</span><span class="s1">&#39;state&#39;</span><span class="p">],</span>
+                         <span class="n">m</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;created_at&#39;</span><span class="p">],</span>
+                         <span class="n">m</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;deployed_asset_type&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">),</span>
+                         <span class="n">get_spec_info</span><span class="p">(</span><span class="n">spec_id</span><span class="p">,</span> <span class="s1">&#39;state&#39;</span><span class="p">),</span>
+                         <span class="n">get_spec_info</span><span class="p">(</span><span class="n">spec_id</span><span class="p">,</span> <span class="s1">&#39;replacement&#39;</span><span class="p">)))</span>
 
             <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
 
@@ -1096,7 +1142,10 @@
         <span class="k">if</span> <span class="n">return_as_df</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">table</span></div>
 
-<div class="viewcode-block" id="Deployments.list_jobs"><a class="viewcode-back" href="../../core_api.html#client.Deployments.list_jobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Deployments.list_jobs">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.list_jobs">[docs]</a>
+    <span class="k">def</span> <span class="nf">list_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print the async deployment jobs in a table format.</span>
 <span class="sd">        If limit is set to None there will be only first 50 records shown.</span>
 
@@ -1150,6 +1199,7 @@
         <span class="k">if</span> <span class="n">return_as_df</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">table</span></div>
 
+
     <span class="k">def</span> <span class="nf">_get_deployable_asset_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">details</span><span class="p">):</span>
         <span class="n">url</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;asset&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="s1">&#39;model&#39;</span> <span class="ow">in</span> <span class="n">url</span><span class="p">:</span>
@@ -1159,7 +1209,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;unknown&#39;</span>
 
-<div class="viewcode-block" id="Deployments.update"><a class="viewcode-back" href="../../core_api.html#client.Deployments.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_uid</span><span class="p">,</span> <span class="n">changes</span><span class="p">):</span>
+<div class="viewcode-block" id="Deployments.update">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_uid</span><span class="p">,</span> <span class="n">changes</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates existing deployment metadata. If ASSET is patched, then &#39;id&#39; field is mandatory</span>
 <span class="sd">        and it starts a deployment with the provided asset id/rev. Deployment id remains the same.</span>
 
@@ -1303,6 +1355,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">ret202</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">updated_details</span></div>
 
+
     <span class="c1">## Below functions are for async scoring. They are just dummy functions.</span>
     <span class="k">def</span> <span class="nf">_score_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">deployment_uid</span><span class="p">,</span> <span class="n">scoring_payload</span><span class="p">,</span>
                      <span class="n">transaction_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1334,7 +1387,9 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">202</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;scoring asynchronously&#39;</span><span class="p">,</span> <span class="n">response_scoring</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Deployments.create_job"><a class="viewcode-back" href="../../core_api.html#client.Deployments.create_job">[docs]</a>    <span class="k">def</span> <span class="nf">create_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_id</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">,</span> <span class="n">retention</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_asset_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Deployments.create_job">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.create_job">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_id</span><span class="p">,</span> <span class="n">meta_props</span><span class="p">,</span> <span class="n">retention</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_asset_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an asynchronous deployment job.</span>
 
 <span class="sd">        :param deployment_id:  Unique Id of Deployment</span>
@@ -1507,7 +1562,10 @@
                                  <span class="n">transaction_id</span><span class="o">=</span><span class="n">transaction_id</span><span class="p">,</span>
                                  <span class="n">retention</span><span class="o">=</span><span class="n">retention</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Deployments.get_job_details"><a class="viewcode-back" href="../../core_api.html#client.Deployments.get_job_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_job_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Deployments.get_job_details">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.get_job_details">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_job_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_uid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get information about deployment job(s).</span>
 <span class="sd">        If deployment job_uid is not passed, all deployment jobs details are fetched.</span>
 
@@ -1544,7 +1602,10 @@
                                           <span class="s1">&#39;async deployment job&#39;</span> <span class="k">if</span> <span class="n">job_uid</span> <span class="k">else</span> <span class="s1">&#39;async deployment jobs&#39;</span><span class="p">,</span>
                                           <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Deployments.get_job_status"><a class="viewcode-back" href="../../core_api.html#client.Deployments.get_job_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_job_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Deployments.get_job_status">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.get_job_status">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_job_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the status of the deployment job.</span>
 
 <span class="sd">        :param job_id: Unique Id of the deployment job</span>
@@ -1567,7 +1628,10 @@
             <span class="k">return</span> <span class="n">job_details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;decision_optimization&#39;</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">job_details</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">][</span><span class="s1">&#39;scoring&#39;</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Deployments.get_job_uid"><a class="viewcode-back" href="../../core_api.html#client.Deployments.get_job_uid">[docs]</a>    <span class="k">def</span> <span class="nf">get_job_uid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_details</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Deployments.get_job_uid">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.get_job_uid">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_job_uid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the Unique Id of the deployment job.</span>
 
 <span class="sd">        :param job_details: metadata of the deployment job</span>
@@ -1590,7 +1654,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">job_details</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;guid&#39;</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Deployments.get_job_href"><a class="viewcode-back" href="../../core_api.html#client.Deployments.get_job_href">[docs]</a>    <span class="k">def</span> <span class="nf">get_job_href</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_details</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Deployments.get_job_href">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.get_job_href">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_job_href</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_details</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the href of the deployment job.</span>
 
 <span class="sd">        :param job_details: metadata of the deployment job</span>
@@ -1613,7 +1680,10 @@
             <span class="k">return</span> <span class="n">job_details</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;href&#39;</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="Deployments.delete_job"><a class="viewcode-back" href="../../core_api.html#client.Deployments.delete_job">[docs]</a>    <span class="k">def</span> <span class="nf">delete_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_uid</span><span class="p">,</span> <span class="n">hard_delete</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Deployments.delete_job">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.delete_job">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_uid</span><span class="p">,</span> <span class="n">hard_delete</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Cancels a deployment job that is currenlty running.  This method is also be used to delete metadata</span>
 <span class="sd">        details of the completed or canceled jobs when hard_delete parameter is set to True.</span>
 
@@ -1661,6 +1731,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;deployment async job deletion&#39;</span><span class="p">,</span> <span class="n">response_delete</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
 
+
     <span class="k">def</span> <span class="nf">_get_filter_func_by_spec_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec_state</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">filter_func</span><span class="p">(</span><span class="n">resources</span><span class="p">):</span>
             <span class="n">asset_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
@@ -1674,7 +1745,7 @@
 
         <span class="k">return</span> <span class="n">filter_func</span>
 
-    <span class="k">def</span> <span class="nf">_get_model_inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_id</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_model_inference_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deployment_id</span><span class="p">,</span> <span class="n">inference_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;text_stream&quot;</span><span class="p">],</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Based on provided deployment_id and params get ModelInference object.</span>
 <span class="sd">        Verify that the deployment with the given deployment_id has generating methods.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1683,16 +1754,35 @@
         <span class="n">ModelInference</span> <span class="o">=</span> <span class="n">_check_if_import_from_watsonx_ai</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="p">,</span>
                                                           <span class="s1">&#39;ibm_watson_machine_learning.foundation_models.inference.model_inference&#39;</span><span class="p">,</span>
                                                           <span class="s1">&#39;ModelInference&#39;</span><span class="p">)</span>
+        <span class="k">match</span> <span class="n">inference_type</span><span class="p">:</span>
+            <span class="k">case</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span>
+                <span class="n">generated_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_fm_deployment_generation_href</span><span class="p">(</span>
+                    <span class="n">deployment_id</span><span class="o">=</span><span class="n">deployment_id</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">)</span>
+            <span class="k">case</span> <span class="s2">&quot;text_stream&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_use_fm_ga_api</span><span class="p">:</span>
+                    <span class="n">generated_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_fm_deployment_generation_stream_href</span><span class="p">(</span>
+                        <span class="n">deployment_id</span><span class="o">=</span><span class="n">deployment_id</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># Remove on CPD 5.0 release</span>
+                    <span class="n">generated_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_fm_deployment_generation_href</span><span class="p">(</span>
+                        <span class="n">deployment_id</span><span class="o">=</span><span class="n">deployment_id</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="s2">&quot;text_stream&quot;</span><span class="p">)</span>
+            <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InvalidValue</span><span class="p">(</span><span class="n">value_name</span><span class="o">=</span><span class="s2">&quot;inference_type&quot;</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Available types: &#39;text&#39;, &#39;text_stream&#39;, got: </span><span class="si">{</span><span class="n">inference_type</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-        <span class="n">generated_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_fm_deployment_generation_href</span><span class="p">(</span>
-            <span class="n">deployment_id</span><span class="o">=</span><span class="n">deployment_id</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">generated_url</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="n">_silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;serving_urls&#39;</span><span class="p">,</span> <span class="p">[]):</span>
-            <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deployment with id:</span><span class="si">{</span><span class="n">deployment_id</span><span class="si">}</span><span class="s2"> does not have inferences with </span><span class="se">\&#39;</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="se">\&#39;</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">inference_url_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">url</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="n">_silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;inference&quot;</span><span class="p">,</span> <span class="p">{})]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">inference_url_list</span><span class="p">:</span>
+            <span class="n">inference_url_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_details</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="n">_silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;serving_urls&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="k">if</span> <span class="n">generated_url</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inference_url_list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">inference_url</span> <span class="ow">in</span> <span class="n">inference_url_list</span><span class="p">:</span>  <span class="c1"># Remove on CPD 5.0 release</span>
+                <span class="k">if</span> <span class="s2">&quot;v1-beta/deployments&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inference_url</span><span class="p">:</span>  <span class="c1"># Remove on CPD 5.0 release</span>
+                    <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="n">Messages</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;fm_deployment_has_not_inference_for_generation&quot;</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">ModelInference</span><span class="p">(</span><span class="n">deployment_id</span><span class="o">=</span><span class="n">deployment_id</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">api_client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Deployments.generate"><a class="viewcode-back" href="../../core_api.html#client.Deployments.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="Deployments.generate">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.generate">[docs]</a>
+    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">deployment_id</span><span class="p">,</span>
                  <span class="n">prompt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1731,7 +1821,7 @@
 <span class="sd">        :return: scoring result containing generated content.</span>
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">d_inference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_inference</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="n">d_inference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_inference_text</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">d_inference</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
                                     <span class="n">guardrails</span><span class="o">=</span><span class="n">guardrails</span><span class="p">,</span>
                                     <span class="n">guardrails_hap_params</span><span class="o">=</span><span class="n">guardrails_hap_params</span><span class="p">,</span>
@@ -1740,7 +1830,10 @@
                                     <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
                                     <span class="n">async_mode</span><span class="o">=</span><span class="n">async_mode</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Deployments.generate_text"><a class="viewcode-back" href="../../core_api.html#client.Deployments.generate_text">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="Deployments.generate_text">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.generate_text">[docs]</a>
+    <span class="k">def</span> <span class="nf">generate_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                       <span class="n">deployment_id</span><span class="p">,</span>
                       <span class="n">prompt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1789,7 +1882,7 @@
 <span class="sd">                warnings.filterwarnings(&quot;always&quot;, category=HAPDetectionWarning)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">d_inference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_inference</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="n">d_inference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_inference_text</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">d_inference</span><span class="o">.</span><span class="n">generate_text</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
                                          <span class="n">raw_response</span><span class="o">=</span><span class="n">raw_response</span><span class="p">,</span>
                                          <span class="n">guardrails</span><span class="o">=</span><span class="n">guardrails</span><span class="p">,</span>
@@ -1798,7 +1891,10 @@
                                          <span class="n">concurrency_limit</span><span class="o">=</span><span class="n">concurrency_limit</span><span class="p">,</span>
                                          <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Deployments.generate_text_stream"><a class="viewcode-back" href="../../core_api.html#client.Deployments.generate_text_stream">[docs]</a>    <span class="k">def</span> <span class="nf">generate_text_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+
+<div class="viewcode-block" id="Deployments.generate_text_stream">
+<a class="viewcode-back" href="../../core_api.html#client.Deployments.generate_text_stream">[docs]</a>
+    <span class="k">def</span> <span class="nf">generate_text_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                              <span class="n">deployment_id</span><span class="p">,</span>
                              <span class="n">prompt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1843,13 +1939,15 @@
 <span class="sd">                warnings.filterwarnings(&quot;always&quot;, category=HAPDetectionWarning)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">d_inference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_inference</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="s1">&#39;text_stream&#39;</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="n">d_inference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_inference_text</span><span class="p">(</span><span class="n">deployment_id</span><span class="p">,</span> <span class="s2">&quot;text_stream&quot;</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">d_inference</span><span class="o">.</span><span class="n">generate_text_stream</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
                                                 <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
                                                 <span class="n">raw_response</span><span class="o">=</span><span class="n">raw_response</span><span class="p">,</span>
                                                 <span class="n">guardrails</span><span class="o">=</span><span class="n">guardrails</span><span class="p">,</span>
                                                 <span class="n">guardrails_hap_params</span><span class="o">=</span><span class="n">guardrails_hap_params</span><span class="p">,</span>
-                                                <span class="n">guardrails_pii_params</span><span class="o">=</span><span class="n">guardrails_pii_params</span><span class="p">)</span></div></div>
+                                                <span class="n">guardrails_pii_params</span><span class="o">=</span><span class="n">guardrails_pii_params</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -1882,9 +1980,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/scripts/furo.js"></script>
+</div><script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

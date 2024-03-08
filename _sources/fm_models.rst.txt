@@ -10,3 +10,4 @@ Modules
 
     model
     fm_model_inference
+    fm_deployments

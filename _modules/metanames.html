@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>metanames - IBM Watson Machine Learning</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystyle2.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyle2.css?v=c40128c6" />
     
     
 
@@ -178,6 +178,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../fm_models.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../model.html">Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../fm_model_inference.html">ModelInference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fm_deployments.html"><code class="docutils literal notranslate"><span class="pre">ModelInference</span></code> for Deployments</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../prompt_tuner.html">Prompt Tuning</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Prompt Tuning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -191,6 +192,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../fm_extensions.html">Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fm_helpers.html">Helpers</a></li>
 </ul>
 </li>
 </ul>
@@ -474,7 +476,9 @@
         <span class="k">return</span> <span class="n">res</span>
 
 
-<div class="viewcode-block" id="TrainingConfigurationMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.TrainingConfigurationMetaNames">[docs]</a><span class="k">class</span> <span class="nc">TrainingConfigurationMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainingConfigurationMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.TrainingConfigurationMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">TrainingConfigurationMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">TAGS</span> <span class="o">=</span> <span class="s2">&quot;tags&quot;</span>
     <span class="n">EXPERIMENT_UID</span> <span class="o">=</span> <span class="s2">&quot;experiment_uid&quot;</span>
     <span class="n">PIPELINE_UID</span> <span class="o">=</span> <span class="s2">&quot;pipeline_uid&quot;</span>
@@ -529,6 +533,7 @@
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
 
+
 <span class="k">class</span> <span class="nc">TrainingConfigurationMetaNamesCp4d30</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">TAGS</span> <span class="o">=</span> <span class="s2">&quot;tags&quot;</span>
     <span class="n">EXPERIMENT</span> <span class="o">=</span> <span class="s2">&quot;experiment&quot;</span>
@@ -571,7 +576,9 @@
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ExperimentMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.ExperimentMetaNames">[docs]</a><span class="k">class</span> <span class="nc">ExperimentMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+<div class="viewcode-block" id="ExperimentMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.ExperimentMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">ExperimentMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
     <span class="n">TAGS</span> <span class="o">=</span> <span class="s2">&quot;tags&quot;</span>
@@ -604,7 +611,10 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PipelineMetanames"><a class="viewcode-back" href="../core_api.html#metanames.PipelineMetanames">[docs]</a><span class="k">class</span> <span class="nc">PipelineMetanames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PipelineMetanames">
+<a class="viewcode-back" href="../core_api.html#metanames.PipelineMetanames">[docs]</a>
+<span class="k">class</span> <span class="nc">PipelineMetanames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
     <span class="n">TAGS</span> <span class="o">=</span> <span class="s2">&quot;tags&quot;</span>
@@ -635,6 +645,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
+
 
 <span class="k">class</span> <span class="nc">LearningSystemMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">_COMPUTE_CONFIGURATION_DEFAULT</span> <span class="o">=</span> <span class="s1">&#39;k80&#39;</span>
@@ -674,7 +685,9 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ModelMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.ModelMetaNames">[docs]</a><span class="k">class</span> <span class="nc">ModelMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.ModelMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">ModelMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="n">MetaNames</span><span class="o">.</span><span class="n">DESCRIPTION</span>
     <span class="n">TRAINING_DATA_REFERENCES</span> <span class="o">=</span> <span class="s2">&quot;training_data_references&quot;</span>
@@ -699,6 +712,7 @@
     <span class="n">SOFTWARE_SPEC_UID</span> <span class="o">=</span> <span class="s2">&quot;software_spec&quot;</span>
     <span class="n">TF_MODEL_PARAMS</span> <span class="o">=</span> <span class="s2">&quot;tf_model_params&quot;</span>
     <span class="n">FAIRNESS_INFO</span> <span class="o">=</span> <span class="s2">&quot;fairness_info&quot;</span>
+    <span class="n">FOUNDATION_MODEL</span> <span class="o">=</span> <span class="s2">&quot;foundation_model&quot;</span>
 
     <span class="n">_meta_props_definitions</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;NAME&#39;</span><span class="p">,</span>                    <span class="n">NAME</span><span class="p">,</span>                        <span class="nb">str</span><span class="p">,</span>        <span class="kc">True</span><span class="p">,</span>   <span class="s2">&quot;my_model&quot;</span><span class="p">),</span>
@@ -724,7 +738,8 @@
         <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;MODEL_DEFINITION_UID&#39;</span><span class="p">,</span>    <span class="n">MODEL_DEFINITION_UID</span><span class="p">,</span>        <span class="nb">str</span><span class="p">,</span>        <span class="kc">False</span><span class="p">,</span> <span class="n">example_value</span><span class="o">=</span><span class="s2">&quot;53628d6_cdee13-35d3-s8989343&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/model_definition&quot;</span><span class="p">),</span>
         <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;SOFTWARE_SPEC_UID&#39;</span><span class="p">,</span>       <span class="n">SOFTWARE_SPEC_UID</span><span class="p">,</span>           <span class="nb">str</span><span class="p">,</span>        <span class="kc">False</span><span class="p">,</span> <span class="n">example_value</span><span class="o">=</span><span class="s2">&quot;53628d69-ced9-4f43-a8cd-9954344039a8&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/software_spec/id&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
         <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;TF_MODEL_PARAMS&#39;</span><span class="p">,</span>         <span class="n">TF_MODEL_PARAMS</span><span class="p">,</span>             <span class="nb">dict</span><span class="p">,</span>       <span class="kc">False</span><span class="p">,</span> <span class="n">example_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;save_format&quot;</span><span class="p">:</span> <span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="s2">&quot;signatures&quot;</span><span class="p">:</span> <span class="s2">&quot;struct&quot;</span><span class="p">,</span><span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="s2">&quot;custom_objects&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;/tf_model_params&quot;</span><span class="p">),</span>
-        <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;FAIRNESS_INFO&#39;</span><span class="p">,</span>           <span class="n">FAIRNESS_INFO</span><span class="p">,</span>               <span class="nb">dict</span><span class="p">,</span>       <span class="kc">False</span><span class="p">,</span> <span class="n">example_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;favorable_labels&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]},</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/metrics/0/context/fairness/info&quot;</span><span class="p">)</span>
+        <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;FAIRNESS_INFO&#39;</span><span class="p">,</span>           <span class="n">FAIRNESS_INFO</span><span class="p">,</span>               <span class="nb">dict</span><span class="p">,</span>       <span class="kc">False</span><span class="p">,</span> <span class="n">example_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;favorable_labels&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]},</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/metrics/0/context/fairness/info&quot;</span><span class="p">),</span>
+        <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;FOUNDATION_MODEL&#39;</span><span class="p">,</span>        <span class="n">FOUNDATION_MODEL</span><span class="p">,</span>            <span class="nb">dict</span><span class="p">,</span>       <span class="kc">False</span><span class="p">,</span> <span class="n">example_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model_id&quot;</span><span class="p">:</span> <span class="s2">&quot;mistralai/Mistral-7B-Instruct-v0.2&quot;</span><span class="p">},</span> <span class="n">hidden</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="p">]</span>
 
@@ -735,6 +750,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
+
 
 
 <span class="k">class</span> <span class="nc">PayloadLoggingMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
@@ -754,7 +770,9 @@
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="FunctionMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.FunctionMetaNames">[docs]</a><span class="k">class</span> <span class="nc">FunctionMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+<div class="viewcode-block" id="FunctionMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.FunctionMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">FunctionMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
     <span class="n">RUNTIME_UID</span> <span class="o">=</span> <span class="s2">&quot;runtime_uid&quot;</span>
@@ -786,6 +804,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
+
 
 <span class="k">class</span> <span class="nc">FunctionNewMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
@@ -826,7 +845,9 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ScoringMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.ScoringMetaNames">[docs]</a><span class="k">class</span> <span class="nc">ScoringMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+<div class="viewcode-block" id="ScoringMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.ScoringMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">ScoringMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">INPUT_DATA</span> <span class="o">=</span> <span class="s2">&quot;input_data&quot;</span>
     <span class="n">INPUT_DATA_REFERENCES</span> <span class="o">=</span> <span class="s2">&quot;input_data_references&quot;</span>
     <span class="n">OUTPUT_DATA_REFERENCE</span> <span class="o">=</span> <span class="s2">&quot;output_data_reference&quot;</span>
@@ -849,7 +870,10 @@
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="DecisionOptimizationMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.DecisionOptimizationMetaNames">[docs]</a><span class="k">class</span> <span class="nc">DecisionOptimizationMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="DecisionOptimizationMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.DecisionOptimizationMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">DecisionOptimizationMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">INPUT_DATA</span> <span class="o">=</span> <span class="s2">&quot;input_data&quot;</span>
     <span class="n">INPUT_DATA_REFERENCES</span> <span class="o">=</span> <span class="s2">&quot;input_data_references&quot;</span>
     <span class="n">OUTPUT_DATA</span> <span class="o">=</span> <span class="s2">&quot;output_data&quot;</span>
@@ -869,7 +893,10 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="RuntimeMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.RuntimeMetaNames">[docs]</a><span class="k">class</span> <span class="nc">RuntimeMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="RuntimeMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.RuntimeMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">RuntimeMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
     <span class="n">CUSTOM</span> <span class="o">=</span> <span class="s2">&quot;custom&quot;</span>
@@ -897,6 +924,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
+
 
 
 <span class="k">class</span> <span class="nc">LibraryMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
@@ -970,7 +998,9 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SpacesPlatformMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.SpacesPlatformMetaNames">[docs]</a><span class="k">class</span> <span class="nc">SpacesPlatformMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+<div class="viewcode-block" id="SpacesPlatformMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.SpacesPlatformMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">SpacesPlatformMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
 
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
@@ -998,7 +1028,10 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SpacesPlatformMemberMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.SpacesPlatformMemberMetaNames">[docs]</a><span class="k">class</span> <span class="nc">SpacesPlatformMemberMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SpacesPlatformMemberMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.SpacesPlatformMemberMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">SpacesPlatformMemberMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="c1"># IDENTITY = &quot;id&quot;</span>
     <span class="c1"># ROLE = &quot;role&quot;</span>
     <span class="c1"># IDENTITY_TYPE = &quot;type&quot;</span>
@@ -1029,7 +1062,10 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AssetsMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.AssetsMetaNames">[docs]</a><span class="k">class</span> <span class="nc">AssetsMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="AssetsMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.AssetsMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">AssetsMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
     <span class="n">CONNECTION_ID</span> <span class="o">=</span> <span class="s2">&quot;connection_id&quot;</span>
@@ -1048,8 +1084,11 @@
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
 
+
 <span class="c1">## update this later #Todo</span>
-<div class="viewcode-block" id="SwSpecMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.SwSpecMetaNames">[docs]</a><span class="k">class</span> <span class="nc">SwSpecMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+<div class="viewcode-block" id="SwSpecMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.SwSpecMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">SwSpecMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">TAGS</span> <span class="o">=</span> <span class="s2">&quot;tags&quot;</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
@@ -1073,7 +1112,10 @@
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ScriptMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.ScriptMetaNames">[docs]</a><span class="k">class</span> <span class="nc">ScriptMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ScriptMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.ScriptMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">ScriptMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
     <span class="n">SOFTWARE_SPEC_UID</span> <span class="o">=</span> <span class="s2">&quot;software_spec_uid&quot;</span>
@@ -1088,6 +1130,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
+
 
 
 <span class="k">class</span> <span class="nc">ShinyMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
@@ -1107,7 +1150,9 @@
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="PkgExtnMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.PkgExtnMetaNames">[docs]</a><span class="k">class</span> <span class="nc">PkgExtnMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+<div class="viewcode-block" id="PkgExtnMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.PkgExtnMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">PkgExtnMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
     <span class="n">TYPE</span> <span class="o">=</span> <span class="s2">&quot;type&quot;</span>
@@ -1123,18 +1168,23 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
-<span class="c1">## update this later #Todo</span>
-<div class="viewcode-block" id="HwSpecMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.HwSpecMetaNames">[docs]</a><span class="k">class</span> <span class="nc">HwSpecMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
-    <span class="n">TAGS</span> <span class="o">=</span> <span class="s2">&quot;tags&quot;</span>
+
+<div class="viewcode-block" id="HwSpecMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.HwSpecMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">HwSpecMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
-    <span class="n">HARDWARE_CONFIGURATION</span> <span class="o">=</span> <span class="s2">&quot;hardware_configuration&quot;</span>
-    <span class="n">BASE_SOFTWARE_SPECIFICATION</span> <span class="o">=</span> <span class="s2">&quot;base_software_specification&quot;</span>
+    <span class="n">NODES</span> <span class="o">=</span> <span class="s2">&quot;nodes&quot;</span>
+    <span class="n">SPARK</span> <span class="o">=</span> <span class="s2">&quot;spark&quot;</span>
+    <span class="n">DATASTAGE</span> <span class="o">=</span> <span class="s2">&quot;datastage&quot;</span>
 
     <span class="n">_meta_props_definitions</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;NAME&#39;</span><span class="p">,</span>    <span class="n">NAME</span><span class="p">,</span>   <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>   <span class="s2">&quot;Python 3.10 with pre-installed ML package&quot;</span><span class="p">),</span>
+        <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;NAME&#39;</span><span class="p">,</span>    <span class="n">NAME</span><span class="p">,</span>   <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>   <span class="s2">&quot;Custom Hardware Specification&quot;</span><span class="p">),</span>
         <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;DESCRIPTION&#39;</span><span class="p">,</span> <span class="n">DESCRIPTION</span><span class="p">,</span>    <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>  <span class="s2">&quot;my_description&quot;</span><span class="p">),</span>
-        <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;HARDWARE_CONFIGURATION&#39;</span><span class="p">,</span>  <span class="n">HARDWARE_CONFIGURATION</span><span class="p">,</span>  <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;NODES&#39;</span><span class="p">,</span>  <span class="n">NODES</span><span class="p">,</span>  <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">{}),</span>
+        <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;SPARK&#39;</span><span class="p">,</span> <span class="n">SPARK</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">{}),</span>
+        <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;DATASTAGE&#39;</span><span class="p">,</span> <span class="n">DATASTAGE</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">{})</span>
+
     <span class="p">]</span>
 
     <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">MetaNamesBase</span><span class="p">(</span><span class="n">_meta_props_definitions</span><span class="p">)</span><span class="o">.</span><span class="n">_generate_doc</span><span class="p">(</span><span class="s1">&#39;Hardware Specifications Specs&#39;</span><span class="p">)</span>
@@ -1143,7 +1193,10 @@
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ModelDefinitionMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.ModelDefinitionMetaNames">[docs]</a><span class="k">class</span> <span class="nc">ModelDefinitionMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelDefinitionMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.ModelDefinitionMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">ModelDefinitionMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
     <span class="n">PLATFORM</span> <span class="o">=</span> <span class="s2">&quot;platform&quot;</span>
@@ -1168,7 +1221,10 @@
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ConnectionMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.ConnectionMetaNames">[docs]</a><span class="k">class</span> <span class="nc">ConnectionMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ConnectionMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.ConnectionMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">ConnectionMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">DATASOURCE_TYPE</span> <span class="o">=</span> <span class="s2">&quot;datasource_type&quot;</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
@@ -1186,6 +1242,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
+
 
 
 <span class="k">class</span> <span class="nc">DeploymentMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
@@ -1234,7 +1291,9 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DeploymentNewMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.DeploymentNewMetaNames">[docs]</a><span class="k">class</span> <span class="nc">DeploymentNewMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+<div class="viewcode-block" id="DeploymentNewMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.DeploymentNewMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">DeploymentNewMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
     <span class="n">TAGS</span> <span class="o">=</span> <span class="s2">&quot;tags&quot;</span>
     <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
@@ -1252,6 +1311,7 @@
     <span class="n">OWNER</span> <span class="o">=</span> <span class="s2">&quot;owner&quot;</span>
     <span class="n">BASE_MODEL_ID</span> <span class="o">=</span> <span class="s2">&quot;base_model_id&quot;</span>
     <span class="n">PROMPT_VARIABLES</span> <span class="o">=</span> <span class="s2">&quot;prompt_variables&quot;</span>
+    <span class="n">FOUNDATION_MODEL</span> <span class="o">=</span> <span class="s2">&quot;foundation_model&quot;</span>
 
     <span class="c1"># As per https://watson-ml-v4-api.mybluemix.net/wml-restapi-cloud.html#/Deployments/deployments_create</span>
     <span class="n">_meta_props_definitions</span> <span class="o">=</span> <span class="p">[</span>
@@ -1270,13 +1330,15 @@
         <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;SERVING_NAME&#39;</span><span class="p">,</span> <span class="n">SERVING_NAME</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">example_value</span><span class="o">=</span><span class="s2">&quot;deployment&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hidden</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/online/parameters/serving_name&#39;</span><span class="p">),</span>
         <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;OWNER&#39;</span><span class="p">,</span> <span class="n">OWNER</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">example_value</span><span class="o">=</span><span class="s1">&#39;&lt;owner_id&gt;&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/metadata/owner&#39;</span><span class="p">),</span>
         <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;BASE_MODEL_ID&#39;</span><span class="p">,</span> <span class="n">BASE_MODEL_ID</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">example_value</span><span class="o">=</span><span class="s1">&#39;google/flan-ul2&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-        <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;PROMPT_VARIABLES&#39;</span><span class="p">,</span> <span class="n">PROMPT_VARIABLES</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">example_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">},</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;PROMPT_VARIABLES&#39;</span><span class="p">,</span> <span class="n">PROMPT_VARIABLES</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">example_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">},</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+        <span class="n">MetaProp</span><span class="p">(</span><span class="s1">&#39;FOUNDATION_MODEL&#39;</span><span class="p">,</span> <span class="n">FOUNDATION_MODEL</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">example_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">},</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hidden</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/online/parameters/foundation_model&#39;</span><span class="p">)</span>
     <span class="p">]</span>
 
     <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">MetaNamesBase</span><span class="p">(</span><span class="n">_meta_props_definitions</span><span class="p">)</span><span class="o">.</span><span class="n">_generate_doc</span><span class="p">(</span><span class="s1">&#39;Deployments Specs&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
+
 
 
 <span class="k">class</span> <span class="nc">Migrationv4GACloudMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
@@ -1411,7 +1473,9 @@
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="FactsheetsMetaNames"><a class="viewcode-back" href="../core_api.html#metanames.FactsheetsMetaNames">[docs]</a><span class="k">class</span> <span class="nc">FactsheetsMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+<div class="viewcode-block" id="FactsheetsMetaNames">
+<a class="viewcode-back" href="../core_api.html#metanames.FactsheetsMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">FactsheetsMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
 
     <span class="n">ASSET_ID</span> <span class="o">=</span> <span class="s2">&quot;model_entry_asset_id&quot;</span>
     <span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;model_entry_name&quot;</span>
@@ -1431,7 +1495,10 @@
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="GenTextParamsMetaNames"><a class="viewcode-back" href="../model.html#metanames.GenTextParamsMetaNames">[docs]</a><span class="k">class</span> <span class="nc">GenTextParamsMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GenTextParamsMetaNames">
+<a class="viewcode-back" href="../model.html#metanames.GenTextParamsMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">GenTextParamsMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">DECODING_METHOD</span> <span class="o">=</span> <span class="s2">&quot;decoding_method&quot;</span>
     <span class="n">LENGTH_PENALTY</span> <span class="o">=</span> <span class="s2">&quot;length_penalty&quot;</span>
     <span class="n">TEMPERATURE</span> <span class="o">=</span> <span class="s2">&quot;temperature&quot;</span>
@@ -1473,6 +1540,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
 
+
 <span class="k">class</span> <span class="nc">GenTextModerationsMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">INPUT</span> <span class="o">=</span> <span class="s2">&quot;input&quot;</span>
     <span class="n">OUTPUT</span> <span class="o">=</span> <span class="s2">&quot;output&quot;</span>
@@ -1491,7 +1559,9 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span>
         
-<div class="viewcode-block" id="GenTextReturnOptMetaNames"><a class="viewcode-back" href="../model.html#metanames.GenTextReturnOptMetaNames">[docs]</a><span class="k">class</span> <span class="nc">GenTextReturnOptMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
+<div class="viewcode-block" id="GenTextReturnOptMetaNames">
+<a class="viewcode-back" href="../model.html#metanames.GenTextReturnOptMetaNames">[docs]</a>
+<span class="k">class</span> <span class="nc">GenTextReturnOptMetaNames</span><span class="p">(</span><span class="n">MetaNamesBase</span><span class="p">):</span>
     <span class="n">INPUT_TEXT</span> <span class="o">=</span> <span class="s2">&quot;input_text&quot;</span>
     <span class="n">GENERATED_TOKENS</span> <span class="o">=</span> <span class="s2">&quot;generated_tokens&quot;</span>
     <span class="n">INPUT_TOKENS</span> <span class="o">=</span> <span class="s2">&quot;input_tokens&quot;</span>
@@ -1514,6 +1584,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">MetaNamesBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta_props_definitions</span><span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -1546,9 +1617,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/scripts/furo.js"></script>
+</div><script src="../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

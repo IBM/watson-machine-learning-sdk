@@ -52,6 +52,7 @@ Factsheets (IBM Cloud only)
 
 Hardware specifications
 -----------------------
+.. _core-api-hardware-specification:
 .. autoclass:: client.HwSpec
     :members:
 
