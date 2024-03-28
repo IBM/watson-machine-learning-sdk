@@ -453,7 +453,8 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">metaProps</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;asset&quot;</span><span class="p">)</span>
                         <span class="n">metaProps</span><span class="p">[</span><span class="s1">&#39;prompt_template&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">artifact_uid</span><span class="p">}</span>
-                        <span class="k">if</span> <span class="n">DeploymentNewMetaNames</span><span class="o">.</span><span class="n">BASE_MODEL_ID</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metaProps</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">DeploymentNewMetaNames</span><span class="o">.</span><span class="n">BASE_MODEL_ID</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metaProps</span> <span class="ow">and</span> \
+                                <span class="n">DeploymentNewMetaNames</span><span class="o">.</span><span class="n">BASE_DEPLOYMENT_ID</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metaProps</span><span class="p">:</span>
                             <span class="n">metaProps</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">DeploymentNewMetaNames</span><span class="o">.</span><span class="n">BASE_MODEL_ID</span><span class="p">:</span> <span class="n">model_id</span><span class="p">})</span>
             <span class="c1"># --- end note</span>
 
