@@ -1,5 +1,14 @@
 The ibm-watson-machine-learning library
 =======================================
+
+.. warning::
+    Please be advised that the ``ibm_watson_machine_learning`` package will soon be placed in maintenance mode.
+    We are introducing the ``ibm_watsonx_ai`` package to replace it, offering enhanced functionalities and performance.
+    We recommend all users to migrate to ``ibm_watsonx_ai`` to leverage its advanced features.
+    Detailed migration guides will be provided `here <https://ibm.github.io/watsonx-ai-python-sdk/migration.html>`_.
+
+----
+
 The ``ibm-watson-machine-learning`` Python library allows you to work with IBM Watson Machine Learning services.
 You can train, store, and deploy your models, score them using APIs, and finally integrate them with your application
 development.

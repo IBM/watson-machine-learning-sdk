@@ -619,7 +619,7 @@
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Not applicable for this release&#39;</span><span class="p">)</span>
 
         <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">shiny_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;shiny_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">rev_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;rev_uid&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">rev_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;rev_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
         <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">()</span>
 
@@ -1039,7 +1039,7 @@
 <span class="sd">        :param shiny_uid: shiny asset ID</span>
 <span class="sd">        :type shiny_uid: str, optional</span>
 <span class="sd">        :param rev_uid: revision ID, if this parameter is not provided, returns latest revision if existing else error</span>
-<span class="sd">        :type rev_uid: int, optional</span>
+<span class="sd">        :type rev_uid: str, optional</span>
 
 <span class="sd">        :return: stored shiny(s) metadata</span>
 <span class="sd">        :rtype: dict</span>
@@ -1057,7 +1057,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_either_is_set</span><span class="p">()</span>
 
         <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">shiny_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;shiny_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">rev_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;rev_uid&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">rev_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;rev_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">rev_uid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">rev_uid</span> <span class="o">=</span> <span class="s1">&#39;latest&#39;</span>

@@ -558,7 +558,7 @@
 <span class="sd">        :type remote_training_system_id: str</span>
 
 <span class="sd">        :param rev_id: Unique id of the remote system revision</span>
-<span class="sd">        :type rev_id: int</span>
+<span class="sd">        :type rev_id: str</span>
 
 <span class="sd">        :return: stored remote system revision metadata</span>
 <span class="sd">        :rtype: dict</span>
@@ -575,7 +575,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_either_is_set</span><span class="p">()</span>
 
         <span class="n">RemoteTrainingSystem</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">remote_training_system_id</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;remote_training_system_id&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="n">RemoteTrainingSystem</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">rev_id</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;rev_id&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">RemoteTrainingSystem</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">rev_id</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;rev_id&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
         <span class="n">href</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">remote_training_system_href</span><span class="p">(</span><span class="n">remote_training_system_id</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_with_or_without_limit</span><span class="p">(</span><span class="n">href</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">op_name</span><span class="o">=</span><span class="s2">&quot;remote_training_system_id&quot;</span><span class="p">,</span>
