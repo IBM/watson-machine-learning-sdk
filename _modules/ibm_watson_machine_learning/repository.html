@@ -193,6 +193,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_extensions.html">Extensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_helpers.html">Helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fm_working_with_custom_models.html">Custom models</a></li>
 </ul>
 </li>
 </ul>
@@ -292,6 +293,39 @@
 <span class="sd">        client.repository.PipelineMetaNames.show()</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Repository.ModelAssetTypes">
+<a class="viewcode-back" href="../../core_api.html#client.Repository.ModelAssetTypes">[docs]</a>
+    <span class="nd">@dataclass</span>
+    <span class="k">class</span> <span class="nc">ModelAssetTypes</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Data class with supported model asset types.&quot;&quot;&quot;</span>
+        <span class="n">DO_DOCPLEX_20_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;do-docplex_20.1&#39;</span>
+        <span class="n">DO_OPL_20_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;do-opl_20.1&#39;</span>
+        <span class="n">DO_CPLEX_20_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;do-cplex_20.1&#39;</span>
+        <span class="n">DO_CPO_20_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;do-cpo_20.1&#39;</span>
+        <span class="n">DO_DOCPLEX_22_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;do-docplex_22.1&#39;</span>
+        <span class="n">DO_OPL_22_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;do-opl_22.1&#39;</span>
+        <span class="n">DO_CPLEX_22_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;do-cplex_22.1&#39;</span>
+        <span class="n">DO_CPO_22_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;do-cpo_22.1&#39;</span>
+        <span class="n">WML_HYBRID_0_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;wml-hybrid_0.1&#39;</span>
+        <span class="n">PMML_4_2_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;pmml_4.2.1&#39;</span>
+        <span class="n">PYTORCH_ONNX_1_12</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;pytorch-onnx_1.12&#39;</span>
+        <span class="n">PYTORCH_ONNX_RT22_2</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;pytorch-onnx_rt22.2&#39;</span>
+        <span class="n">PYTORCH_ONNX_2_0</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;pytorch-onnx_2.0&#39;</span>
+        <span class="n">PYTORCH_ONNX_RT23_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;pytorch-onnx_rt23.1&#39;</span>
+        <span class="n">SCIKIT_LEARN_1_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;scikit-learn_1.1&#39;</span>
+        <span class="n">MLLIB_3_3</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;mllib_3.3&#39;</span>
+        <span class="n">SPSS_MODELER_17_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;spss-modeler_17.1&#39;</span>
+        <span class="n">SPSS_MODELER_18_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;spss-modeler_18.1&#39;</span>
+        <span class="n">SPSS_MODELER_18_2</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;spss-modeler_18.2&#39;</span>
+        <span class="n">TENSORFLOW_2_9</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;tensorflow_2.9&#39;</span>
+        <span class="n">TENSORFLOW_RT22_2</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;tensorflow_rt22.2&#39;</span>
+        <span class="n">TENSORFLOW_2_12</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;tensorflow_2.12&#39;</span>
+        <span class="n">TENSORFLOW_RT23_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;tensorflow_rt23.1&#39;</span>
+        <span class="n">XGBOOST_1_6</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;xgboost_1.6&#39;</span>
+        <span class="n">PROMPT_TUNE_1_0</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;prompt_tune_1.0&#39;</span>
+        <span class="n">CUSTOM_FOUNDATION_MODEL_1_0</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;custom_foundation_model_1.0&#39;</span></div>
+
 
     <span class="n">cloud_platform_spaces</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">icp_platform_spaces</span> <span class="o">=</span> <span class="kc">False</span>

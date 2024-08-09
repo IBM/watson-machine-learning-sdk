@@ -193,6 +193,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_extensions.html">Extensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_helpers.html">Helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fm_working_with_custom_models.html">Custom models</a></li>
 </ul>
 </li>
 </ul>
@@ -241,7 +242,7 @@
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.utils</span> <span class="kn">import</span> <span class="n">DATA_ASSETS_DETAILS_TYPE</span><span class="p">,</span> <span class="n">modify_details_for_script_and_shiny</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.metanames</span> <span class="kn">import</span> <span class="n">ShinyMetaNames</span>
 <span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_resource</span> <span class="kn">import</span> <span class="n">WMLResource</span>
-<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span><span class="p">,</span> <span class="n">ApiRequestFailure</span><span class="p">,</span> <span class="n">ForbiddenActionForGitBasedProject</span>
+<span class="kn">from</span> <span class="nn">ibm_watson_machine_learning.wml_client_error</span> <span class="kn">import</span> <span class="n">WMLClientError</span><span class="p">,</span> <span class="n">ApiRequestFailure</span><span class="p">,</span> <span class="n">ForbiddenActionForGitBasedProject</span><span class="p">,</span> <span class="n">UnexpectedType</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
@@ -619,11 +620,13 @@
             <span class="k">raise</span> <span class="n">WMLClientError</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Not applicable for this release&#39;</span><span class="p">)</span>
 
         <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">shiny_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;shiny_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">rev_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;rev_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-
         <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">rev_uid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">rev_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;rev_id&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="kc">False</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">UnexpectedType</span><span class="p">(</span><span class="s1">&#39;rev_uid&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">type</span><span class="p">(</span><span class="n">rev_uid</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rev_uid</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Parameter rev_uid as int is depreacted, should be of type str.&quot;</span><span class="p">)</span>
             <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;revision_id&#39;</span><span class="p">:</span> <span class="n">rev_uid</span><span class="p">})</span>
 
         <span class="kn">import</span> <span class="nn">urllib</span>
@@ -1057,10 +1060,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_check_if_either_is_set</span><span class="p">()</span>
 
         <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">shiny_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;shiny_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">rev_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;rev_uid&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-
         <span class="k">if</span> <span class="n">rev_uid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">rev_uid</span> <span class="o">=</span> <span class="s1">&#39;latest&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">Shiny</span><span class="o">.</span><span class="n">_validate_type</span><span class="p">(</span><span class="n">rev_uid</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;rev_uid&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="kc">False</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">UnexpectedType</span><span class="p">(</span><span class="s1">&#39;rev_uid&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">type</span><span class="p">(</span><span class="n">rev_uid</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rev_uid</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Parameter rev_uid as int is depreacted, should be of type str.&quot;</span><span class="p">)</span>
 
         <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">service_instance</span><span class="o">.</span><span class="n">_href_definitions</span><span class="o">.</span><span class="n">get_asset_href</span><span class="p">(</span><span class="n">shiny_uid</span><span class="p">)</span>
         <span class="c1"># return self._get_required_element_from_response(self._get_with_or_without_limit(url,</span>

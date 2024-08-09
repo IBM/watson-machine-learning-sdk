@@ -193,6 +193,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_extensions.html">Extensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fm_helpers.html">Helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fm_working_with_custom_models.html">Custom models</a></li>
 </ul>
 </li>
 </ul>
@@ -335,7 +336,7 @@
 
 <div class="viewcode-block" id="HwSpec.list">
 <a class="viewcode-back" href="../../core_api.html#client.HwSpec.list">[docs]</a>
-    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print hardware specifications in a table format.</span>
 
 <span class="sd">        :param name: Unique id of the hardware spec</span>
@@ -343,6 +344,9 @@
 
 <span class="sd">        :param return_as_df: determinate if table should be returned as pandas.DataFrame object, default: True</span>
 <span class="sd">        :type return_as_df: bool, optional</span>
+
+<span class="sd">        :param limit: limit number of fetched records</span>
+<span class="sd">        :type limit: int, optional</span>
 
 <span class="sd">        :return: pandas.DataFrame with listed hardware specifications or None if return_as_df is False</span>
 <span class="sd">        :rtype: pandas.DataFrame or None</span>
@@ -355,7 +359,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_params</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span>
@@ -370,7 +374,7 @@
         <span class="n">hw_spec_values</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;asset_id&#39;</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="sa">u</span><span class="s1">&#39;description&#39;</span><span class="p">])</span> <span class="k">for</span>
             <span class="n">m</span> <span class="ow">in</span> <span class="n">asset_details</span><span class="p">]</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="n">hw_spec_values</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;NAME&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;DESCRIPTION&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_DEFAULT_LIST_LENGTH</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="n">hw_spec_values</span><span class="p">,</span> <span class="p">[</span><span class="sa">u</span><span class="s1">&#39;NAME&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;DESCRIPTION&#39;</span><span class="p">],</span> <span class="n">limit</span><span class="p">,</span> <span class="n">_DEFAULT_LIST_LENGTH</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">return_as_df</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">table</span></div>
 

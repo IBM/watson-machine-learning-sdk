@@ -193,6 +193,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../prompt_template_manager.html">Prompt Template Manager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../fm_extensions.html">Extensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../fm_helpers.html">Helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../fm_working_with_custom_models.html">Custom models</a></li>
 </ul>
 </li>
 </ul>
@@ -1053,7 +1054,20 @@
                 <span class="k">except</span> <span class="p">(</span><span class="ne">ConnectionError</span><span class="p">,</span> <span class="n">FlightError</span><span class="p">,</span> <span class="n">ApiRequestFailure</span><span class="p">)</span> <span class="k">as</span> <span class="n">download_data_error</span><span class="p">:</span>
                     <span class="c1"># note: try to download normal data asset either directly from cams or from mounted NFS</span>
                     <span class="c1">#       to keep backward compatibility</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wml_client</span> <span class="ow">and</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_data_asset_normal</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_size_acceptable</span><span class="p">())</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_data_asset_nfs</span><span class="p">())</span> <span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_wml_client</span>
+                            <span class="ow">and</span> <span class="p">(</span>
+                            <span class="p">(</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">_is_data_asset_normal</span><span class="p">()</span>
+                                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_size_acceptable</span><span class="p">()</span>
+                            <span class="p">)</span>
+                            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_data_asset_nfs</span><span class="p">()</span>
+                    <span class="p">)</span>
+                            <span class="ow">and</span> <span class="p">(</span>
+                            <span class="s2">&quot;Found non-unique column index&quot;</span>
+                            <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">download_data_error</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="p">):</span>
                         <span class="kn">import</span> <span class="nn">warnings</span>
                         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">download_data_error</span><span class="p">),</span> <span class="ne">Warning</span><span class="p">)</span>
                         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_download_training_data_from_data_asset_storage</span><span class="p">()</span>
